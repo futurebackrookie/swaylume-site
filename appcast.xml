@@ -7,32 +7,37 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sat, 22 Aug 2026 21:54:18 +0000</pubDate>
-      <sparkle:version>6</sparkle:version>
+      <pubDate>Sat, 22 Aug 2026 22:04:35 +0000</pubDate>
+      <sparkle:version>7</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Swaylume 1.0.0 Beta 6（构建号 6）这版改了什么
+      <description><![CDATA[Swaylume 1.0.0 Beta 7（构建号 7）这版改了什么
 
-修复播放/暂停反相。点「暂停」壁纸继续播放、点「继续」壁纸反而停住 ——
-这一版之前一直是这样。原因是内部状态更新的时序问题，渲染器总是执行上一次的
-指令；界面文字始终显示正确，所以从界面上看不出任何异常。
+修复升级后可能卡在启动的问题。Beta 6 在启动时会读取钥匙串里保存的 Pixabay
+密钥，而每次构建的代码签名都不同，macOS 会因此弹出一个要输密码的授权框 ——
+在它被回答之前，菜单栏图标不出现、壁纸也不渲染，看起来就是「装完打不开」。
+现在只有真正进入设置页或素材搜索时才会读取密钥，启动路径不再碰钥匙串。
+（只有在 Beta 6 里填过 Pixabay 密钥的用户会遇到这个问题。）
+
+以下是 Beta 6 的内容，从 Beta 5 直接升级的话一并生效：
+
+修复播放/暂停反相。点「暂停」壁纸继续播放、点「继续」壁纸反而停住。原因是
+内部状态更新的时序问题，渲染器总是执行上一次的指令；界面文字始终显示正确，
+所以从界面上看不出异常。
 
 修复换壁纸慢一拍。选一张壁纸桌面不变，再选一张时才换成上次选的那张。
-和上面是同一类问题，这次一并修掉了五处。
+和上面同源，一并修掉了五处。
 
 音频响应的提示不再指错方向。此前壁纸不动时一律显示「无信号 · 检查设备选择」，
-但最常见的原因其实是当前壁纸根本不读频谱（视频、图片、2.5D 壁纸都不读，
-只有网页壁纸可能读）。现在会直接说明这一点。麦克风权限被拒时也会明确提示
-去系统设置开启，并提供直达按钮，不再让人在输入设备列表里反复试。
+但最常见的原因其实是当前壁纸根本不读频谱（视频、图片、2.5D 都不读，只有网页
+壁纸可能读）。现在会直接说明。麦克风权限被拒时也会明确提示并提供直达按钮。
 
-补上无障碍支持。此前 VoiceOver 用户能听到壁纸名称，却无法选中或应用任何一张 ——
-壁纸网格用的点击手势对辅助功能完全不可见。现在每张壁纸都是可操作的按钮，
-支持「选中」和「应用到桌面」两个动作；图标要么有朗读标签，要么明确跳过。
+补上无障碍支持。此前 VoiceOver 用户能听到壁纸名称却无法选中或应用任何一张。
+现在每张壁纸都是可操作的按钮，支持「选中」和「应用到桌面」两个动作。
 
-Pixabay API 密钥改存钥匙串。此前是明文存在偏好设置里，而输入框是密码样式，
-两者不一致。已填过密钥的用户升级后会自动迁移，无需重新输入。]]></description>
+Pixabay API 密钥改存钥匙串。已填过密钥的用户升级后自动迁移，无需重新输入。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="4113013"
+                 length="4116755"
                  type="application/octet-stream"/>
     </item>
   </channel>
