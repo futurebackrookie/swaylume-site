@@ -7,24 +7,32 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sat, 22 Aug 2026 22:57:34 +0000</pubDate>
-      <sparkle:version>8</sparkle:version>
+      <pubDate>Sun, 23 Aug 2026 23:22:55 +0000</pubDate>
+      <sparkle:version>9</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Swaylume 1.0.0 Beta 8（构建号 8）这版改了什么
+      <description><![CDATA[Beta 9
 
-设置里新增「界面语言」。Swaylume 一直是中英双语，但此前只能跟随系统语言，
-没有任何地方能切——看起来就像只有中文。现在可以在设置页直接选：跟随系统、
-简体中文、English。改完需要重启 app 才生效，旁边有「立即重启」按钮。
+修复
+· 超宽壁纸（3440×1440 等）的缩略图会糊到相邻卡片上，行内间隙和圆角消失。
+  壁纸库、工坊和在线搜索三处都修了。
+· 省电设置在升级后会被重置回默认值。原因是设置文件多了新字段之后整份解不出来，
+  没有任何报错。这次改成逐字段兼容，以后再加设置也不会重演。
+· 鼠标悬停播放预览时，超宽视频会溢出卡片边界。
 
-这对系统语言不是中英文的用户尤其有用：此前偏好语言里没有英文的话，界面会
-退回中文而不是英文。
+新增
+· 「资源占用」页：实时显示 Swaylume 自己的功率、CPU 占用和机器热度，
+  外加最近三分钟的功率曲线。笔记本上还会换算成「每小时约耗电百分之几」。
+  功率取自系统内核对本进程的能耗计量，不是按 CPU 占用估算的。
+· 机器过热时自动降低帧率让路，可在设置里关闭。
+· 帧率上限新增「跟随显示器刷新率」并作为新装默认。
+  120Hz 显示器此前一直只跑 60。已经手动设过帧率的用户不受影响，保持原设置。
+  手动档现在只列出显示器撑得住的档位。
 
-更新提示带上构建号。此前显示「有新版本 1.0.0」，而正在运行的也是 1.0.0，
-读起来像是「你已经是最新的了」——真正区分新旧的构建号反而没露出来。
-现在显示成「有新版本 1.0.0 (8)」。]]></description>
+其它
+· 多屏拼接已在双屏实机验证通过（含 AirPlay 无线副屏）。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="4138376"
+                 length="4250070"
                  type="application/octet-stream"/>
     </item>
   </channel>
