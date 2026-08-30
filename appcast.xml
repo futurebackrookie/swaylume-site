@@ -7,32 +7,41 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sun, 23 Aug 2026 23:22:55 +0000</pubDate>
-      <sparkle:version>9</sparkle:version>
+      <pubDate>Sun, 30 Aug 2026 21:39:12 +0000</pubDate>
+      <sparkle:version>25</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 9
+      <description><![CDATA[Beta 25
 
-修复
-· 超宽壁纸（3440×1440 等）的缩略图会糊到相邻卡片上，行内间隙和圆角消失。
-  壁纸库、工坊和在线搜索三处都修了。
-· 省电设置在升级后会被重置回默认值。原因是设置文件多了新字段之后整份解不出来，
-  没有任何报错。这次改成逐字段兼容，以后再加设置也不会重演。
-· 鼠标悬停播放预览时，超宽视频会溢出卡片边界。
+这一版基本都在桌宠上。
 
 新增
-· 「资源占用」页：实时显示 Swaylume 自己的功率、CPU 占用和机器热度，
-  外加最近三分钟的功率曲线。笔记本上还会换算成「每小时约耗电百分之几」。
-  功率取自系统内核对本进程的能耗计量，不是按 CPU 占用估算的。
-· 机器过热时自动降低帧率让路，可在设置里关闭。
-· 帧率上限新增「跟随显示器刷新率」并作为新装默认。
-  120Hz 显示器此前一直只跑 60。已经手动设过帧率的用户不受影响，保持原设置。
-  手动档现在只列出显示器撑得住的档位。
+· 桌宠会自己走动了。以前它只能站在原地——性格设置一路传到最后被丢掉，
+  「靠近光标」的判定门槛也永远为假，等于三个开关全是摆设。现在性格真的
+  影响它靠不靠近你、多久靠近一次，闲着的时候也会自己溜达两步。
+· 眼球跟着光标动，没有延迟。
+· 摸头有反应：眯成弯月的眼睛、压下去的耳朵、呼噜带来的轻微震动，还会「喵」一声。
+· 点一下也会「喵」。
+· ⌥⌘C 把桌宠叫到光标那儿。
+· 新增「一直跟着鼠标走」开关。
+· 新增窗口透明度滑块。
 
-其它
-· 多屏拼接已在双屏实机验证通过（含 AirPlay 无线副屏）。]]></description>
+改进
+· 桌宠画得细了一档，不再是一眼马赛克。轮廓上的阶梯缩到原来的三分之一；
+  眼睛从一个矩形改成杏仁形、瞳孔上下收尖；鼻头改成倒三角；斑点改成圆的。
+  同时开机准备动画帧的耗时降到原来的四分之一。
+
+修复
+· 桌宠的「家」会自己漂移。你把它摆在哪儿，它走开之后就该回哪儿。
+· 「喵」字是倒过来的。
+· 桌宠在屏幕顶部时，「喵」的气泡会顶出画面。
+· 按住 ⌥⌘C 不放会让桌宠原地抬头，一步都迈不出去。
+
+已知限制
+· 这个版本没有经过 Apple 公证（需要付费开发者账号）。首次打开要在
+  「系统设置 → 隐私与安全性」里放行。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="4250070"
+                 length="5111672"
                  type="application/octet-stream"/>
     </item>
   </channel>
