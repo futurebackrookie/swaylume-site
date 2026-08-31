@@ -1036,6 +1036,45 @@ h1.hero-h {
 .pet-fact span { font-size: 13px; color: var(--muted); line-height: 1.6; }
 @media (max-width: 700px) { .pet-facts { grid-template-columns: minmax(0,1fr); } .pet-yard { height: 240px; } }
 
+/* ===== 多屏与 Space ===== */
+.dsp-demo { margin-top: 26px; border: 1px solid var(--line-soft); border-radius: 16px; overflow: hidden; background: var(--surface); }
+.dsp-modes { display: flex; gap: 2px; padding: 10px; border-bottom: 1px solid var(--line-soft); }
+.dsp-modes button {
+  flex: 1; height: 32px; border: 0; border-radius: 8px; background: transparent;
+  font: inherit; font-size: 12.5px; color: var(--muted); cursor: pointer;
+  transition: background .18s ease, color .18s ease;
+}
+.dsp-modes button:hover { color: var(--text); background: var(--surface-2); }
+.dsp-modes button[aria-pressed="true"] { color: var(--text); background: var(--surface-2); font-weight: 600; }
+.dsp-stage { display: flex; gap: 14px; align-items: flex-end; justify-content: center; padding: 30px 24px 34px; }
+.dsp-screen { position: relative; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--ink); }
+.dsp-screen.a { width: 210px; height: 132px; }
+.dsp-screen.b { width: 150px; height: 96px; }
+.dsp-screen i {
+  position: absolute; inset: 0; display: block;
+  background-image:
+    radial-gradient(60% 80% at 22% 20%, rgba(124,224,245,.55), transparent 58%),
+    radial-gradient(55% 70% at 72% 18%, rgba(138,162,255,.5), transparent 60%),
+    linear-gradient(165deg, #10243A, #070E1A);
+  background-size: 100% 100%; background-position: 0 0;
+  transition: background-size .4s cubic-bezier(.3,.8,.3,1), background-position .4s cubic-bezier(.3,.8,.3,1), filter .3s ease;
+}
+/* 拼接：两块屏共用一张画布，各显示其中一段 */
+.dsp-demo[data-mode="span"] .dsp-screen.a i { background-size: 240% 100%; background-position: 0 0; }
+.dsp-demo[data-mode="span"] .dsp-screen.b i { background-size: 336% 100%; background-position: 100% 0; }
+/* 各放各的：右屏换一张不同的 */
+.dsp-demo[data-mode="own"] .dsp-screen.b i { filter: hue-rotate(125deg); }
+.dsp-label { position: absolute; left: 7px; bottom: 6px; font-family: var(--font-mono); font-size: 9.5px; color: rgba(255,255,255,.72); }
+
+/* ===== 顺手的那些 ===== */
+.keys { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px;
+  background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: 13px; overflow: hidden; }
+.key-row { background: var(--surface); padding: 13px 16px; display: flex; align-items: center; gap: 12px; }
+.kbd { font-family: var(--font-mono); font-size: 12px; padding: 4px 8px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--text); white-space: nowrap; }
+.key-row span { font-size: 13.5px; color: var(--text-dim); }
+@media (max-width: 700px) { .keys { grid-template-columns: minmax(0,1fr); } .dsp-stage { flex-direction: column; align-items: center; } }
+
 .gov-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 13px; overflow: hidden; border: 1px solid var(--line-soft); }
 .gov-item { background: var(--surface); padding: 15px 18px; display: grid; gap: 3px; }
 .gov-item b { font-size: 14.5px; font-weight: 620; letter-spacing: -.005em; }
@@ -1473,7 +1512,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   <div class="sc-scene" id="sc-scene">
     <div class="sc-pin">
       <div class="sc-in">
-        <div class="rail"><span class="rail-num">02</span><span>Nativ</span></div>
+        <div class="rail"><span class="rail-num">01</span><span>Nativ</span></div>
         <div class="sc-copy">
           <div class="sc-text">
             <h2 class="sec-h">Der Hintergrund muss sich zwischen Schreibtischbild und Schreibtischsymbole schieben.</h2>
@@ -1592,7 +1631,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 精选壁纸 ============================== -->
 <section class="sec" id="gallery">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">01</span><span>Hintergründe</span></div>
+    <div class="rail"><span class="rail-num">02</span><span>Hintergründe</span></div>
     <div>
       <h2 class="sec-h rise">Such dir einen aus. Den Rest übernimmt dein Schreibtisch.</h2>
       <p class="sec-p rise">
@@ -1678,7 +1717,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 桌宠 ============================== -->
 <section class="sec" id="pet">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">05</span><span>Schreibtischtier</span></div>
+    <div class="rail"><span class="rail-num">04</span><span>Schreibtischtier</span></div>
     <div>
       <h2 class="sec-h rise">Es läuft zu deinem Mauszeiger.</h2>
       <p class="sec-p rise">Gib ihm ein Foto deiner Katze. Swaylume misst Fellfarbe, Kopf-Körper-Verhältnis, Ohren und Schwanz und lässt daraus ein passendes Pixeltier wachsen. Es lebt in derselben Ebene wie das Hintergrundbild — unter den Symbolen, ohne den Fokus zu stehlen oder Klicks zu schlucken.</p>
@@ -1702,10 +1741,40 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   </div>
 </section>
 
+<!-- ============================== § 多屏与 Space ============================== -->
+<section class="sec" id="displays">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">05</span><span>Bildschirme &amp; Spaces</span></div>
+    <div>
+      <h2 class="sec-h rise">Jeder Bildschirm, jeder Space, für sich.</h2>
+      <p class="sec-p rise">Mehrere Monitore sind nicht damit erledigt, ein Bild zu vervielfältigen. Drei Modi: pro Bildschirm ein eigenes Bild, überall dasselbe, oder alle Bildschirme als eine Leinwand behandeln und ein Bild darüber spannen.</p>
+
+      <div class="dsp-demo rise" id="dsp-demo" data-mode="own">
+        <div class="dsp-modes" role="group" aria-label="Anzeigemodus">
+          <button type="button" data-mode="own"  aria-pressed="true">Pro Bildschirm</button>
+          <button type="button" data-mode="same" aria-pressed="false">Überall dasselbe</button>
+          <button type="button" data-mode="span" aria-pressed="false">Durchspannen</button>
+        </div>
+        <div class="dsp-stage">
+          <div class="dsp-screen a"><i></i><span class="dsp-label">3440 × 1440</span></div>
+          <div class="dsp-screen b"><i></i><span class="dsp-label">1920 × 1080</span></div>
+        </div>
+      </div>
+
+      <div class="pet-facts rise">
+        <div class="pet-fact"><b>Jeder Space darf anders sein</b><span>Ein Hintergrund, den du in einem Space setzt, gilt nur dort. Einer fürs Arbeiten, einer für alles andere — beim Wechseln wechselt auch das Bild.</span></div>
+        <div class="pet-fact"><b>Mausparallaxe, ohne Berechtigung</b><span>Das Bild verschiebt sich leicht mit dem Zeiger. Es liest die ohnehin verfügbare Cursorposition — keine Systemberechtigung, keine Eingabeüberwachung.</span></div>
+      </div>
+
+      <div class="note rise"><b>Für das Durchspannen gibt es eine Voraussetzung.</b> Video- und Bildhintergründe spannen problemlos; ein Web-Hintergrund muss selbst erklären, dass er es unterstützt, sonst zeichnet jeder Bildschirm eine eigene vollständige Kopie — das liegt am Hintergrund, nicht an einem Fehler.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 省电 ============================== -->
 <section class="sec pin" id="power">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">04</span><span>Strom</span></div>
+    <div class="rail"><span class="rail-num">06</span><span>Strom</span></div>
     <div>
       <h2 class="sec-h rise">Wenn niemand hinsieht, zeichnet es kein einziges Bild.</h2>
       <p class="sec-p rise">
@@ -1737,7 +1806,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 迁移 ============================== -->
 <section class="sec" id="import">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">06</span><span>Umzug</span></div>
+    <div class="rail"><span class="rail-num">07</span><span>Umzug</span></div>
     <div>
       <h2 class="sec-h rise">Bring deine Wallpaper-Engine-Sammlung auf den Mac.</h2>
       <p class="sec-p rise">
@@ -1792,10 +1861,35 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     </div>
   </div>
 </section>
+<!-- ============================== § 顺手的那些 ============================== -->
+<section class="sec" id="extras">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">08</span><span>Kleinigkeiten</span></div>
+    <div>
+      <h2 class="sec-h rise">Was ohne Einstellungen geht.</h2>
+      <p class="sec-p rise">Vier globale Kurzbefehle, verfügbar, während eine beliebige App vorn ist. Sie nutzen die Hotkey-Registrierung des Systems und brauchen deshalb keine Bedienungshilfen-Berechtigung — eine Hintergrundbild-App sollte nicht nebenbei alles mitlesen dürfen, was du tippst.</p>
+
+      <div class="keys rise">
+        <div class="key-row"><span class="kbd">⌥⌘P</span><span>Pause / weiter</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘→</span><span>Nächstes Bild</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘M</span><span>Stummschalten</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘C</span><span>Tier herbeirufen</span></div>
+      </div>
+
+      <div class="pet-facts rise">
+        <div class="pet-fact"><b>Fenstertransparenz</b><span>Das Einstellungsfenster lässt sich halbtransparent machen, sodass das Hintergrundbild durchscheint. Bei null ist es vollständig deckend — so ist es voreingestellt.</span></div>
+        <div class="pet-fact"><b>Automatische Updateprüfung</b><span>Es lädt eine Versionsdatei und vergleicht. Zurückgesendet wird nichts. Abschaltbar, und einzelne Builds lassen sich überspringen.</span></div>
+      </div>
+
+      <div class="note rise"><b>Wenn eine andere App den Kurzbefehl belegt, erfährst du es.</b> Eine fehlgeschlagene Registrierung scheitert nicht stillschweigend — die Zeile wird in den Einstellungen markiert, statt dich rätseln zu lassen.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">11</span><span>Holen</span></div>
+    <div class="rail"><span class="rail-num">09</span><span>Holen</span></div>
     <div>
       <h2 class="sec-h rise">Jetzt loslegen. Die Store-Version kommt.</h2>
       <p class="sec-p rise">Der Knopf unten startet den Download direkt. Du bekommst eine <code>.dmg</code>; öffne sie und zieh das Symbol in „Programme“. Keine Beipacksoftware, keine Werbe-Add-ons, keine dubiosen Downloadportale.</p>
@@ -2502,6 +2596,23 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
         }, { threshold: 0.15 }).observe(yard);
       }
     }
+  }
+
+  /* =========================================================
+     4.6 多屏演示 —— 三种模式各是什么样
+     纯状态切换，没有动画循环：点一下换一个 data-mode，剩下的交给 CSS 过渡。
+     ========================================================= */
+  if (document.getElementById("dsp-demo")) {
+    var dspDemo = document.getElementById("dsp-demo");
+    var dspBtns = Array.prototype.slice.call(dspDemo.querySelectorAll(".dsp-modes button"));
+    dspBtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        dspDemo.setAttribute("data-mode", b.getAttribute("data-mode"));
+        dspBtns.forEach(function (o) {
+          o.setAttribute("aria-pressed", String(o === b));
+        });
+      });
+    });
   }
 
   /* =========================================================

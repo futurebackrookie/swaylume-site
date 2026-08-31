@@ -1036,6 +1036,45 @@ h1.hero-h {
 .pet-fact span { font-size: 13px; color: var(--muted); line-height: 1.6; }
 @media (max-width: 700px) { .pet-facts { grid-template-columns: minmax(0,1fr); } .pet-yard { height: 240px; } }
 
+/* ===== 多屏与 Space ===== */
+.dsp-demo { margin-top: 26px; border: 1px solid var(--line-soft); border-radius: 16px; overflow: hidden; background: var(--surface); }
+.dsp-modes { display: flex; gap: 2px; padding: 10px; border-bottom: 1px solid var(--line-soft); }
+.dsp-modes button {
+  flex: 1; height: 32px; border: 0; border-radius: 8px; background: transparent;
+  font: inherit; font-size: 12.5px; color: var(--muted); cursor: pointer;
+  transition: background .18s ease, color .18s ease;
+}
+.dsp-modes button:hover { color: var(--text); background: var(--surface-2); }
+.dsp-modes button[aria-pressed="true"] { color: var(--text); background: var(--surface-2); font-weight: 600; }
+.dsp-stage { display: flex; gap: 14px; align-items: flex-end; justify-content: center; padding: 30px 24px 34px; }
+.dsp-screen { position: relative; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--ink); }
+.dsp-screen.a { width: 210px; height: 132px; }
+.dsp-screen.b { width: 150px; height: 96px; }
+.dsp-screen i {
+  position: absolute; inset: 0; display: block;
+  background-image:
+    radial-gradient(60% 80% at 22% 20%, rgba(124,224,245,.55), transparent 58%),
+    radial-gradient(55% 70% at 72% 18%, rgba(138,162,255,.5), transparent 60%),
+    linear-gradient(165deg, #10243A, #070E1A);
+  background-size: 100% 100%; background-position: 0 0;
+  transition: background-size .4s cubic-bezier(.3,.8,.3,1), background-position .4s cubic-bezier(.3,.8,.3,1), filter .3s ease;
+}
+/* 拼接：两块屏共用一张画布，各显示其中一段 */
+.dsp-demo[data-mode="span"] .dsp-screen.a i { background-size: 240% 100%; background-position: 0 0; }
+.dsp-demo[data-mode="span"] .dsp-screen.b i { background-size: 336% 100%; background-position: 100% 0; }
+/* 各放各的：右屏换一张不同的 */
+.dsp-demo[data-mode="own"] .dsp-screen.b i { filter: hue-rotate(125deg); }
+.dsp-label { position: absolute; left: 7px; bottom: 6px; font-family: var(--font-mono); font-size: 9.5px; color: rgba(255,255,255,.72); }
+
+/* ===== 顺手的那些 ===== */
+.keys { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px;
+  background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: 13px; overflow: hidden; }
+.key-row { background: var(--surface); padding: 13px 16px; display: flex; align-items: center; gap: 12px; }
+.kbd { font-family: var(--font-mono); font-size: 12px; padding: 4px 8px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--text); white-space: nowrap; }
+.key-row span { font-size: 13.5px; color: var(--text-dim); }
+@media (max-width: 700px) { .keys { grid-template-columns: minmax(0,1fr); } .dsp-stage { flex-direction: column; align-items: center; } }
+
 .gov-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 13px; overflow: hidden; border: 1px solid var(--line-soft); }
 .gov-item { background: var(--surface); padding: 15px 18px; display: grid; gap: 3px; }
 .gov-item b { font-size: 14.5px; font-weight: 620; letter-spacing: -.005em; }
@@ -1472,7 +1511,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   <div class="sc-scene" id="sc-scene">
     <div class="sc-pin">
       <div class="sc-in">
-        <div class="rail"><span class="rail-num">02</span><span>Mac 原生</span></div>
+        <div class="rail"><span class="rail-num">01</span><span>Mac 原生</span></div>
         <div class="sc-copy">
           <div class="sc-text">
             <h2 class="sec-h">壁纸得挤进桌面图片和桌面图标中间那一层。</h2>
@@ -1590,7 +1629,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 精选壁纸 ============================== -->
 <section class="sec" id="gallery">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">01</span><span>精选壁纸</span></div>
+    <div class="rail"><span class="rail-num">02</span><span>精选壁纸</span></div>
     <div>
       <h2 class="sec-h rise">先挑一张。剩下的，交给你的桌面。</h2>
       <p class="sec-p rise">
@@ -1675,7 +1714,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 桌宠 ============================== -->
 <section class="sec" id="pet">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">05</span><span>桌宠</span></div>
+    <div class="rail"><span class="rail-num">04</span><span>桌宠</span></div>
     <div>
       <h2 class="sec-h rise">它会朝你的光标走过来。</h2>
       <p class="sec-p rise">给它一张你家猫的照片，Swaylume 会量出毛色、体型、耳朵和尾巴的形状，长出一只对得上的像素桌宠。它住在壁纸和图标之间那一层，不抢焦点、不吃鼠标事件。</p>
@@ -1699,10 +1738,40 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   </div>
 </section>
 
+<!-- ============================== § 多屏与 Space ============================== -->
+<section class="sec" id="displays">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">05</span><span>多屏与桌面</span></div>
+    <div>
+      <h2 class="sec-h rise">每块屏幕、每个桌面，各放各的。</h2>
+      <p class="sec-p rise">多屏不是把同一张复制几份就算完。三种模式：每块屏各选各的、全部用同一张、或者把所有屏幕当成一整块画布让一条画面横跨过去。</p>
+
+      <div class="dsp-demo rise" id="dsp-demo" data-mode="own">
+        <div class="dsp-modes" role="group" aria-label="显示模式">
+          <button type="button" data-mode="own"  aria-pressed="true">各放各的</button>
+          <button type="button" data-mode="same" aria-pressed="false">同一张</button>
+          <button type="button" data-mode="span" aria-pressed="false">拼接一张</button>
+        </div>
+        <div class="dsp-stage">
+          <div class="dsp-screen a"><i></i><span class="dsp-label">3440 × 1440</span></div>
+          <div class="dsp-screen b"><i></i><span class="dsp-label">1920 × 1080</span></div>
+        </div>
+      </div>
+
+      <div class="pet-facts rise">
+        <div class="pet-fact"><b>每个桌面（Space）可以不一样</b><span>切到别的桌面后设的壁纸只对那个桌面生效。工作台一张、娱乐一张，切过去自己就换了。</span></div>
+        <div class="pet-fact"><b>鼠标视差，零权限</b><span>壁纸随鼠标轻微错动。它读的是现成的光标位置，不需要任何系统权限，也不装监听。</span></div>
+      </div>
+
+      <div class="note rise"><b>拼接有个前提。</b>视频和图片壁纸横跨过去没问题；网页壁纸要自己声明支持拼接，否则会在每块屏上各画一份完整画面 —— 这是壁纸自己的事，不是拼接坏了。</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 省电 ============================== -->
 <section class="sec pin" id="power">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">04</span><span>省电</span></div>
+    <div class="rail"><span class="rail-num">06</span><span>省电</span></div>
     <div>
       <h2 class="sec-h rise">看不见的时候，它一帧都不画。</h2>
       <p class="sec-p rise">
@@ -1733,7 +1802,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 迁移 ============================== -->
 <section class="sec" id="import">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">06</span><span>迁移</span></div>
+    <div class="rail"><span class="rail-num">07</span><span>迁移</span></div>
     <div>
       <h2 class="sec-h rise">把 Wallpaper Engine 的收藏带到 Mac。</h2>
       <p class="sec-p rise">
@@ -1787,10 +1856,35 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     </div>
   </div>
 </section>
+<!-- ============================== § 顺手的那些 ============================== -->
+<section class="sec" id="extras">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">08</span><span>顺手的那些</span></div>
+    <div>
+      <h2 class="sec-h rise">不用打开设置就能做的事。</h2>
+      <p class="sec-p rise">四个全局快捷键，任何 app 在前台都能用。它们走的是系统的快捷键注册接口，不需要「辅助功能」权限 —— 装个壁纸软件不该顺带拿到读取你所有键盘输入的能力。</p>
+
+      <div class="keys rise">
+        <div class="key-row"><span class="kbd">⌥⌘P</span><span>暂停 / 继续</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘→</span><span>下一张壁纸</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘M</span><span>静音开关</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘C</span><span>把桌宠叫过来</span></div>
+      </div>
+
+      <div class="pet-facts rise">
+        <div class="pet-fact"><b>窗口透明度</b><span>设置窗口可以调成半透明，让底下的壁纸透出来。滑到 0 就是完全不透明，默认如此。</span></div>
+        <div class="pet-fact"><b>自动检查更新</b><span>只拉一个版本号文件比对，不回传任何东西。可以关掉，也可以跳过某一版。</span></div>
+      </div>
+
+      <div class="note rise"><b>快捷键被别的 app 占了会告诉你。</b>注册失败不会静悄悄失效 —— 设置里那一项会标出来，而不是让你按半天以为软件坏了。</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">11</span><span>拿到手</span></div>
+    <div class="rail"><span class="rail-num">09</span><span>拿到手</span></div>
     <div>
       <h2 class="sec-h rise">现在开始用。商店版也在路上。</h2>
       <p class="sec-p rise">点下面的按钮直接开始下载，得到一个 <code>.dmg</code>，打开后把图标拖进「应用程序」就装好了。没有捆绑，没有推广插件，没有来路不明的下载站。</p>
@@ -2495,6 +2589,23 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
         }, { threshold: 0.15 }).observe(yard);
       }
     }
+  }
+
+  /* =========================================================
+     4.6 多屏演示 —— 三种模式各是什么样
+     纯状态切换，没有动画循环：点一下换一个 data-mode，剩下的交给 CSS 过渡。
+     ========================================================= */
+  if (document.getElementById("dsp-demo")) {
+    var dspDemo = document.getElementById("dsp-demo");
+    var dspBtns = Array.prototype.slice.call(dspDemo.querySelectorAll(".dsp-modes button"));
+    dspBtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        dspDemo.setAttribute("data-mode", b.getAttribute("data-mode"));
+        dspBtns.forEach(function (o) {
+          o.setAttribute("aria-pressed", String(o === b));
+        });
+      });
+    });
   }
 
   /* =========================================================

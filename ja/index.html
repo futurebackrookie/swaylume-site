@@ -1036,6 +1036,45 @@ h1.hero-h {
 .pet-fact span { font-size: 13px; color: var(--muted); line-height: 1.6; }
 @media (max-width: 700px) { .pet-facts { grid-template-columns: minmax(0,1fr); } .pet-yard { height: 240px; } }
 
+/* ===== 多屏与 Space ===== */
+.dsp-demo { margin-top: 26px; border: 1px solid var(--line-soft); border-radius: 16px; overflow: hidden; background: var(--surface); }
+.dsp-modes { display: flex; gap: 2px; padding: 10px; border-bottom: 1px solid var(--line-soft); }
+.dsp-modes button {
+  flex: 1; height: 32px; border: 0; border-radius: 8px; background: transparent;
+  font: inherit; font-size: 12.5px; color: var(--muted); cursor: pointer;
+  transition: background .18s ease, color .18s ease;
+}
+.dsp-modes button:hover { color: var(--text); background: var(--surface-2); }
+.dsp-modes button[aria-pressed="true"] { color: var(--text); background: var(--surface-2); font-weight: 600; }
+.dsp-stage { display: flex; gap: 14px; align-items: flex-end; justify-content: center; padding: 30px 24px 34px; }
+.dsp-screen { position: relative; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--ink); }
+.dsp-screen.a { width: 210px; height: 132px; }
+.dsp-screen.b { width: 150px; height: 96px; }
+.dsp-screen i {
+  position: absolute; inset: 0; display: block;
+  background-image:
+    radial-gradient(60% 80% at 22% 20%, rgba(124,224,245,.55), transparent 58%),
+    radial-gradient(55% 70% at 72% 18%, rgba(138,162,255,.5), transparent 60%),
+    linear-gradient(165deg, #10243A, #070E1A);
+  background-size: 100% 100%; background-position: 0 0;
+  transition: background-size .4s cubic-bezier(.3,.8,.3,1), background-position .4s cubic-bezier(.3,.8,.3,1), filter .3s ease;
+}
+/* 拼接：两块屏共用一张画布，各显示其中一段 */
+.dsp-demo[data-mode="span"] .dsp-screen.a i { background-size: 240% 100%; background-position: 0 0; }
+.dsp-demo[data-mode="span"] .dsp-screen.b i { background-size: 336% 100%; background-position: 100% 0; }
+/* 各放各的：右屏换一张不同的 */
+.dsp-demo[data-mode="own"] .dsp-screen.b i { filter: hue-rotate(125deg); }
+.dsp-label { position: absolute; left: 7px; bottom: 6px; font-family: var(--font-mono); font-size: 9.5px; color: rgba(255,255,255,.72); }
+
+/* ===== 顺手的那些 ===== */
+.keys { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px;
+  background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: 13px; overflow: hidden; }
+.key-row { background: var(--surface); padding: 13px 16px; display: flex; align-items: center; gap: 12px; }
+.kbd { font-family: var(--font-mono); font-size: 12px; padding: 4px 8px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--text); white-space: nowrap; }
+.key-row span { font-size: 13.5px; color: var(--text-dim); }
+@media (max-width: 700px) { .keys { grid-template-columns: minmax(0,1fr); } .dsp-stage { flex-direction: column; align-items: center; } }
+
 .gov-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 13px; overflow: hidden; border: 1px solid var(--line-soft); }
 .gov-item { background: var(--surface); padding: 15px 18px; display: grid; gap: 3px; }
 .gov-item b { font-size: 14.5px; font-weight: 620; letter-spacing: -.005em; }
@@ -1473,7 +1512,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   <div class="sc-scene" id="sc-scene">
     <div class="sc-pin">
       <div class="sc-in">
-        <div class="rail"><span class="rail-num">02</span><span>ネイティブ</span></div>
+        <div class="rail"><span class="rail-num">01</span><span>ネイティブ</span></div>
         <div class="sc-copy">
           <div class="sc-text">
             <h2 class="sec-h">壁紙は、デスクトップピクチャとデスクトップアイコンのあいだの層に割り込む必要があります。</h2>
@@ -1592,7 +1631,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 精选壁纸 ============================== -->
 <section class="sec" id="gallery">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">01</span><span>壁紙</span></div>
+    <div class="rail"><span class="rail-num">02</span><span>壁紙</span></div>
     <div>
       <h2 class="sec-h rise">まず一枚選んでください。あとはデスクトップに任せて。</h2>
       <p class="sec-p rise">
@@ -1678,7 +1717,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 桌宠 ============================== -->
 <section class="sec" id="pet">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">05</span><span>デスクトップペット</span></div>
+    <div class="rail"><span class="rail-num">04</span><span>デスクトップペット</span></div>
     <div>
       <h2 class="sec-h rise">カーソルのほうへ歩いてきます。</h2>
       <p class="sec-p rise">飼い猫の写真を渡すと、Swaylume が毛色・頭身・耳と尻尾の形を測り、それに合ったドット絵のペットを育てます。壁紙とアイコンのあいだの層に住み、フォーカスを奪わず、クリックも吸いません。</p>
@@ -1702,10 +1741,40 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   </div>
 </section>
 
+<!-- ============================== § 多屏与 Space ============================== -->
+<section class="sec" id="displays">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">05</span><span>ディスプレイと操作スペース</span></div>
+    <div>
+      <h2 class="sec-h rise">画面ごと、スペースごとに別々に。</h2>
+      <p class="sec-p rise">マルチディスプレイは同じ壁紙を複製すれば済む話ではありません。3つのモード：画面ごとに別々に選ぶ、全画面で同じものを使う、あるいは全画面を1枚のキャンバスとみなして1つの絵を横断させる。</p>
+
+      <div class="dsp-demo rise" id="dsp-demo" data-mode="own">
+        <div class="dsp-modes" role="group" aria-label="表示モード">
+          <button type="button" data-mode="own"  aria-pressed="true">画面ごと</button>
+          <button type="button" data-mode="same" aria-pressed="false">全部同じ</button>
+          <button type="button" data-mode="span" aria-pressed="false">横断させる</button>
+        </div>
+        <div class="dsp-stage">
+          <div class="dsp-screen a"><i></i><span class="dsp-label">3440 × 1440</span></div>
+          <div class="dsp-screen b"><i></i><span class="dsp-label">1920 × 1080</span></div>
+        </div>
+      </div>
+
+      <div class="pet-facts rise">
+        <div class="pet-fact"><b>操作スペースごとに変えられる</b><span>あるスペースで設定した壁紙はそのスペースだけに効きます。仕事用に1枚、それ以外に1枚 — 切り替えれば壁紙も変わります。</span></div>
+        <div class="pet-fact"><b>マウス視差、権限は不要</b><span>ポインタに合わせて壁紙がわずかにずれます。すでに取得できるカーソル位置を読むだけで、システム権限も入力監視も要りません。</span></div>
+      </div>
+
+      <div class="note rise"><b>横断には前提があります。</b>動画と画像の壁紙はそのまま横断できます。Web 壁紙は横断対応を自分で宣言する必要があり、していなければ各画面に完全な絵が1枚ずつ描かれます — 壁紙側の事情で、機能の不具合ではありません。</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 省电 ============================== -->
 <section class="sec pin" id="power">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">04</span><span>省電力</span></div>
+    <div class="rail"><span class="rail-num">06</span><span>省電力</span></div>
     <div>
       <h2 class="sec-h rise">誰にも見えていないとき、1 フレームも描きません。</h2>
       <p class="sec-p rise">
@@ -1736,7 +1805,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 迁移 ============================== -->
 <section class="sec" id="import">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">06</span><span>移行</span></div>
+    <div class="rail"><span class="rail-num">07</span><span>移行</span></div>
     <div>
       <h2 class="sec-h rise">Wallpaper Engine のコレクションを Mac へ。</h2>
       <p class="sec-p rise">
@@ -1791,10 +1860,35 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     </div>
   </div>
 </section>
+<!-- ============================== § 顺手的那些 ============================== -->
+<section class="sec" id="extras">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">08</span><span>細かい便利</span></div>
+    <div>
+      <h2 class="sec-h rise">設定を開かずにできること。</h2>
+      <p class="sec-p rise">グローバルショートカットが4つ。どのアプリが前面にいても使えます。システムのホットキー登録を使うので「アクセシビリティ」権限は不要 — 壁紙アプリを入れたせいでキー入力を全部読める権限まで渡すのはおかしい。</p>
+
+      <div class="keys rise">
+        <div class="key-row"><span class="kbd">⌥⌘P</span><span>一時停止 / 再開</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘→</span><span>次の壁紙</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘M</span><span>ミュート切り替え</span></div>
+        <div class="key-row"><span class="kbd">⌥⌘C</span><span>ペットを呼ぶ</span></div>
+      </div>
+
+      <div class="pet-facts rise">
+        <div class="pet-fact"><b>ウインドウの透明度</b><span>設定ウインドウを半透明にして、下の壁紙を透けさせられます。0 なら完全に不透明で、これが初期値です。</span></div>
+        <div class="pet-fact"><b>更新の自動チェック</b><span>バージョン情報のファイルを1つ取得して比べるだけで、送信は一切ありません。オフにもできますし、特定のビルドを飛ばすこともできます。</span></div>
+      </div>
+
+      <div class="note rise"><b>他のアプリに取られている場合は知らせます。</b>登録の失敗は黙って無効になりません — 設定のその行に印が付くので、押しても効かない理由が分からないまま悩まずに済みます。</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">11</span><span>入手する</span></div>
+    <div class="rail"><span class="rail-num">09</span><span>入手する</span></div>
     <div>
       <h2 class="sec-h rise">今すぐ使えます。ストア版も準備中です。</h2>
       <p class="sec-p rise">下のボタンを押すとすぐダウンロードが始まります。<code>.dmg</code> が手に入るので、開いてアイコンを「アプリケーション」にドラッグすれば完了です。抱き合わせも、宣伝用アドオンも、素性の知れないダウンロードサイトもありません。</p>
@@ -2499,6 +2593,23 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
         }, { threshold: 0.15 }).observe(yard);
       }
     }
+  }
+
+  /* =========================================================
+     4.6 多屏演示 —— 三种模式各是什么样
+     纯状态切换，没有动画循环：点一下换一个 data-mode，剩下的交给 CSS 过渡。
+     ========================================================= */
+  if (document.getElementById("dsp-demo")) {
+    var dspDemo = document.getElementById("dsp-demo");
+    var dspBtns = Array.prototype.slice.call(dspDemo.querySelectorAll(".dsp-modes button"));
+    dspBtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        dspDemo.setAttribute("data-mode", b.getAttribute("data-mode"));
+        dspBtns.forEach(function (o) {
+          o.setAttribute("aria-pressed", String(o === b));
+        });
+      });
+    });
   }
 
   /* =========================================================
