@@ -206,5 +206,8 @@
   "faq.a6": "macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware.",
   "faq.feedback": "<b>Not answered here?</b> This is a beta, and your question is probably somebody else’s too — <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">open an issue</a> and the answer will end up in this section.",
   "details.title": "Technical details and where to find wallpapers — Swaylume",
-  "details.description": "How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's licence allows, privacy and compatibility limits, and answers to common questions."
+  "details.description": "How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's licence allows, privacy and compatibility limits, and answers to common questions.",
+  "scene.a1": "Desktop icons",
+  "scene.a2": "This layer is empty",
+  "scene.a3": "Desktop picture"
 }

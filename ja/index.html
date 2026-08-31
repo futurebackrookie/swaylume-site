@@ -932,6 +932,60 @@ h1.hero-h {
   .sec.pin > .sec-grid { position: static; min-height: 0; padding-block: 0; }
 }
 
+/* ===== 钉住的图层场景（Mac 原生那一幕）=====
+   这一幕是整站的赌注：macOS 没有「设置动态壁纸」这个 API，那一层得自己挤进去。
+   静态图讲不清「挤进去」，所以用滚动驱动：一块平铺的桌面在你滚动时拆成三层，
+   中间那层空着，最后 Swaylume 卡进去。视口被钉住，推完才放行 ——
+   放行之后紧接着就是下面那个能扳开关的真演示，两个都要。 */
+.sc-scene { position: relative; height: 340vh; }
+.sc-pin { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+.sc-in {
+  width: 100%; max-width: var(--maxw); margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid; grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0 clamp(20px, 4vw, 56px); align-items: center;
+}
+.sc-copy { grid-column: 2; display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); align-items: center; }
+.sc-text { align-self: center; }
+.sc-readout { margin-top: 26px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); }
+
+.sc-stage { position: relative; height: 560px; perspective: 1100px; }
+.sc-layer {
+  position: absolute; left: 50%; top: 50%;
+  width: 300px; height: 188px; margin: -94px 0 0 -150px;
+  border-radius: 10px; will-change: transform;
+}
+.sc-layer .sc-fill { position: absolute; inset: 0; border-radius: 9px; overflow: hidden; }
+.sc-icons { position: absolute; top: 10px; left: 12px; display: flex; flex-direction: column; gap: 10px; }
+.sc-tag {
+  position: absolute; right: 0; font-size: 12px; color: var(--text-dim);
+  opacity: 0; will-change: opacity; white-space: nowrap;
+}
+.sc-tag.is-beam { color: var(--beam); }
+.sc-level {
+  position: absolute; right: 0; padding: 7px 11px; border-radius: 8px;
+  background: rgba(8,7,14,.86); border: 1px solid rgba(124,224,245,.32);
+  font-family: var(--font-mono); font-size: 11px; color: var(--beam);
+  opacity: 0; will-change: opacity; white-space: nowrap;
+}
+.sc-level b { font-weight: 600; }
+
+/* 窄屏和减弱动效下不钉：一屏装不下这套双栏，硬钉会切掉内容；
+   开了减弱动效的人也不该被劫持滚动。两种情况都退回普通一节，图层直接摆终态。 */
+@media (max-width: 1000px) {
+  .sc-scene { height: auto; }
+  .sc-pin { position: static; height: auto; padding: clamp(56px, 8vw, 96px) 0; }
+  .sc-copy { grid-template-columns: minmax(0, 1fr); }
+  .sc-stage { height: 380px; }
+  .sc-layer { width: 210px; height: 132px; margin: -66px 0 0 -105px; }
+  .sc-tag, .sc-level { right: auto; left: 50%; transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-scene { height: auto; }
+  .sc-pin { position: static; height: auto; padding: clamp(56px, 8vw, 96px) 0; }
+  .sc-tag, .sc-level { opacity: 1; }
+}
+
 .gov-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 13px; overflow: hidden; border: 1px solid var(--line-soft); }
 .gov-item { background: var(--surface); padding: 15px 18px; display: grid; gap: 3px; }
 .gov-item b { font-size: 14.5px; font-weight: 620; letter-spacing: -.005em; }
@@ -1363,17 +1417,53 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 
 <!-- ============================== § 图层 ============================== -->
 <section class="sec" id="layers">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">02</span><span>ネイティブ</span></div>
-    <div>
-      <h2 class="sec-h rise">壁紙は、デスクトップピクチャとデスクトップアイコンのあいだの層に割り込む必要があります。</h2>
-      <p class="sec-p rise">
+
+  <!-- 第一拍：钉住的图层场景。滚动把一块平铺的桌面拆成三层，
+       中间那层空着，最后 Swaylume 卡进去。 -->
+  <div class="sc-scene" id="sc-scene">
+    <div class="sc-pin">
+      <div class="sc-in">
+        <div class="rail"><span class="rail-num">02</span><span>ネイティブ</span></div>
+        <div class="sc-copy">
+          <div class="sc-text">
+            <h2 class="sec-h">壁紙は、デスクトップピクチャとデスクトップアイコンのあいだの層に割り込む必要があります。</h2>
+            <p class="sec-p">
         macOS に「ライブ壁紙を設定する」API はありません。実際に機能するのは、ボーダーレスウインドウのレベルを
         <code>CGWindowLevelForKey(.desktopIconWindow) − 1</code> に固定する方法です —— デスクトップピクチャのすぐ上、
         アイコンのすぐ下。そのうえで、すべての Space に追従させ、マウスイベントを無視させます。
         下にあるデスクトップは本物です。<strong>スイッチを切り替えて、壁紙がアイコン層を越える様子を見てください</strong>。
       </p>
+            <div class="sc-readout" id="sc-readout"></div>
+          </div>
+          <div class="sc-stage" id="sc-stage">
+            <div class="sc-layer" id="sc-l-icons"
+                 style="border:1px solid rgba(236,233,245,.18);background:rgba(236,233,245,.055)">
+              <div class="sc-icons">
+                <div style="width:26px;height:21px;border-radius:4px;background:#8FB8E8"></div>
+                <div style="width:19px;height:24px;border-radius:3px;background:#EEECF3"></div>
+              </div>
+            </div>
+            <div class="sc-layer" id="sc-l-sway" style="border:1px dashed rgba(124,224,245,.34)">
+              <div class="sc-fill" id="sc-fill"
+                   style="opacity:0;background:linear-gradient(150deg,rgba(124,224,245,.46),rgba(138,162,255,.38))"></div>
+            </div>
+            <div class="sc-layer" id="sc-l-wall" style="border:1px solid rgba(236,233,245,.14)">
+              <div class="sc-fill" style="background:radial-gradient(70% 80% at 25% 20%,rgba(124,224,245,.42),transparent 58%),radial-gradient(60% 70% at 75% 15%,rgba(138,162,255,.36),transparent 60%),linear-gradient(165deg,#10243A,#070E1A)"></div>
+            </div>
+            <div class="sc-tag" id="sc-t-icons" style="top:20%">デスクトップアイコン</div>
+            <div class="sc-tag is-beam" id="sc-t-gap" style="top:47%">この層は空いている</div>
+            <div class="sc-tag" id="sc-t-wall" style="top:74%">デスクトップピクチャ</div>
+            <div class="sc-level" id="sc-level" style="top:45%">level = <b>−2147483628</b> · アイコンの下 · 再生中</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- 第二拍：场景放行之后，还是那块能扳开关的真演示。 -->
+  <div class="sec-grid">
+    <div class="rail"></div>
+    <div>
       <div class="desk-frame rise" id="desk">
         <canvas id="desk-canvas" aria-hidden="true"></canvas>
 
@@ -2083,6 +2173,87 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
   // 不挡的话第一处 null 就会终止**整段脚本** —— 后面第 7 节的滚动入场
   // 跟着不跑，而 .rise 的初始状态是 opacity:0，整页内容直接看不见。
   if (document.getElementById("desk-canvas")) {
+  /* =========================================================
+     3.5 图层场景 —— 滚动把桌面拆成三层
+     视口钉住，滚动推进的是场景内部：一块平铺的桌面拆开，中间那层空着，
+     最后 Swaylume 卡进去。钉不钉得住由 CSS 决定（窄屏和减弱动效下退回
+     普通一节），所以这里读实际算出来的 position，不自己再判一遍条件 ——
+     两处各判一次，迟早不一致。
+     ========================================================= */
+  if (document.getElementById("sc-scene")) {
+    var scScene = document.getElementById("sc-scene");
+    var scPin   = scScene.querySelector(".sc-pin");
+    var scEls = {
+      icons: document.getElementById("sc-l-icons"),
+      sway:  document.getElementById("sc-l-sway"),
+      wall:  document.getElementById("sc-l-wall"),
+      fill:  document.getElementById("sc-fill"),
+      tIcons: document.getElementById("sc-t-icons"),
+      tGap:   document.getElementById("sc-t-gap"),
+      tWall:  document.getElementById("sc-t-wall"),
+      level:  document.getElementById("sc-level"),
+      readout: document.getElementById("sc-readout")
+    };
+
+    // 声明在任何调用之前。函数声明会提升，var 赋值不会 —— 写成 var 的话
+    // 「减弱动效」那条路上 scPaint(1) 里的 scEase 是 undefined，整段脚本
+    // 当场抛 TypeError，三层图叠在一起变成一个空版块，而正常浏览碰不到。
+    function scEase(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function scClamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+    function scPaint(p) {
+      var e = scEase(p);
+      var rx = 56 * e, rz = -34 * e, sep = 142 * e, depth = 92 * e;
+      function tf(dy, dz) {
+        return "rotateX(" + rx + "deg) rotateZ(" + rz + "deg) translate3d(0," + dy + "px," + dz + "px)";
+      }
+      scEls.icons.style.transform = tf(-sep, depth);
+      scEls.sway.style.transform  = tf(0, 0);
+      scEls.wall.style.transform  = tf(sep, -depth);
+
+      // 前半程拆开，后半程 Swaylume 那层填进去
+      var fill = scClamp((p - 0.62) / 0.28, 0, 1);
+      scEls.fill.style.opacity = fill;
+      scEls.sway.style.borderColor = "rgba(124,224,245," + (0.34 + 0.28 * fill) + ")";
+      scEls.sway.style.boxShadow = fill > 0
+        ? "0 0 " + (48 * fill) + "px rgba(124,224,245," + (0.34 * fill) + ")" : "none";
+
+      var tags = scClamp((p - 0.30) / 0.22, 0, 1);
+      scEls.tIcons.style.opacity = tags;
+      scEls.tWall.style.opacity  = tags;
+      scEls.tGap.style.opacity   = tags * (1 - fill);
+      scEls.level.style.opacity  = fill;
+      if (scEls.readout) scEls.readout.textContent = Math.round(p * 100) + "%";
+    }
+
+    // 钉不钉得住**每次都重新判**，不在初始化时一锤定音。
+    //
+    // 一锤定音的写法有个真实的失败：窗口在 1000px 以下加载时，CSS 让它退回
+    // 普通一节，脚本据此摆上终态、连监听都不挂；用户随后把窗口拉宽，CSS 切回
+    // sticky，而 JS 还停在「不钉」的判断上 —— 这一幕从此永远冻在结束状态。
+    // 反过来（宽屏加载后缩窄）则是白挂一套滚动计算。
+    function scUpdate() {
+      var pinned = scPin && getComputedStyle(scPin).position === "sticky";
+      if (!pinned || reduce) { scPaint(1); return; }   // 不钉就直接摆终态
+      var r = scScene.getBoundingClientRect();
+      var total = scScene.offsetHeight - window.innerHeight;
+      if (total <= 0) { scPaint(1); return; }
+      scPaint(scClamp(-r.top / total, 0, 1));
+    }
+
+    var scTick = false;
+    var scOnScroll = function () {
+      if (scTick) return;
+      scTick = true;
+      requestAnimationFrame(function () { scTick = false; scUpdate(); });
+    };
+    window.addEventListener("scroll", scOnScroll, { passive: true });
+    // resize 走同步路径，不进 rAF：rAF 在页面不被合成时不跑，
+    // 而「窗口刚被拉宽」正是最需要立刻重算的时刻。
+    window.addEventListener("resize", scUpdate);
+    scUpdate();
+  }
+
   /* =========================================================
      4. 桌面演示 —— 页面的赌注
      ========================================================= */

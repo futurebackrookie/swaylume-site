@@ -206,5 +206,8 @@
   "faq.a6": "macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。",
   "faq.feedback": "<b>ここに答えがありませんか？</b> これはベータ版で、あなたの疑問はたぶん他の人の疑問でもあります —— <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">issue を立てて</a>いただければ、答えはこの欄に追加されます。",
   "details.title": "技術的な詳細と壁紙の入手先 — Swaylume",
-  "details.description": "オーディオ反応の仕組み、始め方の3つの道筋、ライブ壁紙の入手先と各サイトのライセンス条件、プライバシーと互換性の範囲、そしてよくある質問。"
+  "details.description": "オーディオ反応の仕組み、始め方の3つの道筋、ライブ壁紙の入手先と各サイトのライセンス条件、プライバシーと互換性の範囲、そしてよくある質問。",
+  "scene.a1": "デスクトップアイコン",
+  "scene.a2": "この層は空いている",
+  "scene.a3": "デスクトップピクチャ"
 }

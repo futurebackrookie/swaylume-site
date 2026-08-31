@@ -206,5 +206,8 @@
   "faq.a6": "macOS 14 或更高，Apple 芯片和 Intel 都能跑（通用二进制）。多显示器和 AirPlay 副屏都已实测。",
   "faq.feedback": "<b>还没被回答到？</b> 这是 Beta 版，你的问题很可能别人也会遇到 —— <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">开个 issue</a> 告诉我，答案会补进这一节。",
   "details.title": "技术细节与素材来源 — Swaylume",
-  "details.description": "音频响应的实现、上手的三条路径、动态壁纸素材去哪找与各站授权条款、隐私与兼容边界，以及常见问题。"
+  "details.description": "音频响应的实现、上手的三条路径、动态壁纸素材去哪找与各站授权条款、隐私与兼容边界，以及常见问题。",
+  "scene.a1": "桌面图标",
+  "scene.a2": "这一层是空的",
+  "scene.a3": "桌面图片"
 }

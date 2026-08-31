@@ -206,5 +206,8 @@
   "faq.a6": "macOS 14 ou plus récent, sur Apple Silicon comme sur Intel (binaire universel). Les configurations multi-écrans et les écrans secondaires AirPlay ont été testés sur du vrai matériel.",
   "faq.feedback": "<b>Pas de réponse ici ?</b> C’est une bêta, et votre question est sans doute aussi celle de quelqu’un d’autre — <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">ouvrez un ticket</a> et la réponse atterrira dans cette section.",
   "details.title": "Détails techniques et où trouver des fonds d'écran — Swaylume",
-  "details.description": "Le fonctionnement de la réaction audio, trois façons de démarrer, où trouver des fonds d'écran animés et ce que la licence de chaque site autorise, les limites de confidentialité et de compatibilité, et les questions fréquentes."
+  "details.description": "Le fonctionnement de la réaction audio, trois façons de démarrer, où trouver des fonds d'écran animés et ce que la licence de chaque site autorise, les limites de confidentialité et de compatibilité, et les questions fréquentes.",
+  "scene.a1": "Icônes du bureau",
+  "scene.a2": "Cette couche est vide",
+  "scene.a3": "Image du bureau"
 }
