@@ -209,5 +209,19 @@
   "details.description": "Le fonctionnement de la réaction audio, trois façons de démarrer, où trouver des fonds d'écran animés et ce que la licence de chaque site autorise, les limites de confidentialité et de compatibilité, et les questions fréquentes.",
   "scene.a1": "Icônes du bureau",
   "scene.a2": "Cette couche est vide",
-  "scene.a3": "Image du bureau"
+  "scene.a3": "Image du bureau",
+  "pet.rail": "<span class=\"rail-num\">05</span><span>Compagnon de bureau</span>",
+  "pet.h2": "Il vient jusqu’à votre curseur.",
+  "pet.p": "Donnez-lui une photo de votre chat. Swaylume mesure la couleur du pelage, le rapport tête-corps, les oreilles et la queue, puis fait pousser un compagnon en pixels qui lui ressemble. Il vit dans la même couche que le fond d’écran — sous vos icônes, sans voler le focus ni avaler les clics.",
+  "pet.hint": "Amenez la souris · cliquez dessus",
+  "pet.meow": "Miaou",
+  "pet.f1t": "Né d’une photo",
+  "pet.f1d": "Le pelage, les proportions et la longueur des pattes sont mesurés sur l’image, pas choisis dans un modèle. Le même chat est dessiné à l’identique à chaque fois.",
+  "pet.f2t": "Le caractère décide de son audace",
+  "pet.f2d": "Un chat curieux vient au curseur, un timide reste en place. Laissé tranquille, il se promène, fait sa toilette et somnole.",
+  "pet.f3t": "Ses yeux suivent le curseur",
+  "pet.f3d": "Sans latence. Activez « suivre la souris » et c’est le chat entier qui vous suit.",
+  "pet.f4t": "Il réagit aux caresses",
+  "pet.f4d": "Caressez-lui la tête : il plisse les yeux, couche les oreilles et ronronne. Cliquez, il miaule. ⌥⌘C l’appelle près du curseur.",
+  "pet.note": "<b>Ce chat est le vrai.</b> Ce sont des images exportées du même moteur de sprites que celui de l’app, pas une illustration faite pour cette page — c’est exactement ce qui s’installe sur votre bureau."
 }

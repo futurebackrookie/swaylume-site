@@ -209,5 +209,19 @@
   "details.description": "How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's licence allows, privacy and compatibility limits, and answers to common questions.",
   "scene.a1": "Desktop icons",
   "scene.a2": "This layer is empty",
-  "scene.a3": "Desktop picture"
+  "scene.a3": "Desktop picture",
+  "pet.rail": "<span class=\"rail-num\">05</span><span>Desktop pet</span>",
+  "pet.h2": "It walks over to your cursor.",
+  "pet.p": "Give it a photo of your cat. Swaylume measures the coat colour, the head-to-body ratio, the ears and the tail, and grows a pixel pet that matches. It lives in the same layer as the wallpaper — under your icons, never stealing focus or swallowing clicks.",
+  "pet.hint": "Move your mouse in · click it",
+  "pet.meow": "Meow",
+  "pet.f1t": "Grown from a photo",
+  "pet.f1d": "Coat, proportions and leg length are measured from the picture, not picked from a template. The same cat renders identically every time.",
+  "pet.f2t": "Personality decides how forward it is",
+  "pet.f2d": "A curious one comes to your cursor; a shy one stays put. Left alone it wanders, grooms and naps.",
+  "pet.f3t": "Its eyes track the cursor",
+  "pet.f3d": "With no lag. Turn on \\u201cfollow the mouse\\u201d and the whole cat comes along.",
+  "pet.f4t": "It reacts to being petted",
+  "pet.f4d": "Stroke its head and it squints, flattens its ears and purrs. Click and it meows. \\u2325\\u2318C calls it over.",
+  "pet.note": "<b>That cat is the real thing.</b> Those are frames exported from the same sprite renderer the app uses, not an illustration drawn for this page \\u2014 it is exactly what sits on your desktop."
 }

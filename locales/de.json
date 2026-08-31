@@ -209,5 +209,19 @@
   "details.description": "Wie die Audioreaktion funktioniert, drei Wege für den Einstieg, wo es Live-Wallpaper gibt und was die Lizenz der jeweiligen Seite erlaubt, Grenzen bei Datenschutz und Kompatibilität sowie häufige Fragen.",
   "scene.a1": "Schreibtischsymbole",
   "scene.a2": "Diese Ebene ist leer",
-  "scene.a3": "Schreibtischhintergrund"
+  "scene.a3": "Schreibtischhintergrund",
+  "pet.rail": "<span class=\"rail-num\">05</span><span>Schreibtischtier</span>",
+  "pet.h2": "Es läuft zu deinem Mauszeiger.",
+  "pet.p": "Gib ihm ein Foto deiner Katze. Swaylume misst Fellfarbe, Kopf-Körper-Verhältnis, Ohren und Schwanz und lässt daraus ein passendes Pixeltier wachsen. Es lebt in derselben Ebene wie das Hintergrundbild — unter den Symbolen, ohne den Fokus zu stehlen oder Klicks zu schlucken.",
+  "pet.hint": "Maus hineinbewegen · anklicken",
+  "pet.meow": "Miau",
+  "pet.f1t": "Aus einem Foto gewachsen",
+  "pet.f1d": "Fell, Proportionen und Beinlänge werden aus dem Bild gemessen, nicht aus einer Vorlage gewählt. Dieselbe Katze wird jedes Mal identisch gezeichnet.",
+  "pet.f2t": "Der Charakter entscheidet, wie zutraulich es ist",
+  "pet.f2d": "Eine neugierige Katze kommt zum Zeiger, eine scheue bleibt sitzen. Sich selbst überlassen streift sie umher, putzt sich und döst.",
+  "pet.f3t": "Die Augen folgen dem Zeiger",
+  "pet.f3d": "Ohne Verzögerung. Mit „der Maus folgen“ kommt die ganze Katze mit.",
+  "pet.f4t": "Es reagiert auf Streicheln",
+  "pet.f4d": "Am Kopf gestreichelt kneift es die Augen zu, legt die Ohren an und schnurrt. Ein Klick, und es miaut. ⌥⌘C ruft es herbei.",
+  "pet.note": "<b>Die Katze da oben ist echt.</b> Das sind Einzelbilder aus demselben Sprite-Renderer, den die App benutzt, keine Illustration für diese Seite — genau so sitzt sie auf deinem Schreibtisch."
 }
