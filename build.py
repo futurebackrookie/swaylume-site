@@ -235,7 +235,9 @@ def head(code, entries, page="home"):
     lines += analytics_tag()
     lines += [
         "</head>",
-        "<body>",
+        # 页面 id 挂在 body 上：首页每一幕是满屏画面，二级页退回安静的纸面。
+        # 两页共用一份样式，靠这个属性分流，不再各写一套。
+        f'<body data-page="{page}">',
     ]
     return "\n".join(lines)
 
