@@ -80,7 +80,10 @@
 * { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
+  /* 不开全局平滑滚动。它和钉住的场景犯冲：点导航锚点跳到一个 pin 住的小节
+     之后的位置时，浏览器会拖着整幕动画快进一遍 —— 实测跳转后 260ms 进度还
+     停在 22%，一秒多才落位，中间是一段糊掉的过程。
+     （原来 reduced-motion 里已经把它关掉了，所以这个坑只坑没开减弱动效的人。） */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -194,30 +197,44 @@ a { color: inherit; }
 }
 .nav-cta:hover { border-color: var(--beam); background: var(--beam-glow); }
 
-/* 语言切换器。每个都是真链接，不是 JS 下拉 —— 爬虫要能顺着它
-   找到其它语言版本，头部那些 hreflang 才不是孤证。 */
-.langs { display: flex; gap: 2px; align-items: center; }
-.langs a {
-  font-size: 12px;
-  padding: 5px 9px;
-  border-radius: 7px;
-  text-decoration: none;
-  color: var(--muted);
-  white-space: nowrap;
+/* 语言切换器：收起成一个按钮，点开才列出语言。
+   链接依然是构建时写死的真实 <a hreflang>，只是默认不可见 ——
+   爬虫读 DOM 不读可见状态，头部那些 hreflang 照样有依据。
+   （原来那句「不用 JS 下拉」防的是用 JS 现生成链接，不是这种写法。） */
+.langs { position: relative; }
+.langs > summary {
+  display: flex; align-items: center; gap: 5px;
+  height: 28px; padding: 0 9px; border-radius: 7px;
+  font-size: 12px; color: var(--muted); cursor: pointer;
+  list-style: none; white-space: nowrap;
   transition: color .18s ease, background .18s ease;
 }
-.langs a:hover { color: var(--text); background: var(--surface-2); }
-.langs a[aria-current="true"] { color: var(--text); background: var(--surface-2); font-weight: 600; }
-/* 窄屏只留当前语言可见会让人以为没有多语言，所以改成横向滚动 */
-@media (max-width: 860px) {
-  .nav-in { gap: 12px; }
-  .langs { overflow-x: auto; max-width: 46vw; }
-  .langs a { padding: 5px 7px; font-size: 11.5px; }
-  /* 当前语言排到最前。窄屏下切换器是横向滚动的，按原顺序排的话
-     日语/德语/法语访客一打开就看不到自己所在的那一项 ——
-     既看不出在哪一版，也看不到高亮。 */
-  .langs a[aria-current="true"] { order: -1; }
+.langs > summary::-webkit-details-marker { display: none; }
+.langs > summary::marker { content: ""; }
+.langs > summary:hover { color: var(--text); background: var(--surface-2); }
+.langs[open] > summary { color: var(--text); background: var(--surface-2); }
+.langs > summary:focus-visible { outline: 2px solid var(--beam); outline-offset: 2px; }
+.lang-globe { width: 13px; height: 13px; flex: none; }
+.lang-caret { width: 9px; height: 9px; flex: none; transition: transform .2s cubic-bezier(.3,.8,.3,1); }
+.langs[open] .lang-caret { transform: rotate(180deg); }
+
+.lang-menu {
+  position: absolute; top: 34px; right: 0; z-index: 60;
+  width: 196px; margin: 0; padding: 5px; list-style: none;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--surface); box-shadow: var(--shadow-lg);
+  display: flex; flex-direction: column; gap: 1px;
 }
+.lang-menu a {
+  display: flex; align-items: center; gap: 9px;
+  height: 34px; padding: 0 9px; border-radius: 8px;
+  font-size: 12.5px; color: var(--text-dim); text-decoration: none;
+}
+.lang-menu a:hover { background: var(--surface-2); color: var(--text); }
+.lang-menu a[aria-current="true"] { color: var(--text); background: var(--beam-glow); }
+.lang-tick { width: 12px; flex: none; color: var(--beam); font-size: 11px; }
+.lang-name { flex: 1; }
+.lang-code { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
 
 
 /* ===========================================================
@@ -284,9 +301,13 @@ a { color: inherit; }
 
 h1.hero-h {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(38px, 7.2vw, 92px);
-  line-height: 1.04;
+  /* 数值是量来的，不是估的：Linear 64px/510、Raycast 64px/600、
+     苹果 MacBook Pro 页的段落标题只有 48px/600。首屏原来到 92px、字重 700，
+     比这三家都重一档 —— 大字不等于高级，过了头就是廉价。 */
+  font-weight: 600;
+  font-size: clamp(34px, 6.2vw, 64px);
+  letter-spacing: -.022em;
+  line-height: 1.02;
   margin: 0 0 22px;
   color: #FFFFFF;
   text-wrap: balance;
@@ -307,8 +328,12 @@ h1.hero-h {
 @keyframes split-b { from { transform: translate3d(13px,-4px,0); opacity: .95; } to { transform: none; opacity: 0; } }
 
 .hero-sub {
-  font-size: clamp(15.5px, 1.6vw, 18.5px);
-  line-height: 1.72;
+  /* 副标题要小到不跟标题抢：Linear 15px、Raycast 18px。原来到 18.5px。
+     **只改字号，不要改成 var(--muted)。**首屏文字压在实时渲染的壁纸画布上，
+     颜色必须不跟主题走 —— 换成主题令牌后，浅色主题下它变成深灰压在明亮的
+     极光上，整段几乎看不见。缩小字号本身已经解决了「和标题争视线」。 */
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  line-height: 1.62;
   color: #CFC7E6;
   max-width: 32em;
   margin: 0 0 34px;
@@ -433,9 +458,10 @@ h1.hero-h {
 
 .sec-h {
   font-family: var(--font-display);
-  font-weight: 680;
-  font-size: clamp(27px, 3.7vw, 44px);
-  line-height: 1.2;
+  font-weight: 600;
+  font-size: clamp(27px, 3.7vw, 46px);
+  letter-spacing: -.02em;
+  line-height: 1.08;
   margin: 0 0 18px;
   text-wrap: balance;
   max-width: 18em;
@@ -852,6 +878,28 @@ h1.hero-h {
 .pill[data-s="throt"]  { background: color-mix(in srgb, var(--beam) 20%, transparent); color: var(--beam); }
 .pill[data-s="pause"]  { background: color-mix(in srgb, var(--sub-r) 18%, transparent); color: var(--sub-r); }
 
+/* 钉住的场景。
+   这一节被拉高到三屏，内层 sticky 住 —— 你滚过的那两屏推进的是场景内部
+   （调速器日志逐条落下），推完才放行到下一节。这是「一屏一个想法」和
+   「滑一下全出来」的全部差别。
+
+   只在够宽且没开减弱动效时才钉：窄屏一屏装不下这套双栏，硬钉会把内容切掉；
+   开了减弱动效的人本来就不该被劫持滚动。两种情况都退回普通的一节。 */
+.sec.pin { padding: 0; height: 300vh; }
+.sec.pin > .sec-grid {
+  position: sticky; top: 0; min-height: 100vh;
+  align-content: center;
+  padding-block: clamp(72px, 9vw, 132px);
+}
+@media (max-width: 1000px) {
+  .sec.pin { height: auto; padding: clamp(72px, 9vw, 132px) 0; }
+  .sec.pin > .sec-grid { position: static; min-height: 0; padding-block: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sec.pin { height: auto; padding: clamp(72px, 9vw, 132px) 0; }
+  .sec.pin > .sec-grid { position: static; min-height: 0; padding-block: 0; }
+}
+
 .gov-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 13px; overflow: hidden; border: 1px solid var(--line-soft); }
 .gov-item { background: var(--surface); padding: 15px 18px; display: grid; gap: 3px; }
 .gov-item b { font-size: 14.5px; font-weight: 620; letter-spacing: -.005em; }
@@ -1219,7 +1267,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <a class="skip-link" href="#main-content">{{x.a1}}</a>
 <nav class="nav" id="nav">
   <div class="nav-in">
-    <a class="brand" href="#top">
+    <a class="brand" href="%%HOME%%#top">
       <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
         <rect x="3"  y="9"  width="26" height="22" rx="6" fill="#FF5C8A" opacity=".85"/>
         <rect x="7"  y="9"  width="26" height="22" rx="6" fill="#6BF0B4" opacity=".7"  style="mix-blend-mode:screen"/>
@@ -1228,19 +1276,20 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       Swaylume
     </a>
     <div class="nav-links">
-      <a href="#gallery">{{nav.a1}}</a>
-      <a href="#layers">{{nav.a2}}</a>
-      <a href="#paths">{{nav.a3}}</a>
-      <a href="#wallpapers">{{nav.a4}}</a>
-      <a href="#trust">{{nav.a5}}</a>
-      <a href="#faq">{{nav.faq}}</a>
-      <a href="#get">{{nav.a6}}</a>
+      <a href="%%HOME%%#gallery">{{nav.a1}}</a>
+      <a href="%%HOME%%#layers">{{nav.a2}}</a>
+      <a href="%%DETAILS%%#paths">{{nav.a3}}</a>
+      <a href="%%DETAILS%%#wallpapers">{{nav.a4}}</a>
+      <a href="%%DETAILS%%#trust">{{nav.a5}}</a>
+      <a href="%%DETAILS%%#faq">{{nav.faq}}</a>
+      <a href="%%HOME%%#get">{{nav.a6}}</a>
     </div>
     <!--LANG-SWITCHER-->
-    <a class="nav-cta" href="#get">{{nav.a7}}</a>
+    <a class="nav-cta" href="%%HOME%%#get">{{nav.a7}}</a>
   </div>
 </nav>
 
+<!--ONLY:home-->
 <!-- ============================== 首屏 ============================== -->
 <header class="hero" id="top">
   <canvas id="stage" aria-hidden="true"></canvas>
@@ -1254,8 +1303,8 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     <p class="hero-sub">{{top.p2}}</p>
 
     <div class="btn-row">
-      <a class="btn btn-primary" href="#get">{{top.a1}}</a>
-      <a class="btn btn-ghost" href="#gallery">{{top.a2}}</a>
+      <a class="btn btn-primary" href="%%HOME%%#get">{{top.a1}}</a>
+      <a class="btn btn-ghost" href="%%HOME%%#gallery">{{top.a2}}</a>
     </div>
 
     <div class="hero-proof" aria-label="产品能力摘要">{{top.div1}}</div>
@@ -1270,39 +1319,11 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </div>
   </div>
 </header>
+<!--/ONLY-->
 
 <main id="main-content" tabindex="-1">
 
-<!-- ============================== § 精选壁纸 ============================== -->
-<section class="sec" id="gallery">
-  <div class="sec-grid">
-    <div class="rail">{{gallery.div1}}</div>
-    <div>
-      <h2 class="sec-h rise">{{gallery.h21}}</h2>
-      <p class="sec-p rise">{{gallery.p1}}</p>
-
-      <div class="gallery-showcase rise" id="gallery-showcase">
-        <canvas class="gallery-preview" id="gallery-preview" aria-label="动态壁纸实时预览"></canvas>
-        <div class="gallery-overlay">
-          <div>
-            <p class="gallery-kicker" id="gallery-kind">{{gallery.p2}}</p>
-            <h3 class="gallery-title" id="gallery-title">{{gallery.h31}}</h3>
-            <p class="gallery-meta" id="gallery-meta">{{gallery.p3}}</p>
-          </div>
-          <span class="live-pill">LIVE PREVIEW</span>
-        </div>
-      </div>
-
-      <div class="wall-picker rise" role="group" aria-label="选择预览壁纸">
-        <button class="wall-card" type="button" data-scene="0" aria-pressed="true">{{gallery.button1}}</button>
-        <button class="wall-card" type="button" data-scene="1" aria-pressed="false">{{gallery.button2}}</button>
-        <button class="wall-card" type="button" data-scene="2" aria-pressed="false">{{gallery.button3}}</button>
-        <button class="wall-card" type="button" data-scene="3" aria-pressed="false">{{gallery.button4}}</button>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!--ONLY:home-->
 <!-- ============================== § 图层 ============================== -->
 <section class="sec" id="layers">
   <div class="sec-grid">
@@ -1372,7 +1393,35 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 </div>
   </div>
 </section>
+<!-- ============================== § 精选壁纸 ============================== -->
+<section class="sec" id="gallery">
+  <div class="sec-grid">
+    <div class="rail">{{gallery.div1}}</div>
+    <div>
+      <h2 class="sec-h rise">{{gallery.h21}}</h2>
+      <p class="sec-p rise">{{gallery.p1}}</p>
 
+      <div class="gallery-showcase rise" id="gallery-showcase">
+        <canvas class="gallery-preview" id="gallery-preview" aria-label="动态壁纸实时预览"></canvas>
+        <div class="gallery-overlay">
+          <div>
+            <p class="gallery-kicker" id="gallery-kind">{{gallery.p2}}</p>
+            <h3 class="gallery-title" id="gallery-title">{{gallery.h31}}</h3>
+            <p class="gallery-meta" id="gallery-meta">{{gallery.p3}}</p>
+          </div>
+          <span class="live-pill">LIVE PREVIEW</span>
+        </div>
+      </div>
+
+      <div class="wall-picker rise" role="group" aria-label="选择预览壁纸">
+        <button class="wall-card" type="button" data-scene="0" aria-pressed="true">{{gallery.button1}}</button>
+        <button class="wall-card" type="button" data-scene="1" aria-pressed="false">{{gallery.button2}}</button>
+        <button class="wall-card" type="button" data-scene="2" aria-pressed="false">{{gallery.button3}}</button>
+        <button class="wall-card" type="button" data-scene="3" aria-pressed="false">{{gallery.button4}}</button>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- ============================== § 壁纸类型 ============================== -->
 <section class="sec" id="renderers">
   <div class="sec-grid">
@@ -1415,9 +1464,8 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </div>
   </div>
 </section>
-
 <!-- ============================== § 省电 ============================== -->
-<section class="sec" id="power">
+<section class="sec pin" id="power">
   <div class="sec-grid">
     <div class="rail">{{power.div1}}</div>
     <div>
@@ -1441,27 +1489,6 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </div>
   </div>
 </section>
-
-<!-- ============================== § 音频 ============================== -->
-<section class="sec" id="audio">
-  <div class="sec-grid">
-    <div class="rail">{{audio.div1}}</div>
-    <div>
-      <h2 class="sec-h rise">{{audio.h21}}</h2>
-      <p class="sec-p rise">{{audio.p1}}</p>
-
-      <div class="spectrum-shell rise">
-        <div class="spectrum" id="spectrum" aria-hidden="true"></div>
-        <div class="spectrum-foot">
-          <span>20 Hz</span><span>200 Hz</span><span>2 kHz</span><span>20 kHz</span>
-        </div>
-      </div>
-
-      <div class="note rise">{{audio.div2}}</div>
-    </div>
-  </div>
-</section>
-
 <!-- ============================== § 迁移 ============================== -->
 <section class="sec" id="import">
   <div class="sec-grid">
@@ -1506,113 +1533,6 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </div>
   </div>
 </section>
-
-<!-- ============================== § 三条开始路径 ============================== -->
-<section class="sec" id="paths">
-  <div class="sec-grid">
-    <div class="rail">{{paths.div1}}</div>
-    <div>
-      <h2 class="sec-h rise">{{paths.h21}}</h2>
-      <p class="sec-p rise">{{paths.p1}}</p>
-      <div class="path-grid rise">
-        <article class="path-card">
-          <span class="path-step">{{paths.span1}}</span>
-          <h3>{{paths.h31}}</h3>
-          <p>{{paths.p2}}</p>
-          <a href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">{{paths.a1}}</a>
-        </article>
-        <article class="path-card">
-          <span class="path-step">{{paths.span2}}</span>
-          <h3>{{paths.h32}}</h3>
-          <p>{{paths.p3}}</p>
-          <a href="#import">{{paths.a2}}</a>
-        </article>
-        <article class="path-card">
-          <span class="path-step">{{paths.span3}}</span>
-          <h3>{{paths.h33}}</h3>
-          <p>{{paths.p4}}</p>
-          <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">{{paths.a3}}</a>
-        </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== § 壁纸从哪来 ============================== -->
-<section class="sec" id="wallpapers">
-  <div class="sec-grid">
-    <div class="rail">{{wallpapers.div1}}</div>
-    <div>
-      <h2 class="sec-h rise">{{wallpapers.h21}}</h2>
-      <p class="sec-p rise">{{wallpapers.p1}}</p>
-
-      <h3 class="src-h rise">{{wallpapers.h31}}</h3>
-      <p class="src-note rise">{{wallpapers.p2}}</p>
-      <div class="gov-list rise">
-        <div class="gov-item src-item">{{wallpapers.div2}}</div>
-        <div class="gov-item src-item">{{wallpapers.div3}}</div>
-      </div>
-
-      <h3 class="src-h rise">{{wallpapers.h32}}</h3>
-      <p class="src-note rise">{{wallpapers.p3}}</p>
-      <div class="src-grid rise">
-        <a href="https://www.desktophut.com/" target="_blank" rel="noopener nofollow">DesktopHut ↗</a>
-        <a href="https://moewalls.com/" target="_blank" rel="noopener nofollow">MoeWalls ↗</a>
-        <a href="https://motionbgs.com/" target="_blank" rel="noopener nofollow">MotionBGS ↗</a>
-        <a href="https://livebgs.com/" target="_blank" rel="noopener nofollow">LiveBgs ↗</a>
-        <a href="https://livewallp.com/" target="_blank" rel="noopener nofollow">LiveWallp ↗</a>
-        <a href="https://livewallpapers4free.com/" target="_blank" rel="noopener nofollow">LiveWallpapers4Free ↗</a>
-        <a href="https://mylivewallpapers.com/" target="_blank" rel="noopener nofollow">MyLiveWallpapers ↗</a>
-        <a href="https://wallsflow.com/" target="_blank" rel="noopener nofollow">WallsFlow ↗</a>
-        <a href="https://wallpaperwaves.com/category/3840x2160/" target="_blank" rel="noopener nofollow">WallpaperWaves ↗</a>
-      </div>
-
-      <div class="note rise">{{wallpapers.div4}}</div>
-
-      <div class="note rise" style="border-left-color:var(--sub-r);background:color-mix(in srgb, var(--sub-r) 8%, transparent)">{{wallpapers.div5}}</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== § 信任与边界 ============================== -->
-<section class="sec" id="trust">
-  <div class="sec-grid">
-    <div class="rail">{{trust.div1}}</div>
-    <div>
-      <h2 class="sec-h rise">{{trust.h21}}</h2>
-      <p class="sec-p rise">{{trust.p1}}</p>
-      <div class="trust-grid rise">
-        <article class="trust-card"><strong>{{trust.strong1}}</strong><p>{{trust.p2}}</p></article>
-        <article class="trust-card"><strong>{{trust.strong2}}</strong><p>{{trust.p3}}</p></article>
-        <article class="trust-card"><strong>{{trust.strong3}}</strong><p>{{trust.p4}}</p></article>
-        <article class="trust-card"><strong>{{trust.strong4}}</strong><p>{{trust.p5}}</p></article>
-      </div>
-      <p class="trust-note rise">{{trust.contact}}</p>
-      <!--SITE-ANALYTICS-NOTE-->
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================== § 常见问题 ============================== -->
-<section class="sec" id="faq">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">10</span><span>{{faq.rail}}</span></div>
-    <div>
-      <h2 class="sec-h rise">{{faq.h2}}</h2>
-      <div class="faq rise">
-        <details><summary>{{faq.q1}}</summary><div class="faq-a">{{faq.a1}}</div></details>
-        <details><summary>{{faq.q2}}</summary><div class="faq-a">{{faq.a2}}</div></details>
-        <details><summary>{{faq.q3}}</summary><div class="faq-a">{{faq.a3}}</div></details>
-        <details><summary>{{faq.q4}}</summary><div class="faq-a">{{faq.a4}}</div></details>
-        <details><summary>{{faq.q5}}</summary><div class="faq-a">{{faq.a5}}</div></details>
-        <details><summary>{{faq.q6}}</summary><div class="faq-a">{{faq.a6}}</div></details>
-      </div>
-      <div class="note rise">{{faq.feedback}}</div>
-    </div>
-  </div>
-</section>
-
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
@@ -1679,6 +1599,130 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </div>
   </div>
 </section>
+<!--/ONLY-->
+
+<!--ONLY:details-->
+<!-- ============================== § 音频 ============================== -->
+<section class="sec" id="audio">
+  <div class="sec-grid">
+    <div class="rail">{{audio.div1}}</div>
+    <div>
+      <h2 class="sec-h rise">{{audio.h21}}</h2>
+      <p class="sec-p rise">{{audio.p1}}</p>
+
+      <div class="spectrum-shell rise">
+        <div class="spectrum" id="spectrum" aria-hidden="true"></div>
+        <div class="spectrum-foot">
+          <span>20 Hz</span><span>200 Hz</span><span>2 kHz</span><span>20 kHz</span>
+        </div>
+      </div>
+
+      <div class="note rise">{{audio.div2}}</div>
+    </div>
+  </div>
+</section>
+<!-- ============================== § 三条开始路径 ============================== -->
+<section class="sec" id="paths">
+  <div class="sec-grid">
+    <div class="rail">{{paths.div1}}</div>
+    <div>
+      <h2 class="sec-h rise">{{paths.h21}}</h2>
+      <p class="sec-p rise">{{paths.p1}}</p>
+      <div class="path-grid rise">
+        <article class="path-card">
+          <span class="path-step">{{paths.span1}}</span>
+          <h3>{{paths.h31}}</h3>
+          <p>{{paths.p2}}</p>
+          <a href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">{{paths.a1}}</a>
+        </article>
+        <article class="path-card">
+          <span class="path-step">{{paths.span2}}</span>
+          <h3>{{paths.h32}}</h3>
+          <p>{{paths.p3}}</p>
+          <a href="%%HOME%%#import">{{paths.a2}}</a>
+        </article>
+        <article class="path-card">
+          <span class="path-step">{{paths.span3}}</span>
+          <h3>{{paths.h33}}</h3>
+          <p>{{paths.p4}}</p>
+          <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">{{paths.a3}}</a>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============================== § 壁纸从哪来 ============================== -->
+<section class="sec" id="wallpapers">
+  <div class="sec-grid">
+    <div class="rail">{{wallpapers.div1}}</div>
+    <div>
+      <h2 class="sec-h rise">{{wallpapers.h21}}</h2>
+      <p class="sec-p rise">{{wallpapers.p1}}</p>
+
+      <h3 class="src-h rise">{{wallpapers.h31}}</h3>
+      <p class="src-note rise">{{wallpapers.p2}}</p>
+      <div class="gov-list rise">
+        <div class="gov-item src-item">{{wallpapers.div2}}</div>
+        <div class="gov-item src-item">{{wallpapers.div3}}</div>
+      </div>
+
+      <h3 class="src-h rise">{{wallpapers.h32}}</h3>
+      <p class="src-note rise">{{wallpapers.p3}}</p>
+      <div class="src-grid rise">
+        <a href="https://www.desktophut.com/" target="_blank" rel="noopener nofollow">DesktopHut ↗</a>
+        <a href="https://moewalls.com/" target="_blank" rel="noopener nofollow">MoeWalls ↗</a>
+        <a href="https://motionbgs.com/" target="_blank" rel="noopener nofollow">MotionBGS ↗</a>
+        <a href="https://livebgs.com/" target="_blank" rel="noopener nofollow">LiveBgs ↗</a>
+        <a href="https://livewallp.com/" target="_blank" rel="noopener nofollow">LiveWallp ↗</a>
+        <a href="https://livewallpapers4free.com/" target="_blank" rel="noopener nofollow">LiveWallpapers4Free ↗</a>
+        <a href="https://mylivewallpapers.com/" target="_blank" rel="noopener nofollow">MyLiveWallpapers ↗</a>
+        <a href="https://wallsflow.com/" target="_blank" rel="noopener nofollow">WallsFlow ↗</a>
+        <a href="https://wallpaperwaves.com/category/3840x2160/" target="_blank" rel="noopener nofollow">WallpaperWaves ↗</a>
+      </div>
+
+      <div class="note rise">{{wallpapers.div4}}</div>
+
+      <div class="note rise" style="border-left-color:var(--sub-r);background:color-mix(in srgb, var(--sub-r) 8%, transparent)">{{wallpapers.div5}}</div>
+    </div>
+  </div>
+</section>
+<!-- ============================== § 信任与边界 ============================== -->
+<section class="sec" id="trust">
+  <div class="sec-grid">
+    <div class="rail">{{trust.div1}}</div>
+    <div>
+      <h2 class="sec-h rise">{{trust.h21}}</h2>
+      <p class="sec-p rise">{{trust.p1}}</p>
+      <div class="trust-grid rise">
+        <article class="trust-card"><strong>{{trust.strong1}}</strong><p>{{trust.p2}}</p></article>
+        <article class="trust-card"><strong>{{trust.strong2}}</strong><p>{{trust.p3}}</p></article>
+        <article class="trust-card"><strong>{{trust.strong3}}</strong><p>{{trust.p4}}</p></article>
+        <article class="trust-card"><strong>{{trust.strong4}}</strong><p>{{trust.p5}}</p></article>
+      </div>
+      <p class="trust-note rise">{{trust.contact}}</p>
+      <!--SITE-ANALYTICS-NOTE-->
+    </div>
+  </div>
+</section>
+<!-- ============================== § 常见问题 ============================== -->
+<section class="sec" id="faq">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">10</span><span>{{faq.rail}}</span></div>
+    <div>
+      <h2 class="sec-h rise">{{faq.h2}}</h2>
+      <div class="faq rise">
+        <details><summary>{{faq.q1}}</summary><div class="faq-a">{{faq.a1}}</div></details>
+        <details><summary>{{faq.q2}}</summary><div class="faq-a">{{faq.a2}}</div></details>
+        <details><summary>{{faq.q3}}</summary><div class="faq-a">{{faq.a3}}</div></details>
+        <details><summary>{{faq.q4}}</summary><div class="faq-a">{{faq.a4}}</div></details>
+        <details><summary>{{faq.q5}}</summary><div class="faq-a">{{faq.a5}}</div></details>
+        <details><summary>{{faq.q6}}</summary><div class="faq-a">{{faq.a6}}</div></details>
+      </div>
+      <div class="note rise">{{faq.feedback}}</div>
+    </div>
+  </div>
+</section>
+<!--/ONLY-->
 
 </main>
 
@@ -1689,7 +1733,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">{{x.a2}}</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">{{x.a3}}</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">{{x.a4}}</a>
-      <a href="#top">{{x.a5}}</a>
+      <a href="%%HOME%%#top">{{x.a5}}</a>
     </div>
     <p class="legal">{{x.p1}}</p>
   </div>
@@ -1706,6 +1750,27 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   function T(k) { return Object.prototype.hasOwnProperty.call(I18N, k) ? I18N[k] : k; }
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* =========================================================
+     0. 语言切换器
+     <details> 自己管开合、键盘和读屏，这里只补它不管的两件事：
+     点到外面关掉、Esc 关掉。脚本坏了最多是关不掉，不会打不开 ——
+     这正是用 <details> 而不是 button + 脚本的理由。
+     ========================================================= */
+  (function () {
+    var box = document.querySelector("[data-langs]");
+    if (!box) return;
+    document.addEventListener("click", function (e) {
+      if (box.open && !box.contains(e.target)) box.open = false;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && box.open) {
+        box.open = false;
+        var sum = box.querySelector("summary");
+        if (sum) sum.focus();
+      }
+    });
+  })();
 
   /* =========================================================
      1. 壁纸着色器
@@ -1782,6 +1847,18 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   ];
 
   function makeRenderer(canvas, sceneIndex) {
+    // 画布不在这一页就返回一个空壳。
+    //
+    // 站点分成首页和 /details 两页之后，脚本是两页共用的：/details 上没有
+    // 首屏画布也没有桌面演示画布，原来这里直接 canvas.getContext(...) 会抛
+    // TypeError，**整段脚本当场死掉** —— 那一页的主题切换、语言面板的
+    // Esc/点外面关闭、常见问题展开全部跟着失效，而页面看上去还是好的。
+    //
+    // 挡在工厂里而不是每个调用点：以后再加一处调用也不会漏。
+    if (!canvas) {
+      return { start: function () {}, stop: function () {},
+               setScene: function () {}, setMouse: function () {}, ok: false };
+    }
     var gl = null;
     try {
       gl = canvas.getContext("webgl", { antialias: false, alpha: false, depth: false, powerPreference: "low-power" })
@@ -1906,6 +1983,10 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     };
   }
 
+  // 这一节是首页专属的（首屏 + 播放列表）。/details 上这些元素不存在，
+  // 不挡的话第一处 null 就会终止**整段脚本** —— 后面第 7 节的滚动入场
+  // 跟着不跑，而 .rise 的初始状态是 opacity:0，整页内容直接看不见。
+  if (document.getElementById("stage")) {
   /* =========================================================
      2. 首屏 + 播放列表
      ========================================================= */
@@ -1937,7 +2018,8 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   window.addEventListener("resize", function () { if (reduce) hero.start(); }, { passive: true });
 
   // 滚出视野就停 —— 页面自己也遵守省电那一节讲的规矩
-  if ("IntersectionObserver" in window) {
+  // stage 只存在于首页；/details 上是 null，observe(null) 会抛异常并终止整段脚本。
+  if (stage && "IntersectionObserver" in window) {
     new IntersectionObserver(function (es) {
       es.forEach(function (e) { e.isIntersecting ? hero.start() : hero.stop(); });
     }, { threshold: 0.02 }).observe(stage);
@@ -1947,6 +2029,11 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     syncGalleryActivity();
   });
 
+  }
+  // 这一节是首页专属的（精选壁纸）。/details 上这些元素不存在，
+  // 不挡的话第一处 null 就会终止**整段脚本** —— 后面第 7 节的滚动入场
+  // 跟着不跑，而 .rise 的初始状态是 opacity:0，整页内容直接看不见。
+  if (document.getElementById("gallery-showcase")) {
   /* =========================================================
      3. 精选壁纸 —— 一块真实切场景的独立预览
      ========================================================= */
@@ -2002,6 +2089,11 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     }
   }
 
+  }
+  // 这一节是首页专属的（桌面演示）。/details 上这些元素不存在，
+  // 不挡的话第一处 null 就会终止**整段脚本** —— 后面第 7 节的滚动入场
+  // 跟着不跑，而 .rise 的初始状态是 opacity:0，整页内容直接看不见。
+  if (document.getElementById("desk-canvas")) {
   /* =========================================================
      4. 桌面演示 —— 页面的赌注
      ========================================================= */
@@ -2051,7 +2143,8 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     swOccl.addEventListener("click", function () { state.occl = !state.occl; sync(); });
   }
 
-  if ("IntersectionObserver" in window) {
+  // deskFrame 同样只在首页
+  if (deskFrame && "IntersectionObserver" in window) {
     new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         (e.isIntersecting && !state.occl) ? desk.start() : desk.stop();
@@ -2080,6 +2173,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   tick();
   setInterval(tick, 20000);
 
+  }
   /* =========================================================
      5. 调速器读数 —— 用 app 真实的暂停原因
      ========================================================= */
@@ -2110,13 +2204,54 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     });
 
     var lines = govlog.querySelectorAll(".logline");
-    var gi = 0;
-    function step() {
-      lines.forEach(function (l, i) { l.setAttribute("data-live", String(i === gi)); });
-      gi = (gi + 1) % lines.length;
+
+    function live(i) {
+      lines.forEach(function (l, n) { l.setAttribute("data-live", String(n === i)); });
     }
-    step();
-    if (!reduce) setInterval(step, 2200);
+
+    /* 这一节钉得住的时候，日志由**滚动**推进，不由定时器。
+       定时器的问题是它跟你看不看没关系：你还没读完第一条它就跳走了，
+       而你划过去之后它还在空放。改成滚动驱动之后，进度完全在读的人手里。
+
+       钉不钉得住由 CSS 说了算（窄屏和减弱动效下会退回普通一节），
+       所以这里读实际算出来的 position，而不是自己再判一遍条件 ——
+       两处各判一次，迟早会不一致。 */
+    var powerSec = document.getElementById("power");
+    var grid = powerSec && powerSec.querySelector(".sec-grid");
+    var isPinned = grid && getComputedStyle(grid).position === "sticky";
+
+    if (isPinned && !reduce) {
+      var ticking = false;
+      var onGovScroll = function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          var r = powerSec.getBoundingClientRect();
+          var total = powerSec.offsetHeight - window.innerHeight;
+          if (total <= 0) { live(0); return; }
+          var p = Math.max(0, Math.min(1, -r.top / total));
+          live(Math.min(lines.length - 1, Math.floor(p * lines.length)));
+        });
+      };
+      // 先同步给一个有效的初始状态，再挂监听。
+      // onGovScroll 的实际赋值发生在 requestAnimationFrame 里，而 rAF 在页面
+      // 不被合成时（后台标签页、某些嵌入环境）根本不跑 —— 那样第一屏会是
+      // 一条都没高亮的日志。初始状态不该依赖任何回调先跑一次。
+      live(0);
+      window.addEventListener("scroll", onGovScroll, { passive: true });
+      window.addEventListener("resize", onGovScroll);
+      onGovScroll();
+    } else {
+      var gi = 0;
+      live(gi);
+      if (!reduce) {
+        setInterval(function () {
+          gi = (gi + 1) % lines.length;
+          live(gi);
+        }, 2200);
+      }
+    }
   }
 
   /* =========================================================
@@ -2175,6 +2310,18 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       });
     }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
     risers.forEach(function (el) { io.observe(el); });
+
+    // 兜底：两秒后把还没揭示的一律显示出来。
+    //
+    // `.rise` 的初始状态是 opacity:0 —— 也就是说**内容能不能被看见，取决于
+    // 一个观察器会不会触发**。绝大多数时候它会，但只要不触发（页面被挂起、
+    // 标签页在后台、某些无障碍或省电模式下的节流），整页就是一片空白，
+    // 而且不报任何错。为一个纯装饰的入场动画押上「内容是否可见」，赌注下反了。
+    //
+    // 这不是假想：本地验证时就撞见过观察器完全不回调、整页全黑的情形。
+    setTimeout(function () {
+      risers.forEach(function (el) { el.classList.add("in"); });
+    }, 2000);
   } else {
     risers.forEach(function (el) { el.classList.add("in"); });
   }

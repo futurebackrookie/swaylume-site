@@ -204,5 +204,7 @@
   "faq.a5": "Nein. Hintergründe, Lesezeichen, Importverlauf und Diagnosen bleiben auf deinem Mac. Nichts wird automatisch hochgeladen, und es gibt keine Werbe-Tracking-Skripte. Die einzige Netzwerkaktivität ist das Laden des Katalog-Index, wenn du selbst aktualisierst; ohne Aktualisierung geht die App nie online. Diagnoseberichte entstehen nur, wenn du sie exportierst, und enthalten Zustände und Fehler, nicht deine Hintergrunddateien.",
   "faq.q6": "Welche Macs werden unterstützt?",
   "faq.a6": "macOS 14 oder neuer, auf Apple Silicon wie auf Intel (Universal Binary). Mehrere Bildschirme und AirPlay-Zweitbildschirme wurden beide auf echter Hardware getestet.",
-  "faq.feedback": "<b>Hier nicht beantwortet?</b> Das ist eine Beta, und deine Frage haben vermutlich auch andere — <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">mach ein Issue auf</a>, dann landet die Antwort in diesem Abschnitt."
+  "faq.feedback": "<b>Hier nicht beantwortet?</b> Das ist eine Beta, und deine Frage haben vermutlich auch andere — <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">mach ein Issue auf</a>, dann landet die Antwort in diesem Abschnitt.",
+  "details.title": "Technische Details und Bezugsquellen für Wallpaper — Swaylume",
+  "details.description": "Wie die Audioreaktion funktioniert, drei Wege für den Einstieg, wo es Live-Wallpaper gibt und was die Lizenz der jeweiligen Seite erlaubt, Grenzen bei Datenschutz und Kompatibilität sowie häufige Fragen."
 }

@@ -1,25 +1,25 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Swaylume — Fonds d’écran animés pour macOS</title>
-<meta name="description" content="Une app de fonds d’écran animés pour Mac, et une alternative macOS à Wallpaper Engine : vidéo, WebGL et parallaxe en calques sous les icônes du bureau, avec un convertisseur pour la collection que vous avez déjà.">
+<title>Technical details and where to find wallpapers — Swaylume</title>
+<meta name="description" content="How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's licence allows, privacy and compatibility limits, and answers to common questions.">
 <meta name="google-site-verification" content="93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318">
-<link rel="canonical" href="https://futurebackrookie.github.io/swaylume-site/fr/">
-<link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/">
-<link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/">
-<link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/">
-<link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/">
-<link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/">
-<link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/">
+<link rel="canonical" href="https://futurebackrookie.github.io/swaylume-site/en/details/">
+<link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/details/">
+<link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/details/">
+<link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/details/">
+<link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/details/">
+<link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/details/">
+<link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/details/">
 <meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">
-<meta property="og:title" content="Swaylume — Fonds d’écran animés pour macOS">
-<meta property="og:description" content="Une app de fonds d’écran animés pour Mac, et une alternative macOS à Wallpaper Engine : vidéo, WebGL et parallaxe en calques sous les icônes du bureau, avec un convertisseur pour la collection que vous avez déjà.">
+<meta property="og:title" content="Technical details and where to find wallpapers — Swaylume">
+<meta property="og:description" content="How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's licence allows, privacy and compatibility limits, and answers to common questions.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:url" content="https://futurebackrookie.github.io/swaylume-site/fr/">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://futurebackrookie.github.io/swaylume-site/en/details/">
 <meta property="og:image" content="https://futurebackrookie.github.io/swaylume-site/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -1296,10 +1296,10 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 </style>
 
 <!-- ============================== 导航 ============================== -->
-<a class="skip-link" href="#main-content">Aller au contenu principal</a>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <nav class="nav" id="nav">
   <div class="nav-in">
-    <a class="brand" href="/swaylume-site/fr/#top">
+    <a class="brand" href="/swaylume-site/en/#top">
       <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
         <rect x="3"  y="9"  width="26" height="22" rx="6" fill="#FF5C8A" opacity=".85"/>
         <rect x="7"  y="9"  width="26" height="22" rx="6" fill="#6BF0B4" opacity=".7"  style="mix-blend-mode:screen"/>
@@ -1308,432 +1308,210 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       Swaylume
     </a>
     <div class="nav-links">
-      <a href="/swaylume-site/fr/#gallery">Fonds d’écran</a>
-      <a href="/swaylume-site/fr/#layers">Natif</a>
-      <a href="/swaylume-site/fr/details/#paths">Commencer</a>
-      <a href="/swaylume-site/fr/details/#wallpapers">En trouver</a>
-      <a href="/swaylume-site/fr/details/#trust">Confidentialité</a>
-      <a href="/swaylume-site/fr/details/#faq">FAQ</a>
-      <a href="/swaylume-site/fr/#get">Obtenir</a>
+      <a href="/swaylume-site/en/#gallery">Wallpapers</a>
+      <a href="/swaylume-site/en/#layers">Native</a>
+      <a href="/swaylume-site/en/details/#paths">Get started</a>
+      <a href="/swaylume-site/en/details/#wallpapers">Find wallpapers</a>
+      <a href="/swaylume-site/en/details/#trust">Privacy</a>
+      <a href="/swaylume-site/en/details/#faq">FAQ</a>
+      <a href="/swaylume-site/en/#get">Download</a>
     </div>
-    <details class="langs" data-langs><summary aria-label="Language"><svg class="lang-globe" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 7h10.8M7 1.6c1.5 1.6 2.2 3.4 2.2 5.4S8.5 10.8 7 12.4c-1.5-1.6-2.2-3.4-2.2-5.4S5.5 3.2 7 1.6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span class="lang-here">Français</span><svg class="lang-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ul class="lang-menu"><li><a href="/swaylume-site/" hreflang="zh-Hans" lang="zh-Hans"><span class="lang-tick"></span><span class="lang-name">简体中文</span><span class="lang-code">zh-Hans</span></a></li><li><a href="/swaylume-site/en/" hreflang="en" lang="en"><span class="lang-tick"></span><span class="lang-name">English</span><span class="lang-code">en</span></a></li><li><a href="/swaylume-site/ja/" hreflang="ja" lang="ja"><span class="lang-tick"></span><span class="lang-name">日本語</span><span class="lang-code">ja</span></a></li><li><a href="/swaylume-site/de/" hreflang="de" lang="de"><span class="lang-tick"></span><span class="lang-name">Deutsch</span><span class="lang-code">de</span></a></li><li><a href="/swaylume-site/fr/" hreflang="fr" lang="fr" aria-current="true"><span class="lang-tick" aria-hidden="true">✓</span><span class="lang-name">Français</span><span class="lang-code">fr</span></a></li></ul></details>
-    <a class="nav-cta" href="/swaylume-site/fr/#get">Télécharger</a>
+    <details class="langs" data-langs><summary aria-label="Language"><svg class="lang-globe" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 7h10.8M7 1.6c1.5 1.6 2.2 3.4 2.2 5.4S8.5 10.8 7 12.4c-1.5-1.6-2.2-3.4-2.2-5.4S5.5 3.2 7 1.6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span class="lang-here">English</span><svg class="lang-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ul class="lang-menu"><li><a href="/swaylume-site/details/" hreflang="zh-Hans" lang="zh-Hans"><span class="lang-tick"></span><span class="lang-name">简体中文</span><span class="lang-code">zh-Hans</span></a></li><li><a href="/swaylume-site/en/details/" hreflang="en" lang="en" aria-current="true"><span class="lang-tick" aria-hidden="true">✓</span><span class="lang-name">English</span><span class="lang-code">en</span></a></li><li><a href="/swaylume-site/ja/details/" hreflang="ja" lang="ja"><span class="lang-tick"></span><span class="lang-name">日本語</span><span class="lang-code">ja</span></a></li><li><a href="/swaylume-site/de/details/" hreflang="de" lang="de"><span class="lang-tick"></span><span class="lang-name">Deutsch</span><span class="lang-code">de</span></a></li><li><a href="/swaylume-site/fr/details/" hreflang="fr" lang="fr"><span class="lang-tick"></span><span class="lang-name">Français</span><span class="lang-code">fr</span></a></li></ul></details>
+    <a class="nav-cta" href="/swaylume-site/en/#get">Download</a>
   </div>
 </nav>
 
-<!-- ============================== 首屏 ============================== -->
-<header class="hero" id="top">
-  <canvas id="stage" aria-hidden="true"></canvas>
-  <div class="hero-scrim"></div>
-
-  <div class="hero-body wrap">
-    <p class="eyebrow">En cours de lecture · cet arrière-plan est rendu en direct</p>
-
-    <h1 class="hero-h">Votre bureau Mac, <span class="split" data-t="enfin">enfin</span> vivant.</h1>
-
-    <p class="hero-sub">
-      Des fonds d’écran vidéo, WebGL et parallaxe 2.5D qui tournent <strong>sous les icônes du bureau</strong>,
-      les clics passant directement au Finder. Écrit pour le Mac depuis zéro — ce n’est pas une page web déguisée,
-      ni un lecteur vidéo garé en arrière-plan.
-    </p>
-
-    <div class="btn-row">
-      <a class="btn btn-primary" href="/swaylume-site/fr/#get">Obtenir la bêta</a>
-      <a class="btn btn-ghost" href="/swaylume-site/fr/#gallery">Voir les fonds d’écran</a>
-    </div>
-
-    <div class="hero-proof" aria-label="产品能力摘要">
-      <span>Natif à partir de macOS 14</span>
-      <span>Vidéo · Web · Calques</span>
-      <span>Local d’abord, rien n’est envoyé</span>
-    </div>
-
-    <div class="playlist" id="playlist">
-      <span class="playlist-label">Liste de lecture</span>
-      <button class="chip" type="button" data-scene="0" aria-pressed="true">Aurore</button>
-      <button class="chip" type="button" data-scene="1" aria-pressed="false">Grands fonds</button>
-      <button class="chip" type="button" data-scene="2" aria-pressed="false">Néon</button>
-      <button class="chip" type="button" data-scene="3" aria-pressed="false">Aube</button>
-      <span class="hint" id="hero-hint">Bougez la souris · la parallaxe suit</span>
-    </div>
-  </div>
-</header>
 
 <main id="main-content" tabindex="-1">
 
-<!-- ============================== § 图层 ============================== -->
-<section class="sec" id="layers">
+
+<!-- ============================== § 音频 ============================== -->
+<section class="sec" id="audio">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">02</span><span>Natif</span></div>
+    <div class="rail"><span class="rail-num">05</span><span>Audio reactive</span></div>
     <div>
-      <h2 class="sec-h rise">Le fond d’écran doit se glisser entre l’image du bureau et les icônes du bureau.</h2>
+      <h2 class="sec-h rise">4096-point FFT, 64 logarithmic bands.</h2>
       <p class="sec-p rise">
-        macOS n’a aucune API pour « définir un fond d’écran animé ». Ce qui fonctionne vraiment : épingler une fenêtre
-        sans bordure au niveau <code>CGWindowLevelForKey(.desktopIconWindow) − 1</code> — juste au-dessus de l’image du
-        bureau et juste en dessous des icônes — puis lui faire suivre tous les Spaces et ignorer les événements souris.
-        Le bureau ci-dessous est réel : <strong>actionnez l’interrupteur et regardez le fond d’écran traverser la couche
-        des icônes</strong>.
+        Hann window, real FFT, logarithmic banding, peak-decay smoothing — packed into the 128 values a wallpaper
+        page expects. You can pick the input device in Settings, with a live spectrum bar right next to it so you
+        can tell at a glance whether any signal is arriving.
+        <strong>Off by default</strong>, so nothing asks for microphone access unless you turn it on.
       </p>
 
-      <div class="desk-frame rise" id="desk">
-        <canvas id="desk-canvas" aria-hidden="true"></canvas>
-
-        <div class="strip-note" id="strip" aria-hidden="true">← l’ancien bug : une bande blanche de 122 px en haut</div>
-
-        <div class="desk-menubar">
-          <b>Finder</b><span>Fichier</span><span>Édition</span><span>Présentation</span>
-          <span class="right" id="menu-clock">22:14</span>
-        </div>
-
-        <div class="desk-icons" id="icons" data-under="true">
-          <div class="dicon">
-            <svg viewBox="0 0 48 40" aria-hidden="true">
-              <path d="M2 8a4 4 0 0 1 4-4h12l5 5h19a4 4 0 0 1 4 4v23a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#5AA9F5"/>
-              <path d="M2 14h44v19a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#7FC1FA"/>
-            </svg>
-            <span>Projets</span>
-          </div>
-          <div class="dicon">
-            <svg viewBox="0 0 40 48" aria-hidden="true">
-              <path d="M4 4a3 3 0 0 1 3-3h18l11 11v32a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="#F1EEF9"/>
-              <path d="M25 1l11 11H28a3 3 0 0 1-3-3z" fill="#C9C2DE"/>
-              <rect x="10" y="20" width="20" height="2.4" rx="1.2" fill="#B9B1D0"/>
-              <rect x="10" y="27" width="20" height="2.4" rx="1.2" fill="#B9B1D0"/>
-              <rect x="10" y="34" width="13" height="2.4" rx="1.2" fill="#B9B1D0"/>
-            </svg>
-            <span>lisez-moi.txt</span>
-          </div>
-        </div>
-
-        <div class="desk-window" id="win">
-          <div class="dw-bar">
-            <span class="dot" style="background:#FF5F57"></span>
-            <span class="dot" style="background:#FEBC2E"></span>
-            <span class="dot" style="background:#28C840"></span>
-            <span class="dw-title">Swaylume</span>
-          </div>
-          <div class="dw-body">
-            <div class="dw-row"><span>Moteur de rendu</span><span>WebGL</span></div>
-            <div class="dw-track"><div class="dw-fill" style="width:72%"></div></div>
-            <div class="dw-row"><span>Limite d’images</span><span>60 FPS</span></div>
-            <div class="dw-row"><span>Écran</span><span>MSI MD342CQP</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="desk-controls">
-        <button class="switch" id="sw-cover" type="button" aria-pressed="false">
-          <span class="switch-track"><span class="switch-knob"></span></span>
-          Fond d’écran au-dessus des icônes
-        </button>
-        <button class="switch" id="sw-occl" type="button" aria-pressed="false">
-          <span class="switch-track"><span class="switch-knob"></span></span>
-          Remplir l’écran d’une fenêtre
-        </button>
-        <div class="readout mono" id="layer-readout">level = <b>−2147483628</b> · sous les icônes · en lecture</div>
-      </div>
-
-      <div class="note rise">
-        <b>L’option « au-dessus des icônes » utilise <span class="mono">+2</span>, pas <span class="mono">+1</span>.</b>
-        Un niveau au-dessus des icônes vit une fenêtre de WindowServer qui occupe les 122 px supérieurs de l’écran.
-        L’ordre à l’intérieur d’un même niveau ne dépend pas de nous, et en pratique elle passait devant — d’où une
-        bande blanche imprimée en haut du fond d’écran. Trouvé en le faisant tourner sur du vrai matériel ; impossible
-        à voir en lisant le code.
-      </div>
-    
-      <!-- 第二张实拍。放在这里是因为它能和上面那块模拟桌面对上：
-           演示里扳的那个开关，在真实 app 里就是「壁纸覆盖桌面图标」这一项。 -->
-      <figure class="shot rise">
-        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
-             alt="Les réglages d’écran de Swaylume, avec les interrupteurs de recouvrement des icônes et de parallaxe, et l’affectation par écran">
-        <figcaption>Les vrais réglages d’écran. L’interrupteur de la démo ci-dessus, c’est « Fond d’écran au-dessus des icônes » ici. En bas à droite : état en direct et fréquence d’images.</figcaption>
-      </figure>
-</div>
-  </div>
-</section>
-<!-- ============================== § 精选壁纸 ============================== -->
-<section class="sec" id="gallery">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">01</span><span>Fonds d’écran</span></div>
-    <div>
-      <h2 class="sec-h rise">Choisissez-en un. Votre bureau s’occupe du reste.</h2>
-      <p class="sec-p rise">
-        Ceci est un aperçu réellement animé, pas une série de captures promotionnelles. Cliquez sur un fond d’écran :
-        la page enchaîne exactement comme le fait Swaylume. L’application, elle, place vidéo, WebGL et scènes en calques
-        sur chaque écran et chaque Space.
-      </p>
-
-      <div class="gallery-showcase rise" id="gallery-showcase">
-        <canvas class="gallery-preview" id="gallery-preview" aria-label="动态壁纸实时预览"></canvas>
-        <div class="gallery-overlay">
-          <div>
-            <p class="gallery-kicker" id="gallery-kind">WEBGL / APERÇU EN DIRECT</p>
-            <h3 class="gallery-title" id="gallery-title">Signal d’aurore</h3>
-            <p class="gallery-meta" id="gallery-meta">60 FPS · parallaxe souris · réglable</p>
-          </div>
-          <span class="live-pill">LIVE PREVIEW</span>
-        </div>
-      </div>
-
-      <div class="wall-picker rise" role="group" aria-label="选择预览壁纸">
-        <button class="wall-card" type="button" data-scene="0" aria-pressed="true"><span class="kind">WebGL · 4K</span><b>Signal d’aurore</b><small>Parallaxe · réglable</small></button>
-        <button class="wall-card" type="button" data-scene="1" aria-pressed="false"><span class="kind">Video · 4K</span><b>Écho des abysses</b><small>Boucle sans raccord · décodage matériel</small></button>
-        <button class="wall-card" type="button" data-scene="2" aria-pressed="false"><span class="kind">WebGL · 4K</span><b>Pluie de néon</b><small>60 FPS · basse consommation</small></button>
-        <button class="wall-card" type="button" data-scene="3" aria-pressed="false"><span class="kind">Layered · 4K</span><b>Entre deux aubes</b><small>2.5D · aucun décodage vidéo</small></button>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ============================== § 壁纸类型 ============================== -->
-<section class="sec" id="renderers">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">03</span><span>Types</span></div>
-    <div>
-      <h2 class="sec-h rise">Trois chaînes de rendu, chacune sur le framework prévu pour elle.</h2>
-      <p class="sec-p rise">
-        On n’entasse pas tout dans une WebView en espérant que ça passe. La vidéo passe par le décodage matériel, le web
-        par WebKit, les images par Core Animation — personne ne paie pour les faiblesses des autres.
-      </p>
-
-      <div class="cards rise">
-        <div class="card">
-          <span class="card-kind">Vidéo</span>
-          <h3>Boucles sans raccord, décodage matériel</h3>
-          <p>Un lecteur en file d’attente doublé d’un boucleur : aucune image noire à la jointure, aucun à-coup. La 4K60 part au GPU et le processeur reste pour ainsi dire libre.</p>
-          <span class="impl">AVQueuePlayer + AVPlayerLooper</span>
-        </div>
-        <div class="card">
-          <span class="card-kind">Web / WebGL</span>
-          <h3>Fonds d’écran shader, réglables</h3>
-          <p>Chaque interrupteur, curseur, couleur et sélecteur de fichier déclaré par un fond d’écran apparaît dans le panneau des propriétés, et prend effet immédiatement.</p>
-          <span class="impl">WKWebView + origine http locale</span>
-        </div>
-        <div class="card">
-          <span class="card-kind">Image / Calques</span>
-          <h3>Parallaxe 2.5D, consommation quasi nulle</h3>
-          <p>Quelques images découpées portent chacune une profondeur et se décalent différemment selon la souris. C’est le mouvement relatif entre les calques qui crée la sensation de profondeur.</p>
-          <span class="impl">CALayer · depth 0…1</span>
-        </div>
-      </div>
-
-      <div class="code rise">
-<span class="c">// Toute la définition du format d’un fond d’écran en calques</span>
-{
-  <span class="k">"layers"</span>: [
-    { <span class="k">"image"</span>: "sky.png",   <span class="k">"depth"</span>: 0.0  },  <span class="c">// le plus loin, bouge à peine</span>
-    { <span class="k">"image"</span>: "hills.png", <span class="k">"depth"</span>: 0.45 },
-    { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// le plus près, bouge le plus</span>
-  ]
-}</div>
-
-      <!-- 第三张实拍。放在「壁纸类型」这节，因为它正好证明上面说的
-           「壁纸自己声明的开关和滑块会出现在属性面板里」。 -->
-      <figure class="shot rise" style="margin-top:26px">
-        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-inspector.png" width="1040" height="450" loading="lazy" decoding="async"
-             alt="L’inspecteur de fond d’écran de Swaylume, avec le type, la source et les paramètres réglables">
-        <figcaption>Sélectionnez un fond d’écran et l’inspecteur apparaît. Celui-ci, fourni avec l’app, déclare trois paramètres — vitesse, grain et parallaxe — chacun prenant effet dès qu’on le fait glisser.</figcaption>
-      </figure>
-
-    </div>
-  </div>
-</section>
-<!-- ============================== § 省电 ============================== -->
-<section class="sec pin" id="power">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">04</span><span>Énergie</span></div>
-    <div>
-      <h2 class="sec-h rise">Quand personne ne le voit, il ne dessine pas une seule image.</h2>
-      <p class="sec-p rise">
-        C’est exactement là que se sépare le bricolage du week-end et le produit fini. Toutes les décisions de pause et
-        de bridage vivent dans un seul régulateur ; les moteurs de rendu ne décident de rien — si bien que « pourquoi mon
-        fond d’écran s’est-il arrêté ? » n’a jamais qu’une seule réponse, et elle est dans le journal.
-      </p>
-
-      <div class="gov">
-        <div class="panel rise">
-          <div class="panel-head">
-            <span class="dot" style="background:var(--sub-g)"></span>
-            décisions en direct · com.swaylume.Swaylume
-          </div>
-          <div class="panel-body" id="govlog"></div>
-        </div>
-
-        <div class="gov-list rise">
-          <div class="gov-item"><b>Écran entièrement couvert par une fenêtre</b><span>Le gain le plus important de tous. L’ordre d’empilement des fenêtres indique si nous sommes réellement masqués. Activé par défaut.</span></div>
-          <div class="gov-item"><b>Écran verrouillé / écran en veille / veille du système</b><span>Le préchauffage facultatif ne garde que le pipeline multimédia prêt tandis que l’image reste en pause ; la veille du système arrête toujours tout.</span></div>
-          <div class="gov-item"><b>Mode économie d’énergie</b><span>Suit le réglage du système — qui active ce mode veut que l’arrière-plan se taise.</span></div>
-          <div class="gov-item"><b>Sur batterie</b><span>Mettre en pause, ou descendre en fréquence d’images et continuer. À vous de choisir.</span></div>
-          <div class="gov-item"><b>Limite d’images pour les fonds web</b><span>Nous prenons directement la main sur <span class="mono">requestAnimationFrame</span> — la page ne peut pas contourner ça, et nous ne comptons pas sur sa bonne volonté.</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ============================== § 迁移 ============================== -->
-<section class="sec" id="import">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">06</span><span>Migration</span></div>
-    <div>
-      <h2 class="sec-h rise">Emportez votre collection Wallpaper Engine sur Mac.</h2>
-      <p class="sec-p rise">
-        Le convertisseur en ligne de commande ne lit que des fichiers Wallpaper Engine déjà présents sur votre
-        machine — aucun réseau, aucun Steam, aucun téléchargement. Testé sur 8 éléments réels totalisant 713 Mo : 8 sur 8 convertis.
-      </p>
-
-      <div class="table-scroll rise">
-        <table>
-          <thead>
-            <tr><th>Type d’origine</th><th>Résultat</th><th>Remarques</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>video</td>
-              <td><span class="st" data-v="ok">sans perte</span></td>
-              <td>webm / VP9 transcodé automatiquement en H.264<small>AVFoundation ne décode ni l’un ni l’autre : le transcodage est obligatoire</small></td>
-            </tr>
-            <tr>
-              <td>web</td>
-              <td><span class="st" data-v="ok">fonctionne</span></td>
-              <td>L’interface JS attendue par ces pages est complétée par une couche de compatibilité<small>Écoute des propriétés, tirage de fichier aléatoire et rappels audio sont tous présents</small></td>
-            </tr>
-            <tr>
-              <td>scene</td>
-              <td><span class="st" data-v="warn">partiel</span></td>
-              <td>Celles qui embarquent une vidéo sont extraites automatiquement<small>Les scènes pures doivent être pré-rendues en vidéo côté Windows — les prendre en charge telles quelles reviendrait à réécrire tout le moteur de rendu de quelqu’un d’autre</small></td>
-            </tr>
-            <tr>
-              <td>application</td>
-              <td><span class="st" data-v="no">non</span></td>
-              <td>Exécutables Windows<small>Là, il n’y a rien à faire</small></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="code rise">
-<span class="c"># Installer la dépendance et compiler le convertisseur</span>
-brew install ffmpeg
-cd Tools/swaylume-import &amp;&amp; swift build -c release
-
-<span class="c"># Le pointer sur votre dossier de contenu local ; il écrit des paquets .swaylume</span>
-.build/release/swaylume-import &lt;votre chemin&gt; -o ~/Desktop/out
-
-<span class="c"># Glisser les .swaylume depuis out/ dans Swaylume</span></div>
-
-      <div class="note rise">
-        Les résultats sont pour votre usage personnel. <b>Les droits sur les fonds d’écran d’origine restent à leurs
-        auteurs</b> — l’outil ne change que le format de conteneur, et cela n’y change rien.
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ============================== § 拿到手 ============================== -->
-<section class="sec" id="get">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">11</span><span>Obtenir</span></div>
-    <div>
-      <h2 class="sec-h rise">Commencez tout de suite. La version Store arrive.</h2>
-      <p class="sec-p rise">Le bouton ci-dessous lance le téléchargement directement. Vous obtenez un <code>.dmg</code> : ouvrez-le et glissez l’icône dans « Applications ». Aucun logiciel accompagnant, aucun module promotionnel, aucun portail de téléchargement douteux.</p>
-
-      <!-- 真实截图。此前整个网站一张 app 的实拍都没有，访客翻到底也不知道
-           下载下来长什么样。这张只包含自制的内置壁纸 —— 用户库里的第三方
-           内容不能出现在商业站点的宣传图里。 -->
-      <figure class="shot rise">
-        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-library.png" width="1040" height="265" loading="lazy" decoding="async"
-             alt="La fenêtre de bibliothèque de Swaylume affichant trois fonds d’écran WebGL fournis">
-        <figcaption>La bibliothèque de Swaylume. Ces trois-là sont livrés avec l’app : ils sont là dès l’installation.</figcaption>
-      </figure>
-
-      <div class="status-grid rise">
-        <div class="status-cell"><span class="k">Tests de l’app</span><span class="v">105</span><span class="n">régression automatisée, au vert</span></div>
-        <div class="status-cell"><span class="k">Tests du convertisseur</span><span class="v">23</span><span class="n">chaîne d’import vérifiée à part</span></div>
-        <div class="status-cell"><span class="k">Diagnostic</span><span class="v">Local</span><span class="n">aucun envoi de crash ni de données de fond d’écran</span></div>
-        <div class="status-cell"><span class="k">Requis</span><span class="v">macOS 14+</span><span class="n">Apple Silicon et Intel</span></div>
-      </div>
-
-      <!-- /releases/latest/download/<文件名> 永远指向最新一次发布。
-           所以打包脚本里的文件名不带版本号 —— 否则每发一版都要回来改这个链接。 -->
-      <div class="btn-row rise">
-        <a class="btn btn-dark btn-dl" href="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg">
-          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M8 1.6v8.2m0 0L4.7 6.5M8 9.8l3.3-3.3M2.2 11.6v1.3a1.5 1.5 0 0 0 1.5 1.5h8.6a1.5 1.5 0 0 0 1.5-1.5v-1.3"
-                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Télécharger Swaylume
-          <span class="btn-meta">dmg · 3.6 MB</span>
-        </a>
-        <a class="btn btn-line" href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">Parcourir le catalogue de fonds d’écran</a>
-      </div>
-      <p class="dl-sub rise">
-        Version universelle, tourne sur Apple Silicon comme sur Intel, nécessite macOS 14 ou plus récent.
-        <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Toutes les versions et les sommes de contrôle</a>
-      </p>
-
-      <!-- 首次打开的说明必须显眼。没有公证的 app 会被 Gatekeeper 拦下，
-           不写清楚的话大部分人会以为软件坏了，直接删掉走人。 -->
-      <div class="panel rise" style="margin-top:30px">
-        <div class="panel-head">
-          <span class="dot" style="background:var(--sub-r)"></span>
-          macOS bloquera le premier lancement — c’est normal
-        </div>
-        <div class="panel-body" style="padding:18px 20px">
-          <p class="sec-p" style="margin:0 0 18px;max-width:none">
-            Swaylume n’est <strong>pas encore notarisée par Apple</strong> — la notarisation exige un compte Apple
-            Developer payant, et il n’y en a pas encore. Le premier lancement est donc bloqué avec « impossible de
-            vérifier le développeur ». Cela ne veut pas dire que l’app a un problème.
-            <strong>Tout se fait à la souris, sans Terminal</strong>, et une seule fois :
-          </p>
-
-          <ol class="steps">
-            <li><b>Double-cliquez sur Swaylume et laissez-la être refusée une fois.</b> Ne sautez pas cette étape — le système doit d’abord enregistrer le blocage pour que le bouton « Ouvrir quand même » apparaisse.</li>
-            <li>Ouvrez <b>Réglages Système → Confidentialité et sécurité</b>.</li>
-            <li>Descendez jusqu’à <b>Sécurité</b> ; une ligne indique que Swaylume a été bloquée.</li>
-            <li>Cliquez sur <b>Ouvrir quand même</b> à côté, puis confirmez.</li>
-          </ol>
-
-          <p class="sec-p" style="margin:16px 0 0;max-width:none">
-            Ensuite elle s’ouvre normalement et ne redemande plus rien. Les mêmes instructions figurent dans le dmg, dans « À lire d’abord.txt ».
-          </p>
-
-          <details class="adv">
-            <summary>Si vous préférez le Terminal, une ligne suffit</summary>
-            <div class="code" style="margin:12px 0 0">xattr -d com.apple.quarantine /Applications/Swaylume.app</div>
-          </details>
+      <div class="spectrum-shell rise">
+        <div class="spectrum" id="spectrum" aria-hidden="true"></div>
+        <div class="spectrum-foot">
+          <span>20 Hz</span><span>200 Hz</span><span>2 kHz</span><span>20 kHz</span>
         </div>
       </div>
 
       <div class="note rise">
-        <b>Bac à sable, manifeste de confidentialité, runtime durci et capacité d’élément d’ouverture sont tous en place, sans API privée.</b>
-        Passer sur l’App Store demande en plus l’Apple Developer Program, une signature en règle et des visuels de
-        boutique ; la notarisation dépend du même compte.
-        D’ici là, la page Releases ci-dessus est la seule source officielle — un Swaylume récupéré ailleurs, je ne peux pas en répondre.
+        <b>Straight talk: macOS does not let an app capture the sound the system is playing.</b>
+        Without a loopback device like BlackHole, what you capture is the room through your microphone, not the
+        track you are listening to. The feature is complete, but that prerequisite is on you — it is a platform
+        limitation, not an unfinished feature.
       </div>
     </div>
   </div>
 </section>
+<!-- ============================== § 三条开始路径 ============================== -->
+<section class="sec" id="paths">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">07</span><span>Get started</span></div>
+    <div>
+      <h2 class="sec-h rise">Wherever you’re coming from, that’s where Swaylume starts.</h2>
+      <p class="sec-p rise">
+        Setting your first live wallpaper, bringing a Windows collection across, or publishing your own work are
+        not the same task. So the three routes are separate here, instead of everyone being dropped into one README.
+      </p>
+      <div class="path-grid rise">
+        <article class="path-card">
+          <span class="path-step">01 / Just want it running</span>
+          <h3>Pick a live wallpaper, put it on your desktop.</h3>
+          <p>Download a `.swaylume` from the catalogue and drag it into the app. Video, images, web and layered wallpapers each get their own native renderer.</p>
+          <a href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">Browse the catalogue</a>
+        </article>
+        <article class="path-card">
+          <span class="path-step">02 / Coming from Wallpaper Engine</span>
+          <h3>Bring your collection; don’t start over.</h3>
+          <p>The converter only reads Wallpaper Engine projects already on your computer — no Steam login, no downloads. Video and web types are supported first, and Scene has a documented pre-render route.</p>
+          <a href="/swaylume-site/en/#import">See what converts, and how</a>
+        </article>
+        <article class="path-card">
+          <span class="path-step">03 / I make wallpapers</span>
+          <h3>Make one, and put it on other people’s desktops.</h3>
+          <p>Start with the zero-cost catalogue: a clear format, checksums, version history and a visible review trail. Until uploads open properly, the risk doesn’t get pushed onto creators.</p>
+          <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Read the submission guide</a>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============================== § 壁纸从哪来 ============================== -->
+<section class="sec" id="wallpapers">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">08</span><span>Finding wallpapers</span></div>
+    <div>
+      <h2 class="sec-h rise">Swaylume doesn’t bundle a content library. You choose the material.</h2>
+      <p class="sec-p rise">
+        Any mp4, image or HTML file can be dragged straight in. Below are a few places people go —
+        <strong>we don’t host, resell or vet anything on these sites</strong>, we’re only pointing at the road.
+      </p>
 
+      <h3 class="src-h rise">Clearly licensed</h3>
+      <p class="src-note rise">Terms checked line by line: free for commercial use, no attribution required, modification allowed. The in-app source list only carries this tier.</p>
+      <div class="gov-list rise">
+        <div class="gov-item src-item">
+          <b><a href="https://pixabay.com/videos/search/live%20wallpaper/" target="_blank" rel="noopener">Pixabay video ↗</a></b>
+          <span>Filter by resolution for 4K; searching for “live wallpaper” or “loop” turns up plenty of ready-made loops.
+                <em>Pixabay Content License: free for commercial use, no attribution required, modification allowed; redistributing or selling content on a standalone basis is not.</em></span>
+        </div>
+        <div class="gov-item src-item">
+          <b><a href="https://www.pexels.com/videos/" target="_blank" rel="noopener">Pexels video ↗</a></b>
+          <span>Generally high quality, filterable by orientation and resolution.
+                <em>Pexels License: free to use, no attribution required, modification allowed; redistributing on other stock or wallpaper platforms is not, nor is selling unaltered copies.</em></span>
+        </div>
+      </div>
+
+      <h3 class="src-h rise">Third-party sites</h3>
+      <p class="src-note rise">
+        Most anime- and game-styled live wallpapers live on sites like these. They <strong>do not label licensing
+        item by item</strong>, so check before you use anything.
+      </p>
+      <div class="src-grid rise">
+        <a href="https://www.desktophut.com/" target="_blank" rel="noopener nofollow">DesktopHut ↗</a>
+        <a href="https://moewalls.com/" target="_blank" rel="noopener nofollow">MoeWalls ↗</a>
+        <a href="https://motionbgs.com/" target="_blank" rel="noopener nofollow">MotionBGS ↗</a>
+        <a href="https://livebgs.com/" target="_blank" rel="noopener nofollow">LiveBgs ↗</a>
+        <a href="https://livewallp.com/" target="_blank" rel="noopener nofollow">LiveWallp ↗</a>
+        <a href="https://livewallpapers4free.com/" target="_blank" rel="noopener nofollow">LiveWallpapers4Free ↗</a>
+        <a href="https://mylivewallpapers.com/" target="_blank" rel="noopener nofollow">MyLiveWallpapers ↗</a>
+        <a href="https://wallsflow.com/" target="_blank" rel="noopener nofollow">WallsFlow ↗</a>
+        <a href="https://wallpaperwaves.com/category/3840x2160/" target="_blank" rel="noopener nofollow">WallpaperWaves ↗</a>
+      </div>
+
+      <div class="note rise">
+        <b>These links are not an endorsement.</b>
+        Swaylume has no connection to these sites, takes no part in running them, and cannot vouch for the licensing,
+        quality or safety of what they host. <b>Confirm the licence before you download</b> — copyright in derivative
+        work (anime and game characters and so on) belongs to the original creators, and using something on your own
+        machine is not the same as redistributing it.
+        If something is wrong with one of these sites,
+        <a href="https://github.com/futurebackrookie/swaylume-catalog/issues" target="_blank" rel="noopener">open an issue</a> and we’ll drop it.
+      </div>
+
+      <div class="note rise" style="border-left-color:var(--sub-r);background:color-mix(in srgb, var(--sub-r) 8%, transparent)">
+        <b>Free to download for yourself ≠ free to submit.</b>
+        Plenty of free stock sites allow you to download and use their material but forbid redistribution — Pexels
+        explicitly forbids redistributing “on other stock photo or wallpaper platforms”, and a wallpaper catalogue is
+        exactly that.
+        Changing the container format does not count as “applying creative effort”, so <b>please don’t submit this
+        material to the catalogue</b>.
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============================== § 信任与边界 ============================== -->
+<section class="sec" id="trust">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">09</span><span>Boundaries</span></div>
+    <div>
+      <h2 class="sec-h rise">Your desktop shouldn’t become somebody’s cloud asset library.</h2>
+      <p class="sec-p rise">
+        A live wallpaper can reach a lot of local files, so Swaylume’s default posture is: ask for fewer permissions,
+        keep less data, promise less. What can be done is done properly; what can’t is stated plainly.
+      </p>
+      <div class="trust-grid rise">
+        <article class="trust-card"><strong>Local first.</strong><p>Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically, and there are no ad-tracking scripts.</p></article>
+        <article class="trust-card"><strong>Public APIs only.</strong><p>Desktop window levels, multi-Space behaviour, the power strategy and file access all use documented macOS capabilities, keeping the App Store route open.</p></article>
+        <article class="trust-card"><strong>Diagnostics you can take with you.</strong><p>Hit a black screen or a compatibility problem and you can export a redacted local report. It contains state and errors, not your wallpaper files.</p></article>
+        <article class="trust-card"><strong>No pretend compatibility.</strong><p>Windows application-type wallpapers and native Scene rendering are not promised. Scene has a legitimate video pre-render path instead.</p></article>
+      </div>
+      <p class="trust-note rise">Contact: for questions, to report workshop content, or for copyright and takedown matters, email futureback399@gmail.com. Workshop content is hosted by its submitters — we only maintain the index, but we act on reports.</p>
+      <p class="trust-note rise">About this site: this web page uses Cloudflare Web Analytics to count visits. It sets no cookies, does no cross-site tracking, and builds no profile of individual visitors — we only want to know how many people came and where from. The points above describe the app; this one describes the website.</p>
+    </div>
+  </div>
+</section>
+<!-- ============================== § 常见问题 ============================== -->
+<section class="sec" id="faq">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">10</span><span>FAQ</span></div>
+    <div>
+      <h2 class="sec-h rise">The things you probably want settled before you download.</h2>
+      <div class="faq rise">
+        <details><summary>Is it going to drain my battery?</summary><div class="faq-a">By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log.</div></details>
+        <details><summary>Can I use my own videos or images?</summary><div class="faq-a">Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC). Images: the usual formats plus GIF. Web wallpapers: HTML / WebGL. <strong>webm / VP9 will not play directly</strong> and must be transcoded first — AVFoundation cannot decode either codec, which is a platform limitation.</div></details>
+        <details><summary>How does it compare to Wallpaper Engine?</summary><div class="faq-a">Honestly, each has its strengths. <strong>It has what we don’t</strong>: millions of Workshop items, native Scene rendering, a mature editor. <strong>We have what it doesn’t</strong>: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across with the converter.</div></details>
+        <details><summary>macOS blocked the first launch. Is the app broken?</summary><div class="faq-a">No. This build isn’t notarised by Apple yet — notarisation needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway” once. All clicks, no Terminal, and only the first time. Full steps are in the download section.</div></details>
+        <details><summary>Does it upload any of my data?</summary><div class="faq-a">No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalogue index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files.</div></details>
+        <details><summary>Which Macs are supported?</summary><div class="faq-a">macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware.</div></details>
+      </div>
+      <div class="note rise"><b>Not answered here?</b> This is a beta, and your question is probably somebody else’s too — <a href="https://github.com/futurebackrookie/swaylume-catalog/issues" target="_blank" rel="noopener">open an issue</a> and the answer will end up in this section.</div>
+    </div>
+  </div>
+</section>
 
 </main>
 
 <footer>
   <div class="foot-in">
-    <span>Swaylume · fonds d’écran animés pour macOS</span>
+    <span>Swaylume · live wallpapers for macOS</span>
     <div class="foot-links">
-      <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Versions bêta</a>
-      <a href="https://github.com/futurebackrookie/swaylume-catalog">Catalogue de fonds d’écran</a>
-      <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Proposer un fond d’écran</a>
-      <a href="/swaylume-site/fr/#top">Retour en haut</a>
+      <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Beta builds</a>
+      <a href="https://github.com/futurebackrookie/swaylume-catalog">Wallpaper catalogue</a>
+      <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Submit a wallpaper</a>
+      <a href="/swaylume-site/en/#top">Back to top</a>
     </div>
     <p class="legal">
-      Swaylume n’est affiliée ni à Wallpaper Engine, ni à ses développeurs, ni à aucune plateforme tierce de fonds
-      d’écran, et n’est ni autorisée ni soutenue par eux. Les noms de produits ne sont mentionnés que pour décrire
-      la compatibilité ; les marques appartiennent à leurs détenteurs respectifs.
-      Le convertisseur traite des fichiers que vous possédez déjà, sur votre propre ordinateur.
+      Swaylume is not affiliated with, authorised by, or endorsed by Wallpaper Engine, its developers, or any
+      third-party wallpaper platform. Product names are mentioned only to describe compatibility; trademarks
+      belong to their respective owners.
+      The converter processes files you already have, on your own computer.
     </p>
   </div>
 </footer>
 
-<script>window.__I18N={"js.preview1.kind":"WEBGL / APERÇU EN DIRECT","js.preview1.title":"Signal d’aurore","js.preview1.meta":"60 FPS · parallaxe souris · réglable","js.preview2.kind":"VIDEO / BOUCLE SANS RACCORD","js.preview2.title":"Écho des abysses","js.preview2.meta":"4K · décodage matériel · pause si masqué","js.preview3.kind":"WEBGL / APERÇU EN DIRECT","js.preview3.title":"Pluie de néon","js.preview3.meta":"60 FPS · réactif au son · basse consommation","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"Entre deux aubes","js.preview4.meta":"Profondeur en calques · parallaxe souris · consommation quasi nulle","js.gov1.p":"En lecture · 60 FPS","js.gov1.m":"governor: visible au premier plan, pleine vitesse","js.gov2.p":"En pause · masqué par une fenêtre","js.gov2.m":"occlusion: écran entièrement couvert par une fenêtre opaque","js.gov3.p":"En lecture · 60 FPS","js.gov3.m":"occlusion: bureau de nouveau visible","js.gov4.p":"Bridé · 30 FPS","js.gov4.m":"power: mode économie d’énergie activé","js.gov5.p":"En pause · écran en veille","js.gov5.m":"display: passage en veille","js.gov6.p":"En pause · écran verrouillé","js.gov6.m":"session: écran verrouillé","js.gov7.p":"En lecture · 60 FPS","js.gov7.m":"session: déverrouillé, rendu repris","js.readout.above":"au-dessus des icônes","js.readout.below":"sous les icônes","js.readout.occluded":"en pause · masqué par une fenêtre","js.readout.playing":"en lecture","js.hint.touch":"Touchez ci-dessus pour changer"};</script>
+<script>window.__I18N={"js.preview1.kind":"WEBGL / LIVE PREVIEW","js.preview1.title":"Aurora Signal","js.preview1.meta":"60 FPS · mouse parallax · tunable","js.preview2.kind":"VIDEO / SEAMLESS LOOP","js.preview2.title":"Deep Sea Echo","js.preview2.meta":"4K · hardware decode · pauses when hidden","js.preview3.kind":"WEBGL / LIVE PREVIEW","js.preview3.title":"Neon Rain","js.preview3.meta":"60 FPS · audio reactive · low power","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"Between Daybreak","js.preview4.meta":"Layered depth · mouse parallax · almost no power draw","js.gov1.p":"Playing · 60 FPS","js.gov1.m":"governor: visible in front, full speed","js.gov2.p":"Paused · covered by a window","js.gov2.m":"occlusion: screen fully covered by an opaque window","js.gov3.p":"Playing · 60 FPS","js.gov3.m":"occlusion: desktop visible again","js.gov4.p":"Throttled · 30 FPS","js.gov4.m":"power: Low Power Mode enabled","js.gov5.p":"Paused · display asleep","js.gov5.m":"display: entering sleep","js.gov6.p":"Paused · screen locked","js.gov6.m":"session: screen locked","js.gov7.p":"Playing · 60 FPS","js.gov7.m":"session: unlocked, rendering resumed","js.readout.above":"above icons","js.readout.below":"below icons","js.readout.occluded":"paused · covered by a window","js.readout.playing":"playing","js.hint.touch":"Tap above to switch wallpapers"};</script>
 <script>
 (function () {
   "use strict";

@@ -29,6 +29,34 @@ LOCALES = {
 }
 DEFAULT = "zh-Hans"
 
+# 站点现在有两页。首页只留六幕主线，密集的参考材料（音频、素材来源与授权、
+# 隐私兼容、常见问题、三条上手路径）挪到 /details ——
+# 一条都没删：它们是可信度的证据，只是不该跟首屏抢注意力。
+#
+# 页面 id -> (子路径, 标题词条, 描述词条)
+PAGES = {
+    "home":    ("",         "x.title1",      "meta.description"),
+    "details":  ("details", "details.title", "details.description"),
+}
+
+
+def page_href(base, subdir, page):
+    """某语言某页面的绝对路径。语言子目录在前，页面子目录在后。"""
+    parts = [base.rstrip("/")]
+    if subdir:
+        parts.append(subdir)
+    if PAGES[page][0]:
+        parts.append(PAGES[page][0])
+    return "/".join(parts) + "/"
+
+
+# 只出现在某一页的区块。没标记的（head、导航、页脚）两页都有。
+PAGE_BLOCK = re.compile(r"[ \t]*<!--ONLY:(\w+)-->\n?(.*?)[ \t]*<!--/ONLY-->\n?", re.S)
+
+
+def select_page(html, page):
+    return PAGE_BLOCK.sub(lambda m: m.group(2) if m.group(1) == page else "", html)
+
 # Google Search Console 的所有权验证串。
 #
 # 这是第二种验证方式 —— 第一种是根目录那个 google*.html 文件。
@@ -81,7 +109,10 @@ def check_keys(locales, template):
     # 所以「模板里没用到」对它们不是错误。
     # 这几条由 build.py 自己消费，模板里不会出现对应的 {{}}：
     # 前两条进 <head>，trust.analytics 只在开了统计时才输出。
-    CODE_KEYS = {"x.title1", "meta.description", "trust.analytics"}
+    # 页面标题/描述由 head() 经 PAGES 消费，从那里派生而不是再抄一遍 ——
+    # 抄一遍的话，加一个页面就多一处会忘记同步的地方。
+    PAGE_KEYS = {k for _, t, d in PAGES.values() for k in (t, d)}
+    CODE_KEYS = PAGE_KEYS | {"trust.analytics"}
     # 豁免名单最容易变成孤儿词条的藏身处 —— 写进来却没人用，检查照样放行。
     # 所以反过来验一遍：豁免的 key 必须真的被本文件用到。
     #
@@ -90,7 +121,10 @@ def check_keys(locales, template):
     # 检查永远不会失败。第一版就是这么写的，拿一个纯属虚构的 key 去测才发现。
     # 声明处贡献 1 次，所以真正被用到的至少出现 2 次。
     _self = pathlib.Path(__file__).read_text()
-    _dead = {k for k in CODE_KEYS if _self.count(f'"{k}"') < 2}
+    # 只对**手写**进名单的 key 做这个计数。PAGE_KEYS 是从 PAGES 结构里推出来的，
+    # 「确实被用到」由结构本身保证；而它们的字面量在 PAGES 里只出现一次，
+    # 套用「至少两次」的规则会把它们误判成孤儿词条。
+    _dead = {k for k in CODE_KEYS - PAGE_KEYS if _self.count(f'"{k}"') < 2}
     if _dead:
         errors.append(f"豁免名单里有 build.py 根本没用到的 key：{sorted(_dead)}")
     missing_in_template = {k for k in base - used
@@ -152,31 +186,35 @@ def analytics_note(entries):
     return f'<p class="trust-note rise">{entries["trust.analytics"]}</p>'
 
 
-def head(code, entries):
+def head(code, entries, page="home"):
     subdir, lang, og_locale, _ = LOCALES[code]
-    canonical = f"{SITE_URL}/{subdir}/" if subdir else f"{SITE_URL}/"
+    title_key, desc_key = PAGES[page][1], PAGES[page][2]
+    canonical = page_href(SITE_URL, subdir, page)
     lines = [
         "<!doctype html>",
         f'<html lang="{lang}">',
         "<head>",
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
-        f'<title>{entries["x.title1"]}</title>',
-        f'<meta name="description" content="{entries["meta.description"]}">',
+        f'<title>{entries[title_key]}</title>',
+        f'<meta name="description" content="{entries[desc_key]}">',
         f'<meta name="google-site-verification" content="{GOOGLE_SITE_VERIFICATION}">',
         f'<link rel="canonical" href="{canonical}">',
     ]
     # hreflang：告诉搜索引擎这几个页面是同一内容的不同语言版本。
     # 少了它，各语言版本会被当成互相抄袭的重复内容。
+    # hreflang 必须指向**同一页**的其它语言版本。指回首页的话，
+    # 各语言的 /details 会被判成没有对应译文。
     for other, (osub, olang, _, _) in LOCALES.items():
-        href = f"{SITE_URL}/{osub}/" if osub else f"{SITE_URL}/"
-        lines.append(f'<link rel="alternate" hreflang="{olang}" href="{href}">')
-    lines.append(f'<link rel="alternate" hreflang="x-default" href="{SITE_URL}/">')
+        lines.append(f'<link rel="alternate" hreflang="{olang}" '
+                     f'href="{page_href(SITE_URL, osub, page)}">')
+    lines.append(f'<link rel="alternate" hreflang="x-default" '
+                 f'href="{page_href(SITE_URL, "", page)}">')
     lines += [
         '<meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">',
         '<meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">',
-        f'<meta property="og:title" content="{entries["x.title1"]}">',
-        f'<meta property="og:description" content="{entries["meta.description"]}">',
+        f'<meta property="og:title" content="{entries[title_key]}">',
+        f'<meta property="og:description" content="{entries[desc_key]}">',
         '<meta property="og:type" content="website">',
         f'<meta property="og:locale" content="{og_locale}">',
         f'<meta property="og:url" content="{canonical}">',
@@ -202,21 +240,50 @@ def head(code, entries):
     return "\n".join(lines)
 
 
-def lang_switcher(code):
-    """语言切换器。用真实 <a> 而不是 JS 下拉 —— 爬虫要能顺着链接找到其它语言版本。"""
+def lang_switcher(code, page="home"):
+    """语言切换器：收起成一个按钮，点开才列出语言。
+
+    **链接依然是构建时写死的真实 `<a hreflang>`，只是默认不可见。**
+    爬虫读的是 DOM 不是可见状态，所以头部那些 hreflang 照样有依据 ——
+    以前这里写着「不用 JS 下拉」，防的是**用 JS 现生成链接**那种做法，
+    不是这种。
+
+    用 `<details>` 而不是按钮加脚本：没有 JS 也能展开，键盘和读屏天然可用。
+    脚本只负责「点外面关掉」和 Esc，坏了也只是关不掉，不会打不开。
+
+    顺带解决一个旧问题：五种语言并排在窄屏放不下，原来靠横向滚动加
+    `order: -1` 把当前语言顶到最前。收起来之后这个补丁整个不需要了。
+    """
+    base = "/" + SITE_URL.rstrip("/").split("/")[-1] if "github.io" in SITE_URL else ""
     items = []
     for other, (subdir, lang, _, name) in LOCALES.items():
-        href = f"/{subdir}/" if subdir else "/"
-        # GitHub Pages 部署在子路径下，用相对根路径会跑到域名根部
-        base = "/" + SITE_URL.rstrip("/").split("/")[-1] if "github.io" in SITE_URL else ""
-        href = f"{base}{href}"
+        # 切语言要停在**同一页**：在 /details 上切成英文该去 /en/details/，
+        # 不是把人踢回首页。
+        href = page_href(base, subdir, page)
         current = ' aria-current="true"' if other == code else ""
-        items.append(f'<a href="{href}" hreflang="{lang}" lang="{lang}"{current}>{name}</a>')
-    return ('<div class="langs" role="group" aria-label="Language">'
-            + "".join(items) + "</div>")
+        tick = '<span class="lang-tick" aria-hidden="true">✓</span>' if other == code else '<span class="lang-tick"></span>'
+        items.append(
+            f'<li><a href="{href}" hreflang="{lang}" lang="{lang}"{current}>'
+            f'{tick}<span class="lang-name">{name}</span>'
+            f'<span class="lang-code">{lang}</span></a></li>')
+    here = LOCALES[code][3]
+    return (
+        '<details class="langs" data-langs>'
+        f'<summary aria-label="Language"><svg class="lang-globe" viewBox="0 0 14 14" aria-hidden="true">'
+        '<circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" stroke-width="1.2"/>'
+        '<path d="M1.6 7h10.8M7 1.6c1.5 1.6 2.2 3.4 2.2 5.4S8.5 10.8 7 12.4c-1.5-1.6-2.2-3.4-2.2-5.4S5.5 3.2 7 1.6Z"'
+        ' fill="none" stroke="currentColor" stroke-width="1.2"/></svg>'
+        f'<span class="lang-here">{here}</span>'
+        '<svg class="lang-caret" viewBox="0 0 10 10" aria-hidden="true">'
+        '<path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.4"'
+        ' stroke-linecap="round" stroke-linejoin="round"/></svg></summary>'
+        '<ul class="lang-menu">' + "".join(items) + '</ul>'
+        '</details>')
 
 
-def render(template, entries, code):
+def render(template, entries, code, page="home"):
+    template = select_page(template, page)
+
     def rep(m):
         key = m.group(1)
         if key not in entries:
@@ -227,7 +294,13 @@ def render(template, entries, code):
     # 相对路径会解析到子目录里去 —— 根页面正常、四个语言页全裂图，
     # 只测根页面永远发现不了。
     out = out.replace("%%SITE%%", SITE_URL)
-    out = out.replace("<!--LANG-SWITCHER-->", lang_switcher(code))
+    out = out.replace("<!--LANG-SWITCHER-->", lang_switcher(code, page))
+    # 跨页链接。导航里指向已经挪到 /details 的小节，必须写成完整路径 ——
+    # 写 "#faq" 的话在首页上点了毫无反应（那个锚点已经不在这一页了）。
+    base = "/" + SITE_URL.rstrip("/").split("/")[-1] if "github.io" in SITE_URL else ""
+    subdir = LOCALES[code][0]
+    out = out.replace("%%HOME%%", page_href(base, subdir, "home"))
+    out = out.replace("%%DETAILS%%", page_href(base, subdir, "details"))
     # 站点自己的访问统计声明。关掉统计时输出空串 —— 页面上有一整节在讲隐私，
     # 挂了计数器却只字不提，被人打开开发者工具看见就是自打嘴巴；
     # 反过来，没挂统计还写着「本站使用统计」同样是假话。所以跟着开关走。
@@ -263,18 +336,19 @@ def write_sitemap():
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
              '        xmlns:xhtml="http://www.w3.org/1999/xhtml">']
-    def url_of(subdir):
-        return f"{SITE_URL}/{subdir}/" if subdir else f"{SITE_URL}/"
-    for code, (subdir, lang, _, _) in LOCALES.items():
-        lines.append("  <url>")
-        lines.append(f"    <loc>{url_of(subdir)}</loc>")
-        lines.append(f"    <lastmod>{lastmod}</lastmod>")
-        for other, (osub, olang, _, _) in LOCALES.items():
-            lines.append(f'    <xhtml:link rel="alternate" hreflang="{olang}" '
-                         f'href="{url_of(osub)}"/>')
-        lines.append(f'    <xhtml:link rel="alternate" hreflang="x-default" '
-                     f'href="{url_of("")}"/>')
-        lines.append("  </url>")
+    # 两页 × 五语言。每条 URL 的 alternate 只列**同一页**的其它语言 ——
+    # 混在一起的话，/details 会声称自己的英文版是英文首页。
+    for page in PAGES:
+        for code, (subdir, lang, _, _) in LOCALES.items():
+            lines.append("  <url>")
+            lines.append(f"    <loc>{page_href(SITE_URL, subdir, page)}</loc>")
+            lines.append(f"    <lastmod>{lastmod}</lastmod>")
+            for other, (osub, olang, _, _) in LOCALES.items():
+                lines.append(f'    <xhtml:link rel="alternate" hreflang="{olang}" '
+                             f'href="{page_href(SITE_URL, osub, page)}"/>')
+            lines.append(f'    <xhtml:link rel="alternate" hreflang="x-default" '
+                         f'href="{page_href(SITE_URL, "", page)}"/>')
+            lines.append("  </url>")
     lines.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(lines) + "\n")
     return lastmod
@@ -309,11 +383,16 @@ def main():
         return 0
 
     for code, (subdir, _, _, _) in LOCALES.items():
-        body = render(template, locales[code], code)
-        doc = head(code, locales[code]) + "\n" + body + "\n</body>\n</html>\n"
-        target = ROOT / subdir / "index.html" if subdir else ROOT / "index.html"
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(doc)
+        for page, (pagedir, _, _) in PAGES.items():
+            body = render(template, locales[code], code, page)
+            doc = head(code, locales[code], page) + "\n" + body + "\n</body>\n</html>\n"
+            parts = [pp for pp in (subdir, pagedir) if pp]
+            target = ROOT.joinpath(*parts, "index.html") if parts else ROOT / "index.html"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(doc)
+            rel = "/".join(parts + ["index.html"]) if parts else "index.html"
+            print(f"  {rel:24} {len(doc):>7,} 字节  {code}")
+        body = render(template, locales[code], code, "home")
         if code == DEFAULT:
             # 预览片段自带 title/description；完整文档里这两项由 head() 负责，
             # 两边都放会产生两个 <title>。
@@ -322,12 +401,10 @@ def main():
                 f'<title>{e["x.title1"]}</title>\n'
                 f'<meta name="description" content="{e["meta.description"]}">\n\n'
                 + body)
-        rel = f"{subdir}/index.html" if subdir else "index.html"
-        print(f"  {rel:20} {len(doc):>7,} 字节  {code}")
 
     lastmod = write_sitemap()
     write_robots()
-    print(f"  sitemap.xml         {len(LOCALES)} 条 URL  lastmod {lastmod}")
+    print(f"  sitemap.xml         {len(LOCALES) * len(PAGES)} 条 URL  lastmod {lastmod}")
     print(f"  robots.txt          （子路径部署下爬虫不读，绑域名后自动生效）")
     print(f"✅ {len(LOCALES)} 种语言生成完毕")
     return 0

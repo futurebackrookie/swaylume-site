@@ -112,7 +112,10 @@
 * { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
+  /* 不开全局平滑滚动。它和钉住的场景犯冲：点导航锚点跳到一个 pin 住的小节
+     之后的位置时，浏览器会拖着整幕动画快进一遍 —— 实测跳转后 260ms 进度还
+     停在 22%，一秒多才落位，中间是一段糊掉的过程。
+     （原来 reduced-motion 里已经把它关掉了，所以这个坑只坑没开减弱动效的人。） */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -226,30 +229,44 @@ a { color: inherit; }
 }
 .nav-cta:hover { border-color: var(--beam); background: var(--beam-glow); }
 
-/* 语言切换器。每个都是真链接，不是 JS 下拉 —— 爬虫要能顺着它
-   找到其它语言版本，头部那些 hreflang 才不是孤证。 */
-.langs { display: flex; gap: 2px; align-items: center; }
-.langs a {
-  font-size: 12px;
-  padding: 5px 9px;
-  border-radius: 7px;
-  text-decoration: none;
-  color: var(--muted);
-  white-space: nowrap;
+/* 语言切换器：收起成一个按钮，点开才列出语言。
+   链接依然是构建时写死的真实 <a hreflang>，只是默认不可见 ——
+   爬虫读 DOM 不读可见状态，头部那些 hreflang 照样有依据。
+   （原来那句「不用 JS 下拉」防的是用 JS 现生成链接，不是这种写法。） */
+.langs { position: relative; }
+.langs > summary {
+  display: flex; align-items: center; gap: 5px;
+  height: 28px; padding: 0 9px; border-radius: 7px;
+  font-size: 12px; color: var(--muted); cursor: pointer;
+  list-style: none; white-space: nowrap;
   transition: color .18s ease, background .18s ease;
 }
-.langs a:hover { color: var(--text); background: var(--surface-2); }
-.langs a[aria-current="true"] { color: var(--text); background: var(--surface-2); font-weight: 600; }
-/* 窄屏只留当前语言可见会让人以为没有多语言，所以改成横向滚动 */
-@media (max-width: 860px) {
-  .nav-in { gap: 12px; }
-  .langs { overflow-x: auto; max-width: 46vw; }
-  .langs a { padding: 5px 7px; font-size: 11.5px; }
-  /* 当前语言排到最前。窄屏下切换器是横向滚动的，按原顺序排的话
-     日语/德语/法语访客一打开就看不到自己所在的那一项 ——
-     既看不出在哪一版，也看不到高亮。 */
-  .langs a[aria-current="true"] { order: -1; }
+.langs > summary::-webkit-details-marker { display: none; }
+.langs > summary::marker { content: ""; }
+.langs > summary:hover { color: var(--text); background: var(--surface-2); }
+.langs[open] > summary { color: var(--text); background: var(--surface-2); }
+.langs > summary:focus-visible { outline: 2px solid var(--beam); outline-offset: 2px; }
+.lang-globe { width: 13px; height: 13px; flex: none; }
+.lang-caret { width: 9px; height: 9px; flex: none; transition: transform .2s cubic-bezier(.3,.8,.3,1); }
+.langs[open] .lang-caret { transform: rotate(180deg); }
+
+.lang-menu {
+  position: absolute; top: 34px; right: 0; z-index: 60;
+  width: 196px; margin: 0; padding: 5px; list-style: none;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--surface); box-shadow: var(--shadow-lg);
+  display: flex; flex-direction: column; gap: 1px;
 }
+.lang-menu a {
+  display: flex; align-items: center; gap: 9px;
+  height: 34px; padding: 0 9px; border-radius: 8px;
+  font-size: 12.5px; color: var(--text-dim); text-decoration: none;
+}
+.lang-menu a:hover { background: var(--surface-2); color: var(--text); }
+.lang-menu a[aria-current="true"] { color: var(--text); background: var(--beam-glow); }
+.lang-tick { width: 12px; flex: none; color: var(--beam); font-size: 11px; }
+.lang-name { flex: 1; }
+.lang-code { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
 
 
 /* ===========================================================
@@ -316,9 +333,13 @@ a { color: inherit; }
 
 h1.hero-h {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(38px, 7.2vw, 92px);
-  line-height: 1.04;
+  /* 数值是量来的，不是估的：Linear 64px/510、Raycast 64px/600、
+     苹果 MacBook Pro 页的段落标题只有 48px/600。首屏原来到 92px、字重 700，
+     比这三家都重一档 —— 大字不等于高级，过了头就是廉价。 */
+  font-weight: 600;
+  font-size: clamp(34px, 6.2vw, 64px);
+  letter-spacing: -.022em;
+  line-height: 1.02;
   margin: 0 0 22px;
   color: #FFFFFF;
   text-wrap: balance;
@@ -339,8 +360,12 @@ h1.hero-h {
 @keyframes split-b { from { transform: translate3d(13px,-4px,0); opacity: .95; } to { transform: none; opacity: 0; } }
 
 .hero-sub {
-  font-size: clamp(15.5px, 1.6vw, 18.5px);
-  line-height: 1.72;
+  /* 副标题要小到不跟标题抢：Linear 15px、Raycast 18px。原来到 18.5px。
+     **只改字号，不要改成 var(--muted)。**首屏文字压在实时渲染的壁纸画布上，
+     颜色必须不跟主题走 —— 换成主题令牌后，浅色主题下它变成深灰压在明亮的
+     极光上，整段几乎看不见。缩小字号本身已经解决了「和标题争视线」。 */
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  line-height: 1.62;
   color: #CFC7E6;
   max-width: 32em;
   margin: 0 0 34px;
@@ -465,9 +490,10 @@ h1.hero-h {
 
 .sec-h {
   font-family: var(--font-display);
-  font-weight: 680;
-  font-size: clamp(27px, 3.7vw, 44px);
-  line-height: 1.2;
+  font-weight: 600;
+  font-size: clamp(27px, 3.7vw, 46px);
+  letter-spacing: -.02em;
+  line-height: 1.08;
   margin: 0 0 18px;
   text-wrap: balance;
   max-width: 18em;
@@ -884,6 +910,28 @@ h1.hero-h {
 .pill[data-s="throt"]  { background: color-mix(in srgb, var(--beam) 20%, transparent); color: var(--beam); }
 .pill[data-s="pause"]  { background: color-mix(in srgb, var(--sub-r) 18%, transparent); color: var(--sub-r); }
 
+/* 钉住的场景。
+   这一节被拉高到三屏，内层 sticky 住 —— 你滚过的那两屏推进的是场景内部
+   （调速器日志逐条落下），推完才放行到下一节。这是「一屏一个想法」和
+   「滑一下全出来」的全部差别。
+
+   只在够宽且没开减弱动效时才钉：窄屏一屏装不下这套双栏，硬钉会把内容切掉；
+   开了减弱动效的人本来就不该被劫持滚动。两种情况都退回普通的一节。 */
+.sec.pin { padding: 0; height: 300vh; }
+.sec.pin > .sec-grid {
+  position: sticky; top: 0; min-height: 100vh;
+  align-content: center;
+  padding-block: clamp(72px, 9vw, 132px);
+}
+@media (max-width: 1000px) {
+  .sec.pin { height: auto; padding: clamp(72px, 9vw, 132px) 0; }
+  .sec.pin > .sec-grid { position: static; min-height: 0; padding-block: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sec.pin { height: auto; padding: clamp(72px, 9vw, 132px) 0; }
+  .sec.pin > .sec-grid { position: static; min-height: 0; padding-block: 0; }
+}
+
 .gov-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 13px; overflow: hidden; border: 1px solid var(--line-soft); }
 .gov-item { background: var(--surface); padding: 15px 18px; display: grid; gap: 3px; }
 .gov-item b { font-size: 14.5px; font-weight: 620; letter-spacing: -.005em; }
@@ -1251,7 +1299,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <a class="skip-link" href="#main-content">Zum Hauptinhalt springen</a>
 <nav class="nav" id="nav">
   <div class="nav-in">
-    <a class="brand" href="#top">
+    <a class="brand" href="/swaylume-site/de/#top">
       <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
         <rect x="3"  y="9"  width="26" height="22" rx="6" fill="#FF5C8A" opacity=".85"/>
         <rect x="7"  y="9"  width="26" height="22" rx="6" fill="#6BF0B4" opacity=".7"  style="mix-blend-mode:screen"/>
@@ -1260,16 +1308,16 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       Swaylume
     </a>
     <div class="nav-links">
-      <a href="#gallery">Hintergründe</a>
-      <a href="#layers">Nativ</a>
-      <a href="#paths">Loslegen</a>
-      <a href="#wallpapers">Finden</a>
-      <a href="#trust">Datenschutz</a>
-      <a href="#faq">FAQ</a>
-      <a href="#get">Holen</a>
+      <a href="/swaylume-site/de/#gallery">Hintergründe</a>
+      <a href="/swaylume-site/de/#layers">Nativ</a>
+      <a href="/swaylume-site/de/details/#paths">Loslegen</a>
+      <a href="/swaylume-site/de/details/#wallpapers">Finden</a>
+      <a href="/swaylume-site/de/details/#trust">Datenschutz</a>
+      <a href="/swaylume-site/de/details/#faq">FAQ</a>
+      <a href="/swaylume-site/de/#get">Holen</a>
     </div>
-    <div class="langs" role="group" aria-label="Language"><a href="/swaylume-site/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/swaylume-site/en/" hreflang="en" lang="en">English</a><a href="/swaylume-site/ja/" hreflang="ja" lang="ja">日本語</a><a href="/swaylume-site/de/" hreflang="de" lang="de" aria-current="true">Deutsch</a><a href="/swaylume-site/fr/" hreflang="fr" lang="fr">Français</a></div>
-    <a class="nav-cta" href="#get">Laden</a>
+    <details class="langs" data-langs><summary aria-label="Language"><svg class="lang-globe" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 7h10.8M7 1.6c1.5 1.6 2.2 3.4 2.2 5.4S8.5 10.8 7 12.4c-1.5-1.6-2.2-3.4-2.2-5.4S5.5 3.2 7 1.6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span class="lang-here">Deutsch</span><svg class="lang-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ul class="lang-menu"><li><a href="/swaylume-site/" hreflang="zh-Hans" lang="zh-Hans"><span class="lang-tick"></span><span class="lang-name">简体中文</span><span class="lang-code">zh-Hans</span></a></li><li><a href="/swaylume-site/en/" hreflang="en" lang="en"><span class="lang-tick"></span><span class="lang-name">English</span><span class="lang-code">en</span></a></li><li><a href="/swaylume-site/ja/" hreflang="ja" lang="ja"><span class="lang-tick"></span><span class="lang-name">日本語</span><span class="lang-code">ja</span></a></li><li><a href="/swaylume-site/de/" hreflang="de" lang="de" aria-current="true"><span class="lang-tick" aria-hidden="true">✓</span><span class="lang-name">Deutsch</span><span class="lang-code">de</span></a></li><li><a href="/swaylume-site/fr/" hreflang="fr" lang="fr"><span class="lang-tick"></span><span class="lang-name">Français</span><span class="lang-code">fr</span></a></li></ul></details>
+    <a class="nav-cta" href="/swaylume-site/de/#get">Laden</a>
   </div>
 </nav>
 
@@ -1290,8 +1338,8 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </p>
 
     <div class="btn-row">
-      <a class="btn btn-primary" href="#get">Beta holen</a>
-      <a class="btn btn-ghost" href="#gallery">Hintergründe ansehen</a>
+      <a class="btn btn-primary" href="/swaylume-site/de/#get">Beta holen</a>
+      <a class="btn btn-ghost" href="/swaylume-site/de/#gallery">Hintergründe ansehen</a>
     </div>
 
     <div class="hero-proof" aria-label="产品能力摘要">
@@ -1312,40 +1360,6 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 </header>
 
 <main id="main-content" tabindex="-1">
-
-<!-- ============================== § 精选壁纸 ============================== -->
-<section class="sec" id="gallery">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">01</span><span>Hintergründe</span></div>
-    <div>
-      <h2 class="sec-h rise">Such dir einen aus. Den Rest übernimmt dein Schreibtisch.</h2>
-      <p class="sec-p rise">
-        Das ist eine echte Live-Vorschau, keine Reihe von Werbebildern. Klick einen Hintergrund an, und die Seite
-        blendet genau so über, wie Swaylume es tut. Die App selbst verteilt Video, WebGL und Ebenen-Szenen auf jeden
-        Bildschirm und jeden Space.
-      </p>
-
-      <div class="gallery-showcase rise" id="gallery-showcase">
-        <canvas class="gallery-preview" id="gallery-preview" aria-label="动态壁纸实时预览"></canvas>
-        <div class="gallery-overlay">
-          <div>
-            <p class="gallery-kicker" id="gallery-kind">WEBGL / LIVE-VORSCHAU</p>
-            <h3 class="gallery-title" id="gallery-title">Polarlicht-Signal</h3>
-            <p class="gallery-meta" id="gallery-meta">60 FPS · Maus-Parallaxe · einstellbar</p>
-          </div>
-          <span class="live-pill">LIVE PREVIEW</span>
-        </div>
-      </div>
-
-      <div class="wall-picker rise" role="group" aria-label="选择预览壁纸">
-        <button class="wall-card" type="button" data-scene="0" aria-pressed="true"><span class="kind">WebGL · 4K</span><b>Polarlicht-Signal</b><small>Parallaxe · einstellbar</small></button>
-        <button class="wall-card" type="button" data-scene="1" aria-pressed="false"><span class="kind">Video · 4K</span><b>Tiefsee-Echo</b><small>Nahtlose Schleife · Hardware-Decoding</small></button>
-        <button class="wall-card" type="button" data-scene="2" aria-pressed="false"><span class="kind">WebGL · 4K</span><b>Neonregen</b><small>60 FPS · stromsparend</small></button>
-        <button class="wall-card" type="button" data-scene="3" aria-pressed="false"><span class="kind">Layered · 4K</span><b>Zwischen Tagesanbruch</b><small>2.5D · ohne Video-Decoding</small></button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ============================== § 图层 ============================== -->
 <section class="sec" id="layers">
@@ -1435,7 +1449,39 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 </div>
   </div>
 </section>
+<!-- ============================== § 精选壁纸 ============================== -->
+<section class="sec" id="gallery">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">01</span><span>Hintergründe</span></div>
+    <div>
+      <h2 class="sec-h rise">Such dir einen aus. Den Rest übernimmt dein Schreibtisch.</h2>
+      <p class="sec-p rise">
+        Das ist eine echte Live-Vorschau, keine Reihe von Werbebildern. Klick einen Hintergrund an, und die Seite
+        blendet genau so über, wie Swaylume es tut. Die App selbst verteilt Video, WebGL und Ebenen-Szenen auf jeden
+        Bildschirm und jeden Space.
+      </p>
 
+      <div class="gallery-showcase rise" id="gallery-showcase">
+        <canvas class="gallery-preview" id="gallery-preview" aria-label="动态壁纸实时预览"></canvas>
+        <div class="gallery-overlay">
+          <div>
+            <p class="gallery-kicker" id="gallery-kind">WEBGL / LIVE-VORSCHAU</p>
+            <h3 class="gallery-title" id="gallery-title">Polarlicht-Signal</h3>
+            <p class="gallery-meta" id="gallery-meta">60 FPS · Maus-Parallaxe · einstellbar</p>
+          </div>
+          <span class="live-pill">LIVE PREVIEW</span>
+        </div>
+      </div>
+
+      <div class="wall-picker rise" role="group" aria-label="选择预览壁纸">
+        <button class="wall-card" type="button" data-scene="0" aria-pressed="true"><span class="kind">WebGL · 4K</span><b>Polarlicht-Signal</b><small>Parallaxe · einstellbar</small></button>
+        <button class="wall-card" type="button" data-scene="1" aria-pressed="false"><span class="kind">Video · 4K</span><b>Tiefsee-Echo</b><small>Nahtlose Schleife · Hardware-Decoding</small></button>
+        <button class="wall-card" type="button" data-scene="2" aria-pressed="false"><span class="kind">WebGL · 4K</span><b>Neonregen</b><small>60 FPS · stromsparend</small></button>
+        <button class="wall-card" type="button" data-scene="3" aria-pressed="false"><span class="kind">Layered · 4K</span><b>Zwischen Tagesanbruch</b><small>2.5D · ohne Video-Decoding</small></button>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- ============================== § 壁纸类型 ============================== -->
 <section class="sec" id="renderers">
   <div class="sec-grid">
@@ -1489,9 +1535,8 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </div>
   </div>
 </section>
-
 <!-- ============================== § 省电 ============================== -->
-<section class="sec" id="power">
+<section class="sec pin" id="power">
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">04</span><span>Strom</span></div>
     <div>
@@ -1522,37 +1567,6 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     </div>
   </div>
 </section>
-
-<!-- ============================== § 音频 ============================== -->
-<section class="sec" id="audio">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">05</span><span>Audioreaktiv</span></div>
-    <div>
-      <h2 class="sec-h rise">4096-Punkt-FFT, 64 logarithmische Bänder.</h2>
-      <p class="sec-p rise">
-        Hann-Fenster, reelle FFT, logarithmische Bänder, Peak-Decay-Glättung — verpackt in die 128 Werte, die eine
-        Hintergrundseite erwartet. In den Einstellungen wählst du das Eingabegerät, direkt daneben läuft ein
-        Spektrumbalken, damit du auf einen Blick siehst, ob überhaupt ein Signal ankommt.
-        <strong>Standardmäßig aus</strong> — ohne Einschalten fragt nichts nach Mikrofonzugriff.
-      </p>
-
-      <div class="spectrum-shell rise">
-        <div class="spectrum" id="spectrum" aria-hidden="true"></div>
-        <div class="spectrum-foot">
-          <span>20 Hz</span><span>200 Hz</span><span>2 kHz</span><span>20 kHz</span>
-        </div>
-      </div>
-
-      <div class="note rise">
-        <b>Ehrlich gesagt: macOS erlaubt Apps nicht, den Ton mitzuschneiden, den das System gerade abspielt.</b>
-        Ohne ein Loopback-Gerät wie BlackHole nimmst du den Raum über dein Mikrofon auf, nicht den Titel, den du hörst.
-        Die Funktion ist fertig, aber diese Voraussetzung musst du selbst schaffen — das ist eine Einschränkung der
-        Plattform, kein unfertiges Feature.
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============================== § 迁移 ============================== -->
 <section class="sec" id="import">
   <div class="sec-grid">
@@ -1611,149 +1625,6 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     </div>
   </div>
 </section>
-
-<!-- ============================== § 三条开始路径 ============================== -->
-<section class="sec" id="paths">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">07</span><span>Loslegen</span></div>
-    <div>
-      <h2 class="sec-h rise">Wo du herkommst, da fängt Swaylume an.</h2>
-      <p class="sec-p rise">
-        Den ersten Live-Hintergrund einrichten, eine Windows-Sammlung mitbringen oder eigene Arbeiten einreichen —
-        das sind nicht dieselben Aufgaben. Deshalb sind die drei Wege hier getrennt, statt alle in eine README zu werfen.
-      </p>
-      <div class="path-grid rise">
-        <article class="path-card">
-          <span class="path-step">01 / Einfach loslegen</span>
-          <h3>Einen Live-Hintergrund aussuchen und auf den Schreibtisch legen.</h3>
-          <p>Lade eine `.swaylume` aus dem Katalog und zieh sie in die App. Video, Bild, Web und Ebenen bekommen jeweils ihren eigenen nativen Renderer.</p>
-          <a href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">Katalog durchsehen</a>
-        </article>
-        <article class="path-card">
-          <span class="path-step">02 / Von Wallpaper Engine</span>
-          <h3>Sammlung mitbringen, nicht bei null anfangen.</h3>
-          <p>Der Konverter liest nur Wallpaper-Engine-Projekte, die schon auf deinem Rechner liegen — kein Steam-Login, keine Downloads. Video und Web werden zuerst unterstützt, für Scene gibt es einen dokumentierten Vorrender-Weg.</p>
-          <a href="#import">Ansehen, was konvertiert — und wie</a>
-        </article>
-        <article class="path-card">
-          <span class="path-step">03 / Ich mache Hintergründe</span>
-          <h3>Einen bauen und auf fremde Schreibtische bringen.</h3>
-          <p>Fang beim kostenlosen Katalog an: klares Format, Prüfsummen, Versionsverlauf und eine sichtbare Prüfspur. Bis Uploads richtig geöffnet werden, landet das Risiko nicht bei den Kreativen.</p>
-          <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Einreichungs-Leitfaden lesen</a>
-        </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== § 壁纸从哪来 ============================== -->
-<section class="sec" id="wallpapers">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">08</span><span>Finden</span></div>
-    <div>
-      <h2 class="sec-h rise">Swaylume bringt keine Inhaltsbibliothek mit. Das Material suchst du dir aus.</h2>
-      <p class="sec-p rise">
-        Jede mp4, jedes Bild, jede HTML-Datei lässt sich direkt hineinziehen. Unten ein paar Anlaufstellen —
-        <strong>wir hosten, verkaufen und prüfen nichts davon</strong>, wir zeigen nur den Weg.
-      </p>
-
-      <h3 class="src-h rise">Klar lizenziert</h3>
-      <p class="src-note rise">Bedingungen Zeile für Zeile geprüft: kommerziell kostenlos, keine Namensnennung nötig, Bearbeitung erlaubt. Nur diese Kategorie steht in der Quellenliste der App.</p>
-      <div class="gov-list rise">
-        <div class="gov-item src-item">
-          <b><a href="https://pixabay.com/videos/search/live%20wallpaper/" target="_blank" rel="noopener">Pixabay Video ↗</a></b>
-          <span>Nach Auflösung filtern für 4K; die Suche nach „live wallpaper“ oder „loop“ liefert reichlich fertige Schleifen.
-                <em>Pixabay Content License: kommerziell kostenlos, keine Namensnennung nötig, Bearbeitung erlaubt; Inhalte unverändert einzeln weiterzugeben oder zu verkaufen dagegen nicht.</em></span>
-        </div>
-        <div class="gov-item src-item">
-          <b><a href="https://www.pexels.com/videos/" target="_blank" rel="noopener">Pexels Video ↗</a></b>
-          <span>Durchweg hohe Qualität, filterbar nach Ausrichtung und Auflösung.
-                <em>Pexels License: kostenlos nutzbar, keine Namensnennung nötig, Bearbeitung erlaubt; die Weitergabe auf anderen Stock- oder Hintergrund-Plattformen dagegen nicht, ebenso wenig der Verkauf unveränderter Kopien.</em></span>
-        </div>
-      </div>
-
-      <h3 class="src-h rise">Drittanbieter-Seiten</h3>
-      <p class="src-note rise">
-        Die meisten Anime- und Spiele-Hintergründe liegen auf solchen Seiten. Sie <strong>kennzeichnen Lizenzen nicht
-        pro Datei</strong> — prüf das also selbst, bevor du etwas verwendest.
-      </p>
-      <div class="src-grid rise">
-        <a href="https://www.desktophut.com/" target="_blank" rel="noopener nofollow">DesktopHut ↗</a>
-        <a href="https://moewalls.com/" target="_blank" rel="noopener nofollow">MoeWalls ↗</a>
-        <a href="https://motionbgs.com/" target="_blank" rel="noopener nofollow">MotionBGS ↗</a>
-        <a href="https://livebgs.com/" target="_blank" rel="noopener nofollow">LiveBgs ↗</a>
-        <a href="https://livewallp.com/" target="_blank" rel="noopener nofollow">LiveWallp ↗</a>
-        <a href="https://livewallpapers4free.com/" target="_blank" rel="noopener nofollow">LiveWallpapers4Free ↗</a>
-        <a href="https://mylivewallpapers.com/" target="_blank" rel="noopener nofollow">MyLiveWallpapers ↗</a>
-        <a href="https://wallsflow.com/" target="_blank" rel="noopener nofollow">WallsFlow ↗</a>
-        <a href="https://wallpaperwaves.com/category/3840x2160/" target="_blank" rel="noopener nofollow">WallpaperWaves ↗</a>
-      </div>
-
-      <div class="note rise">
-        <b>Diese Links sind keine Empfehlung.</b>
-        Swaylume hat mit diesen Seiten nichts zu tun, ist an ihrem Betrieb nicht beteiligt und kann für Lizenzlage,
-        Qualität oder Sicherheit der Inhalte nicht einstehen. <b>Prüf die Lizenz vor dem Download</b> — das Urheberrecht
-        an abgeleiteten Werken (Anime- und Spielfiguren und so weiter) liegt bei den Originalurhebern, und etwas auf dem
-        eigenen Rechner zu nutzen ist nicht dasselbe wie es weiterzugeben.
-        Wenn mit einer dieser Seiten etwas nicht stimmt,
-        <a href="https://github.com/futurebackrookie/swaylume-catalog/issues" target="_blank" rel="noopener">mach ein Issue auf</a> — dann fliegt sie raus.
-      </div>
-
-      <div class="note rise" style="border-left-color:var(--sub-r);background:color-mix(in srgb, var(--sub-r) 8%, transparent)">
-        <b>Für dich herunterladen ≠ einreichen dürfen.</b>
-        Viele kostenlose Stock-Seiten erlauben Download und Nutzung, verbieten aber die Weitergabe — Pexels untersagt
-        ausdrücklich die Weitergabe „auf anderen Stock- oder Hintergrund-Plattformen“, und ein Hintergrund-Katalog ist
-        genau das.
-        Das Containerformat zu wechseln zählt nicht als „schöpferische Leistung“, also <b>reich dieses Material bitte
-        nicht beim Katalog ein</b>.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================== § 信任与边界 ============================== -->
-<section class="sec" id="trust">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">09</span><span>Grenzen</span></div>
-    <div>
-      <h2 class="sec-h rise">Dein Schreibtisch sollte niemandes Cloud-Materiallager werden.</h2>
-      <p class="sec-p rise">
-        Ein Live-Hintergrund kommt an viele lokale Dateien heran, deshalb ist Swaylumes Grundhaltung: weniger Rechte
-        verlangen, weniger Daten behalten, weniger versprechen. Was geht, wird ordentlich gemacht; was nicht geht,
-        wird klar gesagt.
-      </p>
-      <div class="trust-grid rise">
-        <article class="trust-card"><strong>Lokal zuerst.</strong><p>Hintergründe, Lesezeichen, Importverlauf und Diagnosen bleiben auf deinem Mac. Nichts wird automatisch hochgeladen, und es gibt keine Werbe-Tracking-Skripte.</p></article>
-        <article class="trust-card"><strong>Nur öffentliche APIs.</strong><p>Fensterebenen, Verhalten über mehrere Spaces, die Energiestrategie und der Dateizugriff nutzen dokumentierte macOS-Funktionen — der Weg in den App Store bleibt offen.</p></article>
-        <article class="trust-card"><strong>Diagnosen zum Mitnehmen.</strong><p>Bei einem schwarzen Bild oder einem Kompatibilitätsproblem lässt sich ein bereinigter lokaler Bericht exportieren. Er enthält Zustände und Fehler, nicht deine Hintergrunddateien.</p></article>
-        <article class="trust-card"><strong>Keine vorgetäuschte Kompatibilität.</strong><p>Windows-Hintergründe vom Typ Anwendung und natives Scene-Rendering werden nicht zugesagt. Für Scene gibt es stattdessen den sauberen Weg über vorgerendertes Video.</p></article>
-      </div>
-      <p class="trust-note rise">Kontakt: Bei Fragen, Meldungen zu Workshop-Inhalten oder bei Urheberrechts- und Löschanfragen schreiben Sie an futureback399@gmail.com. Workshop-Inhalte liegen bei den Einreichenden — wir pflegen nur den Index, gehen Meldungen aber nach.</p>
-      <p class="trust-note rise">Zu dieser Website: Diese Seite zählt Besuche mit Cloudflare Web Analytics. Es werden keine Cookies gesetzt, kein seitenübergreifendes Tracking betrieben und keine Profile einzelner Besucher angelegt — wir wollen nur wissen, wie viele Menschen kommen und woher. Die Punkte oben beschreiben die App, dieser Punkt die Website selbst.</p>
-    </div>
-  </div>
-</section>
-
-
-<!-- ============================== § 常见问题 ============================== -->
-<section class="sec" id="faq">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">10</span><span>FAQ</span></div>
-    <div>
-      <h2 class="sec-h rise">Was du vor dem Download vermutlich geklärt haben willst.</h2>
-      <div class="faq rise">
-        <details><summary>Zieht das nicht ordentlich Strom?</summary><div class="faq-a">Standardmäßig zeichnet Swaylume kein einziges Bild, wenn niemand hinsieht. Vollständige Verdeckung, Sperrbildschirm, Bildschirm- und Systemruhezustand sowie Energiesparmodus haben eigene Pausengründe und setzen automatisch fort. Der optionale Modus „Entsperren ohne Verzögerung (Vorwärmen)“ pausiert Animation und Medien weiterhin, hält aber Video-Pipeline und Webprozess für schnelleres Entsperren bereit; das kostet etwas zusätzlichen Speicher. Im Systemruhezustand wird nie vorgewärmt, und die App erklärt den Kompromiss vor dem Einschalten. Alle Entscheidungen liegen in einem Governor, deshalb steht der genaue Pausengrund immer im Log.</div></details>
-        <details><summary>Kann ich eigene Videos oder Bilder verwenden?</summary><div class="faq-a">Ja — einfach ins Fenster ziehen. Video: mp4 / mov / m4v (H.264 oder HEVC). Bilder: die üblichen Formate plus GIF. Web-Hintergründe: HTML / WebGL. <strong>webm / VP9 laufen nicht direkt</strong> und müssen zuerst umkodiert werden — AVFoundation kann beide Codecs nicht dekodieren, das ist eine Einschränkung der Plattform.</div></details>
-        <details><summary>Wie schlägt es sich gegen Wallpaper Engine?</summary><div class="faq-a">Ehrlich gesagt hat jedes seine Stärken. <strong>Was es hat und wir nicht</strong>: Millionen Workshop-Inhalte, natives Scene-Rendering, ein ausgereifter Editor. <strong>Was wir haben und es nicht</strong>: ein eigener Hintergrund pro Space (unter Windows nicht machbar), automatisches Umschalten zu Sonnenauf- und -untergang und eine spürbar ernsthaftere Energiestrategie. Außerdem gibt es dort keine macOS-Version — und deine vorhandene Sammlung kann mit dem Konverter mitkommen.</div></details>
-        <details><summary>macOS hat den ersten Start blockiert. Ist die App kaputt?</summary><div class="faq-a">Nein. Dieser Build ist noch nicht von Apple notarisiert — Notarisierung braucht einen kostenpflichtigen Entwickleraccount. macOS meldet „Entwickler kann nicht verifiziert werden“; öffne Systemeinstellungen → Datenschutz &amp; Sicherheit → Sicherheit und klick einmal auf „Trotzdem öffnen“. Alles per Maus, kein Terminal, und nur beim ersten Mal. Die vollständigen Schritte stehen im Download-Bereich.</div></details>
-        <details><summary>Werden Daten von mir hochgeladen?</summary><div class="faq-a">Nein. Hintergründe, Lesezeichen, Importverlauf und Diagnosen bleiben auf deinem Mac. Nichts wird automatisch hochgeladen, und es gibt keine Werbe-Tracking-Skripte. Die einzige Netzwerkaktivität ist das Laden des Katalog-Index, wenn du selbst aktualisierst; ohne Aktualisierung geht die App nie online. Diagnoseberichte entstehen nur, wenn du sie exportierst, und enthalten Zustände und Fehler, nicht deine Hintergrunddateien.</div></details>
-        <details><summary>Welche Macs werden unterstützt?</summary><div class="faq-a">macOS 14 oder neuer, auf Apple Silicon wie auf Intel (Universal Binary). Mehrere Bildschirme und AirPlay-Zweitbildschirme wurden beide auf echter Hardware getestet.</div></details>
-      </div>
-      <div class="note rise"><b>Hier nicht beantwortet?</b> Das ist eine Beta, und deine Frage haben vermutlich auch andere — <a href="https://github.com/futurebackrookie/swaylume-catalog/issues" target="_blank" rel="noopener">mach ein Issue auf</a>, dann landet die Antwort in diesem Abschnitt.</div>
-    </div>
-  </div>
-</section>
-
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
@@ -1839,6 +1710,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
   </div>
 </section>
 
+
 </main>
 
 <footer>
@@ -1848,7 +1720,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Beta-Builds</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">Hintergrund-Katalog</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Hintergrund einreichen</a>
-      <a href="#top">Nach oben</a>
+      <a href="/swaylume-site/de/#top">Nach oben</a>
     </div>
     <p class="legal">
       Swaylume steht in keiner Verbindung zu Wallpaper Engine, dessen Entwicklern oder irgendeiner Plattform
@@ -1870,6 +1742,27 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
   function T(k) { return Object.prototype.hasOwnProperty.call(I18N, k) ? I18N[k] : k; }
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* =========================================================
+     0. 语言切换器
+     <details> 自己管开合、键盘和读屏，这里只补它不管的两件事：
+     点到外面关掉、Esc 关掉。脚本坏了最多是关不掉，不会打不开 ——
+     这正是用 <details> 而不是 button + 脚本的理由。
+     ========================================================= */
+  (function () {
+    var box = document.querySelector("[data-langs]");
+    if (!box) return;
+    document.addEventListener("click", function (e) {
+      if (box.open && !box.contains(e.target)) box.open = false;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && box.open) {
+        box.open = false;
+        var sum = box.querySelector("summary");
+        if (sum) sum.focus();
+      }
+    });
+  })();
 
   /* =========================================================
      1. 壁纸着色器
@@ -1946,6 +1839,18 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
   ];
 
   function makeRenderer(canvas, sceneIndex) {
+    // 画布不在这一页就返回一个空壳。
+    //
+    // 站点分成首页和 /details 两页之后，脚本是两页共用的：/details 上没有
+    // 首屏画布也没有桌面演示画布，原来这里直接 canvas.getContext(...) 会抛
+    // TypeError，**整段脚本当场死掉** —— 那一页的主题切换、语言面板的
+    // Esc/点外面关闭、常见问题展开全部跟着失效，而页面看上去还是好的。
+    //
+    // 挡在工厂里而不是每个调用点：以后再加一处调用也不会漏。
+    if (!canvas) {
+      return { start: function () {}, stop: function () {},
+               setScene: function () {}, setMouse: function () {}, ok: false };
+    }
     var gl = null;
     try {
       gl = canvas.getContext("webgl", { antialias: false, alpha: false, depth: false, powerPreference: "low-power" })
@@ -2070,6 +1975,10 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     };
   }
 
+  // 这一节是首页专属的（首屏 + 播放列表）。/details 上这些元素不存在，
+  // 不挡的话第一处 null 就会终止**整段脚本** —— 后面第 7 节的滚动入场
+  // 跟着不跑，而 .rise 的初始状态是 opacity:0，整页内容直接看不见。
+  if (document.getElementById("stage")) {
   /* =========================================================
      2. 首屏 + 播放列表
      ========================================================= */
@@ -2101,7 +2010,8 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
   window.addEventListener("resize", function () { if (reduce) hero.start(); }, { passive: true });
 
   // 滚出视野就停 —— 页面自己也遵守省电那一节讲的规矩
-  if ("IntersectionObserver" in window) {
+  // stage 只存在于首页；/details 上是 null，observe(null) 会抛异常并终止整段脚本。
+  if (stage && "IntersectionObserver" in window) {
     new IntersectionObserver(function (es) {
       es.forEach(function (e) { e.isIntersecting ? hero.start() : hero.stop(); });
     }, { threshold: 0.02 }).observe(stage);
@@ -2111,6 +2021,11 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     syncGalleryActivity();
   });
 
+  }
+  // 这一节是首页专属的（精选壁纸）。/details 上这些元素不存在，
+  // 不挡的话第一处 null 就会终止**整段脚本** —— 后面第 7 节的滚动入场
+  // 跟着不跑，而 .rise 的初始状态是 opacity:0，整页内容直接看不见。
+  if (document.getElementById("gallery-showcase")) {
   /* =========================================================
      3. 精选壁纸 —— 一块真实切场景的独立预览
      ========================================================= */
@@ -2166,6 +2081,11 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     }
   }
 
+  }
+  // 这一节是首页专属的（桌面演示）。/details 上这些元素不存在，
+  // 不挡的话第一处 null 就会终止**整段脚本** —— 后面第 7 节的滚动入场
+  // 跟着不跑，而 .rise 的初始状态是 opacity:0，整页内容直接看不见。
+  if (document.getElementById("desk-canvas")) {
   /* =========================================================
      4. 桌面演示 —— 页面的赌注
      ========================================================= */
@@ -2215,7 +2135,8 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     swOccl.addEventListener("click", function () { state.occl = !state.occl; sync(); });
   }
 
-  if ("IntersectionObserver" in window) {
+  // deskFrame 同样只在首页
+  if (deskFrame && "IntersectionObserver" in window) {
     new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         (e.isIntersecting && !state.occl) ? desk.start() : desk.stop();
@@ -2244,6 +2165,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
   tick();
   setInterval(tick, 20000);
 
+  }
   /* =========================================================
      5. 调速器读数 —— 用 app 真实的暂停原因
      ========================================================= */
@@ -2274,13 +2196,54 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     });
 
     var lines = govlog.querySelectorAll(".logline");
-    var gi = 0;
-    function step() {
-      lines.forEach(function (l, i) { l.setAttribute("data-live", String(i === gi)); });
-      gi = (gi + 1) % lines.length;
+
+    function live(i) {
+      lines.forEach(function (l, n) { l.setAttribute("data-live", String(n === i)); });
     }
-    step();
-    if (!reduce) setInterval(step, 2200);
+
+    /* 这一节钉得住的时候，日志由**滚动**推进，不由定时器。
+       定时器的问题是它跟你看不看没关系：你还没读完第一条它就跳走了，
+       而你划过去之后它还在空放。改成滚动驱动之后，进度完全在读的人手里。
+
+       钉不钉得住由 CSS 说了算（窄屏和减弱动效下会退回普通一节），
+       所以这里读实际算出来的 position，而不是自己再判一遍条件 ——
+       两处各判一次，迟早会不一致。 */
+    var powerSec = document.getElementById("power");
+    var grid = powerSec && powerSec.querySelector(".sec-grid");
+    var isPinned = grid && getComputedStyle(grid).position === "sticky";
+
+    if (isPinned && !reduce) {
+      var ticking = false;
+      var onGovScroll = function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          var r = powerSec.getBoundingClientRect();
+          var total = powerSec.offsetHeight - window.innerHeight;
+          if (total <= 0) { live(0); return; }
+          var p = Math.max(0, Math.min(1, -r.top / total));
+          live(Math.min(lines.length - 1, Math.floor(p * lines.length)));
+        });
+      };
+      // 先同步给一个有效的初始状态，再挂监听。
+      // onGovScroll 的实际赋值发生在 requestAnimationFrame 里，而 rAF 在页面
+      // 不被合成时（后台标签页、某些嵌入环境）根本不跑 —— 那样第一屏会是
+      // 一条都没高亮的日志。初始状态不该依赖任何回调先跑一次。
+      live(0);
+      window.addEventListener("scroll", onGovScroll, { passive: true });
+      window.addEventListener("resize", onGovScroll);
+      onGovScroll();
+    } else {
+      var gi = 0;
+      live(gi);
+      if (!reduce) {
+        setInterval(function () {
+          gi = (gi + 1) % lines.length;
+          live(gi);
+        }, 2200);
+      }
+    }
   }
 
   /* =========================================================
@@ -2339,6 +2302,18 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
       });
     }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
     risers.forEach(function (el) { io.observe(el); });
+
+    // 兜底：两秒后把还没揭示的一律显示出来。
+    //
+    // `.rise` 的初始状态是 opacity:0 —— 也就是说**内容能不能被看见，取决于
+    // 一个观察器会不会触发**。绝大多数时候它会，但只要不触发（页面被挂起、
+    // 标签页在后台、某些无障碍或省电模式下的节流），整页就是一片空白，
+    // 而且不报任何错。为一个纯装饰的入场动画押上「内容是否可见」，赌注下反了。
+    //
+    // 这不是假想：本地验证时就撞见过观察器完全不回调、整页全黑的情形。
+    setTimeout(function () {
+      risers.forEach(function (el) { el.classList.add("in"); });
+    }, 2000);
   } else {
     risers.forEach(function (el) { el.classList.add("in"); });
   }

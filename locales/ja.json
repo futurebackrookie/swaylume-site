@@ -204,5 +204,7 @@
   "faq.a5": "されません。壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac に留まります。自動アップロードはなく、広告トラッキングのスクリプトもありません。通信するのは、あなたが自分で壁紙カタログを更新したときにインデックスを取得する場面だけです。診断レポートは自分で書き出したときだけ生成され、含まれるのは状態とエラーで、壁紙ファイルは含まれません。",
   "faq.q6": "対応している Mac は？",
   "faq.a6": "macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。",
-  "faq.feedback": "<b>ここに答えがありませんか？</b> これはベータ版で、あなたの疑問はたぶん他の人の疑問でもあります —— <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">issue を立てて</a>いただければ、答えはこの欄に追加されます。"
+  "faq.feedback": "<b>ここに答えがありませんか？</b> これはベータ版で、あなたの疑問はたぶん他の人の疑問でもあります —— <a href=\"https://github.com/futurebackrookie/swaylume-catalog/issues\" target=\"_blank\" rel=\"noopener\">issue を立てて</a>いただければ、答えはこの欄に追加されます。",
+  "details.title": "技術的な詳細と壁紙の入手先 — Swaylume",
+  "details.description": "オーディオ反応の仕組み、始め方の3つの道筋、ライブ壁紙の入手先と各サイトのライセンス条件、プライバシーと互換性の範囲、そしてよくある質問。"
 }
