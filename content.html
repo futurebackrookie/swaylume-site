@@ -1621,11 +1621,26 @@ body[data-page="details"] .gov-item span, body[data-page="details"] .pet-fact sp
 /* ---------- 首屏：C 的极致形态 ---------- */
 .hero {
   min-height: 100vh;
-  display: grid; align-content: center;
+  display: grid;
+  align-content: center;
+  /* **必须显式重置 justify-content。**原来的 .hero 是
+     flex-direction:column + justify-content:flex-end；这一层只把 display
+     换成了 grid，那句 flex-end 会继续生效 —— 在 grid 里它把整条列轨道推到
+     右边缘。普通宽度下轨道撑满看不出来，超宽屏（3440）上首屏内容整块偏右
+     六百多像素，读起来就是「歪的」。真机上撞出来的。 */
+  justify-content: center;
+  justify-items: center;
   padding: clamp(120px,16vh,180px) var(--scene-pad) clamp(84px,10vh,120px);
   text-align: center;
 }
-.hero-body { max-width: 1000px; margin-inline: auto; }
+/* 暗幕本来是「左深右浅」，配的是左对齐的文字。文字改到居中之后，
+   它只剩下平白压暗左半边这一个效果，也在加重那种「歪」的观感。改成对称。 */
+.hero-scrim {
+  background:
+    linear-gradient(to top, var(--ink) 2%, color-mix(in srgb, var(--ink) 50%, transparent) 34%, transparent 64%),
+    radial-gradient(120% 90% at 50% 55%, transparent 30%, rgba(4,3,10,.55) 100%);
+}
+.hero-body { max-width: 1000px; margin-inline: auto; width: 100%; }
 h1.hero-h {
   font-family: var(--font-serif);
   font-weight: 400;
