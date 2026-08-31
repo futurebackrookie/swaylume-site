@@ -247,5 +247,17 @@
   "ex.f1d": "The settings window can be made semi-transparent so the wallpaper shows through. At zero it is fully opaque, which is the default.",
   "ex.f2t": "Automatic update checks",
   "ex.f2d": "It fetches one version file and compares. Nothing is sent back. You can turn it off, or skip a particular build.",
-  "ex.note": "<b>If another app has taken a shortcut, you are told.</b> A failed registration doesn’t fail silently — that row is flagged in settings instead of leaving you pressing keys wondering what broke."
+  "ex.note": "<b>If another app has taken a shortcut, you are told.</b> A failed registration doesn’t fail silently — that row is flagged in settings instead of leaving you pressing keys wondering what broke.",
+  "cmd.placeholder": "Jump to… (sections, download, FAQ)",
+  "cmd.foot": "↑↓ select · ↵ go · Esc close",
+  "cmd.open": "Open command palette",
+  "js.cmd.empty": "Nothing matches",
+  "mix.title": "Inspector",
+  "mix.p": "These four sliders aren’t a web gimmick — this is exactly how a wallpaper’s own declared parameters show up in the app’s inspector, applied as you drag. The preview above is really redrawing with your values.",
+  "mix.reset": "Reset",
+  "mix.speed": "Speed",
+  "mix.grain": "Grain",
+  "mix.par": "Parallax",
+  "mix.tint": "Tint",
+  "mix.export": "Current values"
 }

@@ -247,5 +247,17 @@
   "ex.f1d": "Das Einstellungsfenster lässt sich halbtransparent machen, sodass das Hintergrundbild durchscheint. Bei null ist es vollständig deckend — so ist es voreingestellt.",
   "ex.f2t": "Automatische Updateprüfung",
   "ex.f2d": "Es lädt eine Versionsdatei und vergleicht. Zurückgesendet wird nichts. Abschaltbar, und einzelne Builds lassen sich überspringen.",
-  "ex.note": "<b>Wenn eine andere App den Kurzbefehl belegt, erfährst du es.</b> Eine fehlgeschlagene Registrierung scheitert nicht stillschweigend — die Zeile wird in den Einstellungen markiert, statt dich rätseln zu lassen."
+  "ex.note": "<b>Wenn eine andere App den Kurzbefehl belegt, erfährst du es.</b> Eine fehlgeschlagene Registrierung scheitert nicht stillschweigend — die Zeile wird in den Einstellungen markiert, statt dich rätseln zu lassen.",
+  "cmd.placeholder": "Springe zu … (Abschnitte, Download, FAQ)",
+  "cmd.foot": "↑↓ wählen · ↵ los · Esc schließen",
+  "cmd.open": "Befehlspalette öffnen",
+  "js.cmd.empty": "Kein Treffer",
+  "mix.title": "Eigenschaften",
+  "mix.p": "Diese vier Regler sind kein Web-Effekt — genau so tauchen die vom Hintergrund selbst deklarierten Parameter in der Eigenschaftenpalette der App auf, wirksam schon beim Ziehen. Die Vorschau oben zeichnet wirklich mit deinen Werten neu.",
+  "mix.reset": "Zurücksetzen",
+  "mix.speed": "Tempo",
+  "mix.grain": "Korn",
+  "mix.par": "Parallaxe",
+  "mix.tint": "Farbton",
+  "mix.export": "Aktuelle Werte"
 }

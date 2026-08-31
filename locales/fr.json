@@ -247,5 +247,17 @@
   "ex.f1d": "La fenêtre des réglages peut devenir translucide pour laisser voir le fond d’écran. À zéro elle est parfaitement opaque, ce qui est la valeur par défaut.",
   "ex.f2t": "Vérification automatique des mises à jour",
   "ex.f2d": "Un seul fichier de version est récupéré puis comparé. Rien n’est renvoyé. Désactivable, et une version donnée peut être ignorée.",
-  "ex.note": "<b>Si une autre app occupe le raccourci, vous êtes prévenu.</b> Un enregistrement raté n’échoue pas en silence : la ligne est signalée dans les réglages au lieu de vous laisser appuyer sans comprendre."
+  "ex.note": "<b>Si une autre app occupe le raccourci, vous êtes prévenu.</b> Un enregistrement raté n’échoue pas en silence : la ligne est signalée dans les réglages au lieu de vous laisser appuyer sans comprendre.",
+  "cmd.placeholder": "Aller à… (sections, téléchargement, FAQ)",
+  "cmd.foot": "↑↓ choisir · ↵ aller · Esc fermer",
+  "cmd.open": "Ouvrir la palette de commandes",
+  "js.cmd.empty": "Aucun résultat",
+  "mix.title": "Inspecteur",
+  "mix.p": "Ces quatre curseurs ne sont pas un effet web — c’est ainsi que les paramètres déclarés par le fond d’écran lui-même apparaissent dans l’inspecteur de l’app, appliqués pendant que vous glissez. L’aperçu ci-dessus se redessine vraiment avec vos valeurs.",
+  "mix.reset": "Réinitialiser",
+  "mix.speed": "Vitesse",
+  "mix.grain": "Grain",
+  "mix.par": "Parallaxe",
+  "mix.tint": "Teinte",
+  "mix.export": "Valeurs actuelles"
 }

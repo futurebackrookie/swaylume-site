@@ -1121,12 +1121,198 @@ footer {
 
 /* /details 上首屏没有，正文直接顶到导航下面 */
 body[data-page="details"] main { padding-top: 96px; }
+
+/* ===========================================================
+   交互层 A —— 换幕
+   点导航里的锚点，先用一整块红斜切把屏幕扫掉，再落到目标位置。
+   这是整站唯一一处「打断」用户的动画，所以必须短（<0.5s）且不可点。
+   =========================================================== */
+.wipe {
+  position: fixed; inset: -10% -30%; z-index: 300; pointer-events: none;
+  background: var(--red); transform: translateX(-130%) skewX(-14deg);
+  will-change: transform;
+}
+.wipe[data-on="in"]  { animation: wipe-in  .26s cubic-bezier(.5,0,.75,0) forwards; }
+.wipe[data-on="out"] { animation: wipe-out .34s cubic-bezier(.2,1,.4,1) forwards; }
+@keyframes wipe-in  { to   { transform: translateX(0) skewX(-14deg); } }
+@keyframes wipe-out { from { transform: translateX(0) skewX(-14deg); }
+                      to   { transform: translateX(130%) skewX(-14deg); } }
+.wipe::after {
+  content: "SWAYLUME"; position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%,-50%) skewX(14deg);
+  font-family: var(--f-scream); font-size: clamp(40px, 9vw, 130px);
+  letter-spacing: .06em; color: var(--slab); opacity: .22;
+}
+
+/* ===========================================================
+   交互层 A —— 光标
+   不藏系统光标。藏了之后一旦脚本出错，用户连指针都没有了 ——
+   为一个装饰押上「还能不能用鼠标」，赌注下反了。
+   这里只加一个跟在后面的红菱形，悬到可点的东西上会张开。
+   =========================================================== */
+.cursor {
+  position: fixed; left: 0; top: 0; z-index: 250; pointer-events: none;
+  width: 26px; height: 26px; margin: -13px 0 0 -13px;
+  border: 2px solid var(--red); opacity: 0;
+  transform: rotate(45deg) scale(.6);
+  transition: opacity .2s linear, background-color .14s linear, border-color .14s linear;
+  will-change: transform;
+}
+.cursor[data-on="true"] { opacity: .9; }
+.cursor[data-hot="true"] { background: color-mix(in srgb, var(--red) 26%, transparent); }
+@media (pointer: coarse), (prefers-reduced-motion: reduce) { .cursor { display: none; } }
+
+/* 导航项 hover 时甩出去一点 —— 游戏菜单的手感来自「会动的不只是颜色」 */
+.nav-links a { transition: transform .14s cubic-bezier(.2,1.6,.4,1), color .14s linear; }
+.nav-links a:hover { transform: translateX(4px) skewX(-6deg); }
+
+/* HUD 加一个当前章节号，换节时闪一下 */
+.hud-chap {
+  font-family: var(--f-scream); font-size: 20px; color: var(--red);
+  line-height: 1; margin-bottom: 10px;
+}
+.hud-chap[data-flip="true"] { animation: chap .32s steps(2) 2; }
+@keyframes chap { 50% { opacity: .15; } }
+@media (prefers-reduced-motion: reduce) { .hud-chap[data-flip="true"] { animation: none; } }
+
+/* ===========================================================
+   交互层 B —— 属性面板（可玩的壁纸沙盒）
+   =========================================================== */
+.mixer { margin-top: 22px; background: var(--slab); border: 3px solid var(--slab); box-shadow: 9px 9px 0 var(--red); }
+.mixer-head {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  border-bottom: 2px solid var(--slab-line);
+  font: 700 11.5px/1 var(--f-head); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--slab-fg);
+}
+.mixer-head .dot { width: 9px; height: 9px; background: var(--red); display: block; }
+#mix-reset {
+  margin-left: auto; cursor: pointer; border: 2px solid var(--slab-line);
+  background: transparent; color: var(--slab-dim);
+  font: 700 11px/1 var(--f-head); letter-spacing: .1em; padding: 7px 12px;
+  transition: color .14s, border-color .14s, background .14s;
+}
+#mix-reset:hover { color: #fff; background: var(--red); border-color: var(--red); }
+.mixer-body { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 2px; background: var(--slab-line); }
+.mix-row {
+  display: grid; grid-template-columns: 62px minmax(0,1fr) 62px; align-items: center; gap: 12px;
+  background: var(--slab); padding: 15px 16px;
+}
+.mix-row > span { font: 700 12px/1 var(--f-head); color: var(--slab-fg); letter-spacing: .04em; }
+.mix-row > b { font-family: var(--f-mono); font-size: 11.5px; color: var(--red); text-align: right; }
+
+/* 滑块。原生控件长什么样各系统不一样，这里整条自己画 */
+.mix-row input[type="range"] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 22px;
+  background: transparent; cursor: pointer; margin: 0;
+}
+.mix-row input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px; background: var(--slab-2); border: 1px solid var(--slab-line);
+}
+.mix-row input[type="range"]::-moz-range-track {
+  height: 6px; background: var(--slab-2); border: 1px solid var(--slab-line);
+}
+.mix-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 22px; margin-top: -9px;
+  background: var(--red); border: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 74%, 50% 100%, 0 74%);
+}
+.mix-row input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 22px; border: 0; border-radius: 0;
+  background: var(--red);
+  clip-path: polygon(0 0, 100% 0, 100% 74%, 50% 100%, 0 74%);
+}
+.mixer-foot { padding: 16px 18px; border-top: 2px solid var(--slab-line); }
+.mixer-note { margin: 0 0 14px; font-size: 12.5px; line-height: 1.7; color: var(--slab-dim); }
+.mixer-cap {
+  display: block; font: 700 10px/1 var(--f-head); letter-spacing: .18em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 8px;
+}
+.mixer-code {
+  margin: 0; padding: 14px 16px; border-left: 6px solid var(--red);
+  background: #000; color: #E8E4DA;
+  font-family: var(--f-mono); font-size: 12px; line-height: 1.7; white-space: pre;
+  overflow-x: auto;
+}
+@media (max-width: 700px) { .mixer-body { grid-template-columns: minmax(0,1fr); } }
+
+/* ===========================================================
+   交互层 C —— 命令面板
+   =========================================================== */
+.pal {
+  position: fixed; inset: 0; z-index: 280;
+  background: color-mix(in srgb, var(--slab) 74%, transparent);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 12vh 20px 20px;
+}
+.pal[hidden] { display: none; }
+.pal-box {
+  width: min(620px, 100%); background: var(--card); color: var(--card-fg);
+  border: 3px solid var(--slab); box-shadow: 12px 12px 0 var(--red);
+  transform: rotate(-.5deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pal-box { animation: pal-in .2s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes pal-in { from { transform: rotate(-.5deg) translateY(-14px) scale(.97); opacity: 0; } }
+}
+#pal-q {
+  width: 100%; border: 0; border-bottom: 3px solid var(--slab);
+  background: var(--card-2); color: var(--card-fg);
+  font: 800 17px/1 var(--f-head); padding: 18px 20px;
+}
+#pal-q::placeholder { color: var(--card-dim); font-weight: 600; }
+#pal-q:focus { outline: 0; }
+#pal-list { list-style: none; margin: 0; padding: 6px; max-height: 46vh; overflow-y: auto; }
+#pal-list li {
+  display: flex; align-items: baseline; gap: 12px; padding: 11px 14px; cursor: pointer;
+}
+#pal-list li .n {
+  font-family: var(--f-scream); font-size: 15px; color: var(--red); min-width: 24px;
+}
+#pal-list li .t { font-size: 14.5px; font-weight: 700; }
+#pal-list li .s {
+  margin-left: auto; font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim);
+  white-space: nowrap;
+}
+#pal-list li[aria-selected="true"] { background: var(--red); color: #fff; }
+#pal-list li[aria-selected="true"] .n,
+#pal-list li[aria-selected="true"] .s { color: #fff; }
+#pal-list li.empty { cursor: default; color: var(--card-dim); font-size: 13.5px; }
+.pal-foot {
+  padding: 11px 16px; border-top: 2px solid var(--card-line); background: var(--card-2);
+  font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em;
+}
+
+/* 导航里那个 ⌘K —— 快捷键得看得见才有人用 */
+.nav-k {
+  flex: none; cursor: pointer; background: transparent;
+  border: 2px solid var(--slab-line); color: var(--slab-dim);
+  font-family: var(--f-mono); font-size: 12px; padding: 9px 11px; line-height: 1;
+  transition: color .14s, border-color .14s, background .14s;
+}
+.nav-k:hover { color: #fff; background: var(--red); border-color: var(--red); }
+@media (max-width: 700px) { .nav-k { display: none; } }
 </style>
 
 <!-- ============================== HUD ============================== -->
 <div class="hud" aria-hidden="true">
   <div class="hud-bar" id="hud-bar"></div>
+  <div class="hud-chap" id="hud-chap"></div>
   <div class="hud-num" id="hud-num">00</div>
+</div>
+
+<div class="wipe" id="wipe" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<div class="pal" id="pal" hidden>
+  <div class="pal-box" role="dialog" aria-modal="true" aria-label="打开命令面板">
+    <input id="pal-q" type="text" autocomplete="off" spellcheck="false"
+           role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list"
+           placeholder="跳到…（分节、下载、常见问题）" aria-label="跳到…（分节、下载、常见问题）">
+    <ul id="pal-list" role="listbox"></ul>
+    <div class="pal-foot">↑↓ 选择 · ↵ 跳转 · Esc 关闭</div>
+  </div>
 </div>
 
 <!-- ============================== 导航 ============================== -->
@@ -1149,6 +1335,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="/swaylume-site/details/#faq">常见问题</a>
       <a href="/swaylume-site/#get">拿到手</a>
     </div>
+    <button class="nav-k" id="nav-k" type="button" aria-label="打开命令面板">⌘K</button>
     <details class="langs" data-langs><summary aria-label="Language"><svg class="lang-globe" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 7h10.8M7 1.6c1.5 1.6 2.2 3.4 2.2 5.4S8.5 10.8 7 12.4c-1.5-1.6-2.2-3.4-2.2-5.4S5.5 3.2 7 1.6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span class="lang-here">简体中文</span><svg class="lang-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ul class="lang-menu"><li><a href="/swaylume-site/details/" hreflang="zh-Hans" lang="zh-Hans" aria-current="true"><span class="lang-tick" aria-hidden="true">✓</span><span class="lang-name">简体中文</span><span class="lang-code">zh-Hans</span></a></li><li><a href="/swaylume-site/en/details/" hreflang="en" lang="en"><span class="lang-tick"></span><span class="lang-name">English</span><span class="lang-code">en</span></a></li><li><a href="/swaylume-site/ja/details/" hreflang="ja" lang="ja"><span class="lang-tick"></span><span class="lang-name">日本語</span><span class="lang-code">ja</span></a></li><li><a href="/swaylume-site/de/details/" hreflang="de" lang="de"><span class="lang-tick"></span><span class="lang-name">Deutsch</span><span class="lang-code">de</span></a></li><li><a href="/swaylume-site/fr/details/" hreflang="fr" lang="fr"><span class="lang-tick"></span><span class="lang-name">Français</span><span class="lang-code">fr</span></a></li></ul></details>
     <a class="nav-cta" href="/swaylume-site/#get"><span>下载</span></a>
   </div>
@@ -1342,7 +1529,7 @@ body[data-page="details"] main { padding-top: 96px; }
   </div>
 </footer>
 
-<script>window.__I18N={"js.preview1.kind":"WEBGL / 实时预览","js.preview1.title":"极光信号","js.preview1.meta":"60 FPS · 鼠标视差 · 可调参数","js.preview2.kind":"VIDEO / 无缝循环","js.preview2.title":"深海回声","js.preview2.meta":"4K · 硬件解码 · 遮挡即暂停","js.preview3.kind":"WEBGL / 实时预览","js.preview3.title":"霓虹雨幕","js.preview3.meta":"60 FPS · 音频响应 · 低功耗","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"黎明之间","js.preview4.meta":"分层景深 · 鼠标视差 · 几乎不耗电","js.gov1.p":"播放中 · 60 FPS","js.gov1.m":"governor: 前台可见,全速","js.gov2.p":"已暂停 · 被窗口遮挡","js.gov2.m":"occlusion: 屏幕被不透明窗口盖满","js.gov3.p":"播放中 · 60 FPS","js.gov3.m":"occlusion: 桌面重新露出","js.gov4.p":"省电 · 30 FPS","js.gov4.m":"power: 低电量模式已开启","js.gov5.p":"已暂停 · 显示器休眠","js.gov5.m":"display: 进入休眠","js.gov6.p":"已暂停 · 锁屏","js.gov6.m":"session: 屏幕已锁定","js.gov7.p":"播放中 · 60 FPS","js.gov7.m":"session: 已解锁,恢复渲染","js.readout.above":"图标之上","js.readout.below":"图标之下","js.readout.occluded":"已暂停 · 被窗口遮挡","js.readout.playing":"播放中","js.hint.touch":"点上面切换壁纸"};</script>
+<script>window.__I18N={"js.preview1.kind":"WEBGL / 实时预览","js.preview1.title":"极光信号","js.preview1.meta":"60 FPS · 鼠标视差 · 可调参数","js.preview2.kind":"VIDEO / 无缝循环","js.preview2.title":"深海回声","js.preview2.meta":"4K · 硬件解码 · 遮挡即暂停","js.preview3.kind":"WEBGL / 实时预览","js.preview3.title":"霓虹雨幕","js.preview3.meta":"60 FPS · 音频响应 · 低功耗","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"黎明之间","js.preview4.meta":"分层景深 · 鼠标视差 · 几乎不耗电","js.gov1.p":"播放中 · 60 FPS","js.gov1.m":"governor: 前台可见,全速","js.gov2.p":"已暂停 · 被窗口遮挡","js.gov2.m":"occlusion: 屏幕被不透明窗口盖满","js.gov3.p":"播放中 · 60 FPS","js.gov3.m":"occlusion: 桌面重新露出","js.gov4.p":"省电 · 30 FPS","js.gov4.m":"power: 低电量模式已开启","js.gov5.p":"已暂停 · 显示器休眠","js.gov5.m":"display: 进入休眠","js.gov6.p":"已暂停 · 锁屏","js.gov6.m":"session: 屏幕已锁定","js.gov7.p":"播放中 · 60 FPS","js.gov7.m":"session: 已解锁,恢复渲染","js.readout.above":"图标之上","js.readout.below":"图标之下","js.readout.occluded":"已暂停 · 被窗口遮挡","js.readout.playing":"播放中","js.hint.touch":"点上面切换壁纸","js.cmd.empty":"没有匹配的去处"};</script>
 <script>
 (function () {
   "use strict";
@@ -1470,7 +1657,9 @@ body[data-page="details"] main { padding-top: 96px; }
     // 挡在工厂里而不是每个调用点：以后再加一处调用也不会漏。
     if (!canvas) {
       return { start: function () {}, stop: function () {},
-               setScene: function () {}, setMouse: function () {}, ok: false };
+               setScene: function () {}, setMods: function () {},
+               resolved: function () { return cloneScene(SCENES[sceneIndex || 0]); },
+               setMouse: function () {}, ok: false };
     }
     var gl = null;
     try {
@@ -1506,9 +1695,23 @@ body[data-page="details"] main { padding-top: 96px; }
       U[n] = gl.getUniformLocation(prog, n);
     });
 
+    // 属性面板拧出来的倍数/偏移。它不改 SCENES ——
+    // 那是四张壁纸的定义，被面板改掉的话「复位」就没有基准可回。
+    var mods = { speed: 1, grain: 1, par: 1, tint: 0 };
+    var idx = sceneIndex;
+    function withMods(base) {
+      var o = cloneScene(base);
+      o.speed *= mods.speed;
+      o.grain *= mods.grain;
+      // 余弦调色板里 D 是相位。三个通道错开加，色相就转起来了；
+      // 三个加一样多只会整体明暗漂移，看着像调了亮度而不是调了色。
+      o.D = [o.D[0] + mods.tint, o.D[1] + mods.tint * 0.66, o.D[2] + mods.tint * 0.33];
+      return o;
+    }
+
     // 当前值与目标值分开存：切场景时插值过去,就是 app 里的淡入淡出
-    var cur = cloneScene(SCENES[sceneIndex]);
-    var tgt = cloneScene(SCENES[sceneIndex]);
+    var cur = withMods(SCENES[sceneIndex]);
+    var tgt = withMods(SCENES[sceneIndex]);
     var mouse = { x: 0, y: 0, tx: 0, ty: 0 };
     var raf = 0, t0 = performance.now(), running = false;
 
@@ -1531,7 +1734,7 @@ body[data-page="details"] main { padding-top: 96px; }
 
       gl.uniform2f(U.uRes, canvas.width, canvas.height);
       gl.uniform1f(U.uTime, (now - t0) / 1000);
-      gl.uniform2f(U.uMouse, mouse.x, mouse.y);
+      gl.uniform2f(U.uMouse, mouse.x * mods.par, mouse.y * mods.par);
       gl.uniform3fv(U.uA, cur.A); gl.uniform3fv(U.uB, cur.B);
       gl.uniform3fv(U.uC, cur.C); gl.uniform3fv(U.uD, cur.D);
       gl.uniform1f(U.uWarp, cur.warp);
@@ -1550,7 +1753,13 @@ body[data-page="details"] main { padding-top: 96px; }
         raf = requestAnimationFrame(draw);
       },
       stop: function () { running = false; cancelAnimationFrame(raf); },
-      setScene: function (i) { tgt = cloneScene(SCENES[i]); if (reduce) { cur = cloneScene(SCENES[i]); this.start(); } },
+      setScene: function (i) { idx = i; tgt = withMods(SCENES[i]); if (reduce) { cur = withMods(SCENES[i]); this.start(); } },
+      setMods: function (m) {
+        mods = m; tgt = withMods(SCENES[idx]);
+        if (reduce) { cur = withMods(SCENES[idx]); this.start(); }
+      },
+      // 面板要显示「算完之后到底是多少」，而不是它自己那份倍数
+      resolved: function () { return withMods(SCENES[idx]); },
       setMouse: function (x, y) { mouse.tx = x; mouse.ty = y; },
       ok: true
     };
@@ -1572,6 +1781,7 @@ body[data-page="details"] main { padding-top: 96px; }
   // WebGL 不可用时退到 2D 渐变 —— 不留白屏
   function fallback2D(canvas, idx) {
     var ctx = canvas.getContext("2d");
+    var idx2 = idx;
     var s = SCENES[idx];
     function paint() {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -1590,7 +1800,9 @@ body[data-page="details"] main { padding-top: 96px; }
     return {
       start: paint,
       stop: function () {},
-      setScene: function (i) { s = SCENES[i]; paint(); },
+      setScene: function (i) { s = SCENES[i]; idx2 = i; paint(); },
+      setMods: function () {},
+      resolved: function () { return cloneScene(SCENES[idx2]); },
       setMouse: function () {},
       ok: false
     };
@@ -1687,6 +1899,73 @@ body[data-page="details"] main { padding-top: 96px; }
   galleryCards.forEach(function (card) {
     card.addEventListener("click", function () { selectGalleryScene(parseInt(card.getAttribute("data-scene"), 10)); });
   });
+
+  /* -------------------------------------------------------
+     属性面板。四个滑块直接进着色器，预览当场重画。
+     首屏那块画布一起跟着改 —— 滚回顶上时看到的是你调过的那张，
+     不然「你在调的是壁纸」这句话就只是网页上的一个小玩具。
+     ------------------------------------------------------- */
+  (function () {
+    var box = document.getElementById("mixer");
+    if (!box) return;
+    var out = document.getElementById("mix-json");
+    var DEF = { speed: 100, grain: 100, par: 100, tint: 0 };
+    var ids = { speed: "mix-speed", grain: "mix-grain", par: "mix-par", tint: "mix-tint" };
+    var outs = { speed: "out-speed", grain: "out-grain", par: "out-par", tint: "out-tint" };
+    var el = {}, lab = {};
+    for (var k in ids) {
+      el[k] = document.getElementById(ids[k]);
+      lab[k] = document.getElementById(outs[k]);
+      if (!el[k]) return;
+    }
+
+    function read() {
+      return {
+        speed: el.speed.value / 100,
+        grain: el.grain.value / 100,
+        par:   el.par.value / 100,
+        tint:  el.tint.value / 100
+      };
+    }
+
+    function apply() {
+      var m = read();
+      lab.speed.textContent = m.speed.toFixed(2) + "×";
+      lab.grain.textContent = m.grain.toFixed(2) + "×";
+      lab.par.textContent   = m.par.toFixed(2) + "×";
+      lab.tint.textContent  = (m.tint >= 0 ? "+" : "") + m.tint.toFixed(2);
+
+      if (galleryRenderer) galleryRenderer.setMods(m);
+      hero.setMods(m);
+
+      // 读数取「算完之后」的真实值，不是滑块自己那份倍数
+      var r = (galleryRenderer && galleryRenderer.resolved) ? galleryRenderer.resolved() : null;
+      if (out && r) {
+        out.textContent =
+          "{\n" +
+          '  "speed":    ' + r.speed.toFixed(3) + ",\n" +
+          '  "grain":    ' + r.grain.toFixed(3) + ",\n" +
+          '  "parallax": ' + m.par.toFixed(2) + ",\n" +
+          '  "tint":     ' + m.tint.toFixed(2) + "\n" +
+          "}";
+      }
+    }
+
+    for (var n in el) {
+      el[n].addEventListener("input", apply);
+    }
+    var reset = document.getElementById("mix-reset");
+    if (reset) {
+      reset.addEventListener("click", function () {
+        for (var n2 in el) el[n2].value = DEF[n2];
+        apply();
+      });
+    }
+    // 换一张壁纸之后读数要跟着变 —— 倍数没动，但基准换了
+    var origSelect = selectGalleryScene;
+    selectGalleryScene = function (i) { origSelect(i); apply(); };
+    apply();
+  })();
   if (galleryRenderer && galleryShowcase) {
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (es) {
@@ -2141,27 +2420,287 @@ body[data-page="details"] main { padding-top: 96px; }
 </script>
 
 <script>
-/* 左边那条进度尺。纯装饰，所以单独一个 script —— 就算它整段抛异常，
-   上面那份带交互的脚本也已经跑完了，不会被牵连。 */
+/* 交互层：换幕、光标、命令面板、章节 HUD。
+   单独一段，和上面那份带渲染器的脚本互不牵连 —— 这里全是锦上添花的东西，
+   坏掉不该把「壁纸能不能预览、开关能不能扳」一起带走。
+   每一项都先问一句「没有它页面还能用吗」，答案必须是能。 */
 (function () {
   "use strict";
+  var I18N = window.__I18N || {};
+  function T(k) { return Object.prototype.hasOwnProperty.call(I18N, k) ? I18N[k] : k; }
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var NAV_H = 92;
+
+  /* ---------- 换幕 ---------- */
+  var wipe = document.getElementById("wipe");
+  var wiping = false;
+  function curtain(go) {
+    if (reduce || !wipe || wiping) { go(); return; }
+    wiping = true;
+    wipe.setAttribute("data-on", "in");
+    setTimeout(function () {
+      go();
+      wipe.setAttribute("data-on", "out");
+    }, 260);
+    setTimeout(function () {
+      wipe.removeAttribute("data-on");
+      wiping = false;
+    }, 620);
+  }
+
+  function jumpTo(el) {
+    // 换幕期间不要再走平滑滚动：红块落下来的那一刻位置就该已经到了，
+    // 否则幕布拉开时页面还在自己飘。
+    var prev = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    var y = el.getBoundingClientRect().top + window.scrollY - NAV_H;
+    window.scrollTo(0, Math.max(0, y));
+    document.documentElement.style.scrollBehavior = prev;
+  }
+
+  function go(href) {
+    var url;
+    try { url = new URL(href, location.href); } catch (e) { location.href = href; return; }
+    var samePage = url.origin === location.origin && url.pathname === location.pathname;
+    if (samePage && url.hash) {
+      var el = document.querySelector(url.hash);
+      if (!el) { location.href = href; return; }
+      curtain(function () {
+        jumpTo(el);
+        history.pushState(null, "", url.hash);
+        // 锚点跳转之后焦点得跟过去，否则读屏和键盘用户还停在原地
+        el.setAttribute("tabindex", "-1");
+        el.focus({ preventScroll: true });
+      });
+      return;
+    }
+    curtain(function () { location.href = href; });
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a) return;
+    // 新标签页、下载、外站、带修饰键的点击，一律不接管 ——
+    // 接管了就等于把「按住 ⌘ 在新标签打开」这种基本行为弄坏了。
+    if (a.target || a.hasAttribute("download")) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    var url;
+    try { url = new URL(a.getAttribute("href"), location.href); } catch (err) { return; }
+    if (url.origin !== location.origin) return;
+    if (url.protocol !== "http:" && url.protocol !== "https:") return;
+    e.preventDefault();
+    go(url.href);
+  });
+
+  /* ---------- 光标 ----------
+     系统光标不藏。藏掉之后一旦这段脚本出错，用户连指针都没了 ——
+     为一个装饰押上「还能不能用鼠标」，赌注下反了。 */
+  var cur = document.getElementById("cursor");
+  if (cur && !reduce && window.matchMedia("(pointer: fine)").matches) {
+    var cx = -100, cy = -100, tx = -100, ty = -100, craf = 0;
+    var HOT = "a,button,input,summary,label,.chip,.wall-card,.switch,.dsp-modes button";
+    window.addEventListener("pointermove", function (e) {
+      tx = e.clientX; ty = e.clientY;
+      cur.setAttribute("data-on", "true");
+      cur.setAttribute("data-hot", String(!!(e.target.closest && e.target.closest(HOT))));
+      if (!craf) craf = requestAnimationFrame(cursorStep);
+    }, { passive: true });
+    document.addEventListener("pointerleave", function () { cur.removeAttribute("data-on"); });
+    function cursorStep() {
+      cx += (tx - cx) * 0.22;
+      cy += (ty - cy) * 0.22;
+      var hot = cur.getAttribute("data-hot") === "true";
+      cur.style.transform = "translate(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px) rotate(45deg) scale("
+        + (hot ? 1.25 : 0.6) + ")";
+      craf = (Math.abs(tx - cx) > 0.4 || Math.abs(ty - cy) > 0.4) ? requestAnimationFrame(cursorStep) : 0;
+    }
+  }
+
+  /* ---------- 命令面板 ---------- */
+  var pal = document.getElementById("pal");
+  var palQ = document.getElementById("pal-q");
+  var palList = document.getElementById("pal-list");
+  var items = [], shown = [], sel = 0, lastFocus = null;
+
+  function collect() {
+    var out = [], seen = {};
+    // 本页的分节：编号 + 侧栏小标题 + 大标题，全部拿来当搜索词
+    Array.prototype.forEach.call(document.querySelectorAll("main .sec[id]"), function (sec) {
+      var num = sec.querySelector(".rail-num");
+      var rail = sec.querySelector(".rail > span:not(.rail-num)");
+      var h = sec.querySelector(".sec-h");
+      var label = (rail && rail.textContent.trim()) || (h && h.textContent.trim()) || sec.id;
+      out.push({
+        n: num ? num.textContent.trim() : "",
+        t: label,
+        s: "#" + sec.id,
+        href: "#" + sec.id
+      });
+      seen["#" + sec.id] = true;
+    });
+    // 导航里的去处：不用另写一份文案，导航怎么叫这里就怎么叫
+    Array.prototype.forEach.call(document.querySelectorAll(".nav-links a, .nav-cta"), function (a) {
+      var href = a.getAttribute("href");
+      var url;
+      try { url = new URL(href, location.href); } catch (e) { return; }
+      var key = (url.pathname === location.pathname ? "" : url.pathname) + url.hash;
+      if (seen[key] || seen[url.hash]) return;
+      seen[key] = true;
+      out.push({ n: "→", t: a.textContent.trim(), s: key || "/", href: href });
+    });
+    return out;
+  }
+
+  function render() {
+    palList.textContent = "";
+    palQ.removeAttribute("aria-activedescendant");
+    if (!shown.length) {
+      var li = document.createElement("li");
+      li.className = "empty";
+      li.textContent = T("js.cmd.empty");
+      palList.appendChild(li);
+      return;
+    }
+    shown.forEach(function (it, i) {
+      var li = document.createElement("li");
+      li.id = "pal-opt-" + i;
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", String(i === sel));
+      if (i === sel) palQ.setAttribute("aria-activedescendant", li.id);
+      var n = document.createElement("span"); n.className = "n"; n.textContent = it.n;
+      var t = document.createElement("span"); t.className = "t"; t.textContent = it.t;
+      var sfx = document.createElement("span"); sfx.className = "s"; sfx.textContent = it.s;
+      li.appendChild(n); li.appendChild(t); li.appendChild(sfx);
+      li.addEventListener("click", function () { closePal(); go(it.href); });
+      li.addEventListener("mousemove", function () {
+        if (sel === i) return;
+        sel = i; render();
+      });
+      palList.appendChild(li);
+    });
+  }
+
+  function filter() {
+    var q = palQ.value.trim().toLowerCase();
+    shown = q ? items.filter(function (it) {
+      return (it.t + " " + it.s + " " + it.n).toLowerCase().indexOf(q) >= 0;
+    }) : items.slice();
+    sel = 0;
+    render();
+  }
+
+  function openPal() {
+    if (!pal || pal.hidden === false) return;   // 没有面板，或者已经开着
+    lastFocus = document.activeElement;
+    items = collect();
+    palQ.value = "";
+    pal.hidden = false;
+    filter();
+    palQ.focus();
+  }
+  function closePal() {
+    if (!pal || pal.hidden) return;
+    pal.hidden = true;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  if (pal && palQ && palList) {
+    palQ.addEventListener("input", filter);
+    pal.addEventListener("mousedown", function (e) { if (e.target === pal) closePal(); });
+    pal.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); closePal(); return; }
+      // 面板里只有一个可聚焦控件，Tab 直接吃掉，焦点跑不出去
+      if (e.key === "Tab") { e.preventDefault(); return; }
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!shown.length) return;
+        sel = (sel + (e.key === "ArrowDown" ? 1 : shown.length - 1)) % shown.length;
+        render();
+        var act = palList.children[sel];
+        if (act && act.scrollIntoView) act.scrollIntoView({ block: "nearest" });
+        return;
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        var it = shown[sel];
+        if (it) { closePal(); go(it.href); }
+      }
+    });
+    var navK = document.getElementById("nav-k");
+    if (navK) navK.addEventListener("click", openPal);
+  }
+
+  /* ---------- 键盘 ---------- */
+  function typing(el) {
+    if (!el) return false;
+    var t = el.tagName;
+    return t === "INPUT" || t === "TEXTAREA" || t === "SELECT" || el.isContentEditable;
+  }
+  function sections() {
+    return Array.prototype.slice.call(document.querySelectorAll("main .sec[id]"));
+  }
+  /* 分节在文档里的绝对位置。**不能用 offsetTop** —— main 是 position:relative
+     （为了压在整页的网点和速度线之上），于是 section.offsetTop 是相对 main 的，
+     拿它跟 window.scrollY 比会整整差出一个首屏的高度。
+     实测：在第 02 节时 HUD 显示 03，J/K 也跳错一节。 */
+  function docTop(el) { return el.getBoundingClientRect().top + window.scrollY; }
+
+  // 还在首屏（一节都没过）时返回 -1，这样 HUD 上是空的而不是硬写个 01
+  function current(list) {
+    var y = window.scrollY + NAV_H + 4, i = -1;
+    for (var n = 0; n < list.length; n++) if (docTop(list[n]) <= y) i = n;
+    return i;
+  }
+  function step(dir) {
+    var list = sections();
+    if (!list.length) return;
+    var next = list[Math.min(list.length - 1, Math.max(0, current(list) + dir))];
+    if (next) jumpTo(next);
+  }
+  document.addEventListener("keydown", function (e) {
+    if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+      e.preventDefault(); openPal(); return;
+    }
+    if (typing(document.activeElement)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "/") { e.preventDefault(); openPal(); return; }
+    // 上下方向键不抢 —— 那是页面本来的滚动。跳分节用 J / K。
+    if (e.key === "j" || e.key === "J") { e.preventDefault(); step(1); }
+    else if (e.key === "k" || e.key === "K") { e.preventDefault(); step(-1); }
+  });
+
+  /* ---------- 左边那条尺 + 章节号 ---------- */
   var bar = document.getElementById("hud-bar");
   var num = document.getElementById("hud-num");
-  if (!bar || !num) return;
-  var tick = false;
-  function paint() {
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
-    bar.style.height = (p * 100).toFixed(2) + "%";
-    num.textContent = String(Math.round(p * 100)).padStart(2, "0");
+  var chap = document.getElementById("hud-chap");
+  if (bar && num) {
+    var tick = false, lastChap = "";
+    function paint() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+      bar.style.height = (p * 100).toFixed(2) + "%";
+      num.textContent = String(Math.round(p * 100)).padStart(2, "0");
+
+      if (!chap) return;
+      var list = sections(), ci = current(list);
+      var hit = ci >= 0 ? list[ci] : null;
+      var el = hit && hit.querySelector(".rail-num");
+      var txt = el ? el.textContent.trim() : "";
+      if (txt !== lastChap) {
+        lastChap = txt;
+        chap.textContent = txt;
+        chap.setAttribute("data-flip", "true");
+        setTimeout(function () { chap.removeAttribute("data-flip"); }, 700);
+      }
+    }
+    window.addEventListener("scroll", function () {
+      if (tick) return;
+      tick = true;
+      requestAnimationFrame(function () { tick = false; paint(); });
+    }, { passive: true });
+    window.addEventListener("resize", paint);
+    paint();
   }
-  window.addEventListener("scroll", function () {
-    if (tick) return;
-    tick = true;
-    requestAnimationFrame(function () { tick = false; paint(); });
-  }, { passive: true });
-  window.addEventListener("resize", paint);
-  paint();
 })();
 </script>
 
