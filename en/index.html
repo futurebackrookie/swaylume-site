@@ -310,7 +310,10 @@ code, .mono { font-family: var(--f-mono); }
 .lang-name { flex: 1; }
 .lang-code { font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em; }
 
-@media (max-width: 1080px) { .nav-links { display: none; } }
+/* 导航项现在有八个，德语和法语的词又长。先收紧再隐藏 ——
+   一步就整排消失的话，1100px 的笔电上导航会突然只剩一个 ⌘K。 */
+@media (max-width: 1340px) { .nav-links a { padding: 8px 7px; font-size: 12px; letter-spacing: 0; } }
+@media (max-width: 1120px) { .nav-links { display: none; } }
 @media (max-width: 560px) {
   .nav-in { height: 66px; gap: 10px; }
   .brand { font-size: 21px; }
@@ -1356,6 +1359,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="/swaylume-site/en/details/#wallpapers">Find wallpapers</a>
       <a href="/swaylume-site/en/details/#trust">Privacy</a>
       <a href="/swaylume-site/en/details/#faq">FAQ</a>
+      <a href="/swaylume-site/en/format/">Make one</a>
       <a href="/swaylume-site/en/#get">Download</a>
     </div>
     <button class="nav-k" id="nav-k" type="button" aria-label="Open command palette">⌘K</button>
@@ -1904,6 +1908,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
 </section>
 
 
+
 </main>
 
 <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span></div></div>
@@ -1913,6 +1918,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     <span>Swaylume · live wallpapers for macOS</span>
     <div class="foot-links">
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Beta builds</a>
+      <a href="/swaylume-site/en/format/">Make one</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">Wallpaper catalogue</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Submit a wallpaper</a>
       <a href="/swaylume-site/en/#top">Back to top</a>

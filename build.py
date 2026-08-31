@@ -37,6 +37,10 @@ DEFAULT = "zh-Hans"
 PAGES = {
     "home":    ("",         "x.title1",      "meta.description"),
     "details":  ("details", "details.title", "details.description"),
+    # 包格式单独一页。它面向的是想做壁纸的人，跟「想马上用」的人需求完全不同，
+    # 挤进首页只会互相稀释；而放在私有仓库的 docs/ 里等于没公开 ——
+    # 站点上写着「欢迎投稿、格式清楚」，格式却在外面看不到。
+    "format":  ("format",  "fmt.title",     "fmt.description"),
 }
 
 
@@ -186,6 +190,33 @@ def analytics_note(entries):
     return f'<p class="trust-note rise">{entries["trust.analytics"]}</p>'
 
 
+TAGS = re.compile(r"<[^>]+>")
+
+
+def faq_schema(entries):
+    """常见问题的结构化数据。
+
+    有了它，搜索结果里可以直接把问答展开 —— 对一个主要靠
+    「wallpaper engine mac 平替」这类问句式搜索进来的产品，这是白捡的位置。
+
+    答案里带 HTML（<strong>、<a>），schema.org 要的是纯文本，所以标签得剥掉。
+    问答条目从词条里现取，不另抄一份 —— 抄一份就多一处会忘记同步的地方。
+    """
+    items = []
+    n = 1
+    while f"faq.q{n}" in entries and f"faq.a{n}" in entries:
+        q = TAGS.sub("", str(entries[f"faq.q{n}"])).strip()
+        a = TAGS.sub("", str(entries[f"faq.a{n}"])).strip()
+        items.append({"@type": "Question", "name": q,
+                      "acceptedAnswer": {"@type": "Answer", "text": a}})
+        n += 1
+    if not items:
+        return []
+    blob = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+                       "mainEntity": items}, ensure_ascii=False, separators=(",", ":"))
+    return [f'<script type="application/ld+json">{blob}</script>']
+
+
 def head(code, entries, page="home"):
     subdir, lang, og_locale, _ = LOCALES[code]
     title_key, desc_key = PAGES[page][1], PAGES[page][2]
@@ -232,6 +263,10 @@ def head(code, entries, page="home"):
         f'<link rel="icon" type="image/png" href="{SITE_URL}/icon.png">',
         f'<link rel="apple-touch-icon" href="{SITE_URL}/icon.png">',
     ]
+    # 常见问题只在 /details 上，结构化数据也只该出现在那一页 ——
+    # 每页都放一份等于告诉搜索引擎首页也有 FAQ，实际点进去没有。
+    if page == "details":
+        lines += faq_schema(entries)
     lines += analytics_tag()
     lines += [
         "</head>",
@@ -303,6 +338,7 @@ def render(template, entries, code, page="home"):
     subdir = LOCALES[code][0]
     out = out.replace("%%HOME%%", page_href(base, subdir, "home"))
     out = out.replace("%%DETAILS%%", page_href(base, subdir, "details"))
+    out = out.replace("%%FORMAT%%", page_href(base, subdir, "format"))
     # 站点自己的访问统计声明。关掉统计时输出空串 —— 页面上有一整节在讲隐私，
     # 挂了计数器却只字不提，被人打开开发者工具看见就是自打嘴巴；
     # 反过来，没挂统计还写着「本站使用统计」同样是假话。所以跟着开关走。

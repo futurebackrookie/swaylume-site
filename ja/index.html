@@ -310,7 +310,10 @@ code, .mono { font-family: var(--f-mono); }
 .lang-name { flex: 1; }
 .lang-code { font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em; }
 
-@media (max-width: 1080px) { .nav-links { display: none; } }
+/* 导航项现在有八个，德语和法语的词又长。先收紧再隐藏 ——
+   一步就整排消失的话，1100px 的笔电上导航会突然只剩一个 ⌘K。 */
+@media (max-width: 1340px) { .nav-links a { padding: 8px 7px; font-size: 12px; letter-spacing: 0; } }
+@media (max-width: 1120px) { .nav-links { display: none; } }
 @media (max-width: 560px) {
   .nav-in { height: 66px; gap: 10px; }
   .brand { font-size: 21px; }
@@ -1356,6 +1359,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="/swaylume-site/ja/details/#wallpapers">壁紙を探す</a>
       <a href="/swaylume-site/ja/details/#trust">プライバシー</a>
       <a href="/swaylume-site/ja/details/#faq">よくある質問</a>
+      <a href="/swaylume-site/ja/format/">壁紙を作る</a>
       <a href="/swaylume-site/ja/#get">入手する</a>
     </div>
     <button class="nav-k" id="nav-k" type="button" aria-label="コマンドパレットを開く">⌘K</button>
@@ -1902,6 +1906,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
 </section>
 
 
+
 </main>
 
 <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span></div></div>
@@ -1911,6 +1916,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     <span>Swaylume · macOS のライブ壁紙</span>
     <div class="foot-links">
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">ベータビルド</a>
+      <a href="/swaylume-site/ja/format/">壁紙を作る</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">壁紙カタログ</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">壁紙を投稿</a>
       <a href="/swaylume-site/ja/#top">トップへ戻る</a>

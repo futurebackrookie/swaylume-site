@@ -1,25 +1,25 @@
 <!doctype html>
-<html lang="ja">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>技術的な詳細と壁紙の入手先 — Swaylume</title>
-<meta name="description" content="オーディオ反応の仕組み、始め方の3つの道筋、ライブ壁紙の入手先と各サイトのライセンス条件、プライバシーと互換性の範囲、そしてよくある質問。">
+<title>Créer un fond d’écran Swaylume — le format .swaylume</title>
+<meta name="description" content="Créer un fond d’écran animé qui tourne dans Swaylume : structure du dossier, chaque champ de manifest.json, l’encodage des paramètres réglables, le modèle de profondeur des fonds en calques, et la vérification avant soumission.">
 <meta name="google-site-verification" content="93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318">
-<link rel="canonical" href="https://futurebackrookie.github.io/swaylume-site/ja/details/">
-<link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/details/">
-<link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/details/">
-<link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/details/">
-<link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/details/">
-<link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/details/">
-<link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/details/">
+<link rel="canonical" href="https://futurebackrookie.github.io/swaylume-site/fr/format/">
+<link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/format/">
+<link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/format/">
+<link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/format/">
+<link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/format/">
+<link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/format/">
+<link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/format/">
 <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#EBE4D3" media="(prefers-color-scheme: light)">
-<meta property="og:title" content="技術的な詳細と壁紙の入手先 — Swaylume">
-<meta property="og:description" content="オーディオ反応の仕組み、始め方の3つの道筋、ライブ壁紙の入手先と各サイトのライセンス条件、プライバシーと互換性の範囲、そしてよくある質問。">
+<meta property="og:title" content="Créer un fond d’écran Swaylume — le format .swaylume">
+<meta property="og:description" content="Créer un fond d’écran animé qui tourne dans Swaylume : structure du dossier, chaque champ de manifest.json, l’encodage des paramètres réglables, le modèle de profondeur des fonds en calques, et la vérification avant soumission.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="ja_JP">
-<meta property="og:url" content="https://futurebackrookie.github.io/swaylume-site/ja/details/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://futurebackrookie.github.io/swaylume-site/fr/format/">
 <meta property="og:image" content="https://futurebackrookie.github.io/swaylume-site/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -27,10 +27,9 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Swaylume","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"電力を食いませんか？","acceptedAnswer":{"@type":"Answer","text":"デフォルトでは、誰にも見えないときは 1 フレームも描画しません。画面がウインドウで完全に覆われた場合、ロック画面、ディスプレイスリープ、システムスリープ、低電力モードにはそれぞれ停止理由があり、復帰時に自動再開します。任意の「ロック解除遅延ゼロ（プリウォーム）」もアニメーションとメディアを停止し、少量の追加メモリと引き換えにビデオパイプラインと Web プロセスだけを待機させます。システムスリープ中はプリウォームせず、有効化前に app が影響を説明します。判断はすべて 1 つのガバナーに集約され、停止理由はログに残ります。"}},{"@type":"Question","name":"自分の動画や画像を使えますか？","acceptedAnswer":{"@type":"Answer","text":"使えます。ウインドウにドラッグするだけです。動画は mp4 / mov / m4v（H.264 または HEVC）、画像は一般的な形式と GIF、ウェブ壁紙は HTML / WebGL に対応します。webm / VP9 はそのままでは再生できず、先に変換が必要です —— AVFoundation がこの 2 つのコーデックをデコードできないためで、プラットフォームの制限です。"}},{"@type":"Question","name":"Wallpaper Engine と比べてどうですか？","acceptedAnswer":{"@type":"Answer","text":"正直に言うと、それぞれに強みがあります。あちらにあってこちらにないもの：数百万点のワークショップ、ネイティブの Scene 描画、成熟したエディタ。こちらにあってあちらにないもの：Space ごとに別の壁紙（Windows では実現できません）、日の出・日の入りでの自動切り替え、そして明らかに真面目な省電力設計。さらに向こうには macOS 版がなく、手持ちのコレクションは変換ツールで持ってこられます。"}},{"@type":"Question","name":"初回起動がブロックされました。壊れているのですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。このビルドはまだ Apple の公証を受けていません —— 公証には有料の開発者アカウントが必要です。macOS は「開発元を検証できません」と表示しますが、「システム設定 →プライバシーとセキュリティ →セキュリティ」で一度「このまま開く」を押せば済みます。すべてマウス操作、ターミナル不要、初回だけです。詳しい手順はダウンロード欄にあります。"}},{"@type":"Question","name":"データはアップロードされますか？","acceptedAnswer":{"@type":"Answer","text":"されません。壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac に留まります。自動アップロードはなく、広告トラッキングのスクリプトもありません。通信するのは、あなたが自分で壁紙カタログを更新したときにインデックスを取得する場面だけです。診断レポートは自分で書き出したときだけ生成され、含まれるのは状態とエラーで、壁紙ファイルは含まれません。"}},{"@type":"Question","name":"対応している Mac は？","acceptedAnswer":{"@type":"Answer","text":"macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。"}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
-<body data-page="details">
+<body data-page="format">
 <style>
 /* ===========================================================
    Swaylume 官网 —— 视觉语言：「予告状」CALLING CARD
@@ -1333,20 +1332,20 @@ body[data-page="details"] main { padding-top: 96px; }
 <div class="cursor" id="cursor" aria-hidden="true"></div>
 
 <div class="pal" id="pal" hidden>
-  <div class="pal-box" role="dialog" aria-modal="true" aria-label="コマンドパレットを開く">
+  <div class="pal-box" role="dialog" aria-modal="true" aria-label="Ouvrir la palette de commandes">
     <input id="pal-q" type="text" autocomplete="off" spellcheck="false"
            role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list"
-           placeholder="移動先を検索…（セクション・ダウンロード・FAQ）" aria-label="移動先を検索…（セクション・ダウンロード・FAQ）">
+           placeholder="Aller à… (sections, téléchargement, FAQ)" aria-label="Aller à… (sections, téléchargement, FAQ)">
     <ul id="pal-list" role="listbox"></ul>
-    <div class="pal-foot">↑↓ 選択 · ↵ 移動 · Esc 閉じる</div>
+    <div class="pal-foot">↑↓ choisir · ↵ aller · Esc fermer</div>
   </div>
 </div>
 
 <!-- ============================== 导航 ============================== -->
-<a class="skip-link" href="#main-content">本文へスキップ</a>
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
 <nav class="nav" id="nav">
   <div class="nav-in">
-    <a class="brand" href="/swaylume-site/ja/#top">
+    <a class="brand" href="/swaylume-site/fr/#top">
       <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
         <path d="M20 1 24.6 13.4 37 8.8l-6.2 11.4L40 26.4l-13 1.6 2.4 12.0-9.4-8.2-9.4 8.2L13 28 0 26.4l9.2-6.2L3 8.8l12.4 4.6Z" fill="#E60012"/>
         <path d="M20 11.5 22 18.2l6.6.2-5.2 4 1.9 6.4-5.3-3.9-5.3 3.9 1.9-6.4-5.2-4 6.6-.2Z" fill="#0D0D0F"/>
@@ -1354,18 +1353,18 @@ body[data-page="details"] main { padding-top: 96px; }
       Swaylume
     </a>
     <div class="nav-links">
-      <a href="/swaylume-site/ja/#gallery">壁紙</a>
-      <a href="/swaylume-site/ja/#layers">ネイティブ</a>
-      <a href="/swaylume-site/ja/details/#paths">はじめ方</a>
-      <a href="/swaylume-site/ja/details/#wallpapers">壁紙を探す</a>
-      <a href="/swaylume-site/ja/details/#trust">プライバシー</a>
-      <a href="/swaylume-site/ja/details/#faq">よくある質問</a>
-      <a href="/swaylume-site/ja/format/">壁紙を作る</a>
-      <a href="/swaylume-site/ja/#get">入手する</a>
+      <a href="/swaylume-site/fr/#gallery">Fonds d’écran</a>
+      <a href="/swaylume-site/fr/#layers">Natif</a>
+      <a href="/swaylume-site/fr/details/#paths">Commencer</a>
+      <a href="/swaylume-site/fr/details/#wallpapers">En trouver</a>
+      <a href="/swaylume-site/fr/details/#trust">Confidentialité</a>
+      <a href="/swaylume-site/fr/details/#faq">FAQ</a>
+      <a href="/swaylume-site/fr/format/">En créer un</a>
+      <a href="/swaylume-site/fr/#get">Obtenir</a>
     </div>
-    <button class="nav-k" id="nav-k" type="button" aria-label="コマンドパレットを開く">⌘K</button>
-    <details class="langs" data-langs><summary aria-label="Language"><svg class="lang-globe" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 7h10.8M7 1.6c1.5 1.6 2.2 3.4 2.2 5.4S8.5 10.8 7 12.4c-1.5-1.6-2.2-3.4-2.2-5.4S5.5 3.2 7 1.6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span class="lang-here">日本語</span><svg class="lang-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ul class="lang-menu"><li><a href="/swaylume-site/details/" hreflang="zh-Hans" lang="zh-Hans"><span class="lang-tick"></span><span class="lang-name">简体中文</span><span class="lang-code">zh-Hans</span></a></li><li><a href="/swaylume-site/en/details/" hreflang="en" lang="en"><span class="lang-tick"></span><span class="lang-name">English</span><span class="lang-code">en</span></a></li><li><a href="/swaylume-site/ja/details/" hreflang="ja" lang="ja" aria-current="true"><span class="lang-tick" aria-hidden="true">✓</span><span class="lang-name">日本語</span><span class="lang-code">ja</span></a></li><li><a href="/swaylume-site/de/details/" hreflang="de" lang="de"><span class="lang-tick"></span><span class="lang-name">Deutsch</span><span class="lang-code">de</span></a></li><li><a href="/swaylume-site/fr/details/" hreflang="fr" lang="fr"><span class="lang-tick"></span><span class="lang-name">Français</span><span class="lang-code">fr</span></a></li></ul></details>
-    <a class="nav-cta" href="/swaylume-site/ja/#get"><span>ダウンロード</span></a>
+    <button class="nav-k" id="nav-k" type="button" aria-label="Ouvrir la palette de commandes">⌘K</button>
+    <details class="langs" data-langs><summary aria-label="Language"><svg class="lang-globe" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 7h10.8M7 1.6c1.5 1.6 2.2 3.4 2.2 5.4S8.5 10.8 7 12.4c-1.5-1.6-2.2-3.4-2.2-5.4S5.5 3.2 7 1.6Z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span class="lang-here">Français</span><svg class="lang-caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><ul class="lang-menu"><li><a href="/swaylume-site/format/" hreflang="zh-Hans" lang="zh-Hans"><span class="lang-tick"></span><span class="lang-name">简体中文</span><span class="lang-code">zh-Hans</span></a></li><li><a href="/swaylume-site/en/format/" hreflang="en" lang="en"><span class="lang-tick"></span><span class="lang-name">English</span><span class="lang-code">en</span></a></li><li><a href="/swaylume-site/ja/format/" hreflang="ja" lang="ja"><span class="lang-tick"></span><span class="lang-name">日本語</span><span class="lang-code">ja</span></a></li><li><a href="/swaylume-site/de/format/" hreflang="de" lang="de"><span class="lang-tick"></span><span class="lang-name">Deutsch</span><span class="lang-code">de</span></a></li><li><a href="/swaylume-site/fr/format/" hreflang="fr" lang="fr" aria-current="true"><span class="lang-tick" aria-hidden="true">✓</span><span class="lang-name">Français</span><span class="lang-code">fr</span></a></li></ul></details>
+    <a class="nav-cta" href="/swaylume-site/fr/#get"><span>Télécharger</span></a>
   </div>
 </nav>
 
@@ -1373,176 +1372,122 @@ body[data-page="details"] main { padding-top: 96px; }
 <main id="main-content" tabindex="-1">
 
 
-<!-- ============================== § 音频 ============================== -->
-<section class="sec" id="audio">
+
+<!-- ============================== § 包的结构 ============================== -->
+<section class="sec" id="layout">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">01</span><span>音に反応</span></div>
+    <div class="rail"><span class="rail-num">01</span><span>Structure</span></div>
     <div>
-      <!-- 提成 h1 是因为 /details 整页原本一个都没有（每节都是 h2），
-           文档大纲缺顶。.sec-h 样式不变，视觉上看不出区别。 -->
-      <h1 class="sec-h rise">4096 点 FFT、64 バンドの対数分割。</h1>
-      <p class="sec-p rise">
-        ハン窓、実数 FFT、対数分割、ピーク減衰の平滑化を経て、壁紙ページが期待する 128 個の値にまとめます。
-        設定で入力デバイスを選べ、そのすぐ横にリアルタイムのスペクトラムバーがあるので、信号が来ているかどうかが
-        一目で分かります。
-        <strong>既定はオフ</strong>なので、有効にしない限りマイクの許可を求めることはありません。
-      </p>
+      <h1 class="sec-h rise">En créer un est plus simple que vous ne croyez.</h1>
+      <p class="sec-p rise">Un <code>.swaylume</code> n’est qu’un dossier — macOS l’enregistre comme bundle, le Finder affiche donc un seul fichier. Dedans : un manifeste qui dit ce que c’est, et un <code>content/</code> avec la matière. C’est tout. <strong>Aucune étape de compilation, aucun SDK, aucun compte à créer.</strong></p>
 
-      <div class="spectrum-shell rise">
-        <div class="spectrum" id="spectrum" aria-hidden="true"></div>
-        <div class="spectrum-foot">
-          <span>20 Hz</span><span>200 Hz</span><span>2 kHz</span><span>20 kHz</span>
-        </div>
-      </div>
+      <h2 class="src-h rise">Un manifeste, un dossier.</h2>
+      <p class="sec-p rise"><code>preview.jpg</code> est facultatif — sans lui, Swaylume choisit lui-même une image de couverture dans la matière (pour la vidéo il évite les images noires et prend celle dont la variance de luminosité est la plus forte). Le contenu de <code>content/</code> dépend de <code>type</code>.</p>
 
-      <div class="note rise">
-        <b>正直に言うと：macOS はアプリがシステムの再生音を直接キャプチャすることを許していません。</b>
-        BlackHole のようなループバックデバイスを入れないかぎり、拾えるのはマイク越しの周囲の音であって、
-        いま聴いている曲ではありません。機能自体は完成していますが、この前提だけはご自身で満たす必要があります ——
-        これはプラットフォームの制限であって、作りかけという意味ではありません。
+      <div class="code rise">MyWallpaper.swaylume/
+├── <b>manifest.json</b>          <span class="c">// 必需 / required</span>
+├── preview.jpg            <span class="c">// 可选 / optional</span>
+└── <b>content/</b>              <span class="c">// 必需 / required</span>
+    ├── video.mp4              <span class="c">// type == "video"</span>
+    ├── index.html + assets/   <span class="c">// type == "web"</span>
+    ├── image.png              <span class="c">// type == "image"</span>
+    └── layers.json + *.png    <span class="c">// type == "layered"</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 清单 ============================== -->
+<section class="sec" id="manifest">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">02</span><span>Manifeste</span></div>
+    <div>
+      <h2 class="sec-h rise">Ce que contient manifest.json.</h2>
+      <p class="sec-p rise">Quatre champs requis, le reste est facultatif. Le lecteur ignore les champs qu’il ne connaît pas : un extra n’est jamais une erreur.</p>
+
+      <div class="code rise">{
+  <span class="k">"formatVersion"</span>: 1,
+  <span class="k">"title"</span>:  "Neon City",
+  <span class="k">"author"</span>: "someone",
+  <span class="k">"type"</span>:   "video",
+  <span class="k">"entry"</span>:  "video.mp4",
+  <span class="k">"preview"</span>: "preview.jpg",
+  <span class="k">"fillMode"</span>: "fill",
+  <span class="k">"muted"</span>: true
+}</div>
+
+      <div class="table-scroll rise">
+        <table><thead><tr><th>Champ</th><th>Requis</th><th>Remarques</th></tr></thead><tbody><tr><td>formatVersion</td><td><span class="st" data-v="ok">Requis</span></td><td>Toujours <b>1</b> pour l’instant. L’app refuse un paquet plus récent qu’elle</td></tr><tr><td>title</td><td><span class="st" data-v="ok">Requis</span></td><td>Nom affiché</td></tr><tr><td>type</td><td><span class="st" data-v="ok">Requis</span></td><td><b>video</b> / <b>web</b> / <b>image</b> / <b>layered</b></td></tr><tr><td>entry</td><td><span class="st" data-v="ok">Requis</span></td><td>Fichier d’entrée, relatif à <code>content/</code></td></tr><tr><td>author</td><td></td><td>Crédit<small>Affiché dans la bibliothèque et l’inspecteur</small></td></tr><tr><td>preview</td><td></td><td>Image d’aperçu, relative à la racine du paquet</td></tr><tr><td>fillMode</td><td></td><td><b>fill</b> / fit / stretch / center<small>Par défaut : fill</small></td></tr><tr><td>muted</td><td></td><td>Par défaut <b>true</b><small>Utile seulement si la matière a du son</small></td></tr><tr><td>properties</td><td></td><td>Paramètres réglables<small>Uniquement pour les fonds web — voir plus bas</small></td></tr><tr><td>sourceNote</td><td></td><td>Note de provenance<small>Affichage seul, sans effet sur la logique</small></td></tr></tbody></table>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================== § 三条开始路径 ============================== -->
-<section class="sec" id="paths">
+<!-- ============================== § 可调参数 ============================== -->
+<section class="sec" id="properties">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">02</span><span>はじめ方</span></div>
+    <div class="rail"><span class="rail-num">03</span><span>Paramètres</span></div>
     <div>
-      <h2 class="sec-h rise">あなたがどこから来たかで、Swaylume の入口も変わります。</h2>
-      <p class="sec-p rise">
-        はじめてライブ壁紙を設定するのと、Windows のコレクションを持ち込むのと、自分の作品を投稿するのとでは、
-        必要なものが違います。だからここでは 3 つの道を分けています。全員をひとつの README に放り込みません。
-      </p>
-      <div class="path-grid rise">
-        <article class="path-card">
-          <span class="path-step">01 / すぐ使いたい</span>
-          <h3>ライブ壁紙を 1 枚選んで、デスクトップに置く。</h3>
-          <p>カタログから `.swaylume` をダウンロードして、アプリにドラッグするだけ。動画・画像・ウェブ・レイヤー壁紙は、それぞれ専用のネイティブレンダラーで動きます。</p>
-          <a href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">カタログを見る</a>
-        </article>
-        <article class="path-card">
-          <span class="path-step">02 / Wallpaper Engine から</span>
-          <h3>コレクションを持ち込む。ゼロからやり直さない。</h3>
-          <p>変換ツールが読むのは、すでにお使いのコンピュータにある Wallpaper Engine のプロジェクトだけです。Steam へのログインもダウンロードもありません。動画とウェブ形式を優先して対応し、Scene には事前レンダリングの手順を明示しています。</p>
-          <a href="/swaylume-site/ja/#import">対応範囲と変換方法を見る</a>
-        </article>
-        <article class="path-card">
-          <span class="path-step">03 / 壁紙をつくる人へ</span>
-          <h3>1 枚つくって、誰かのデスクトップを動かす。</h3>
-          <p>まずは費用ゼロのカタログへの投稿から。明確なフォーマット、チェックサム、バージョン履歴、そして目に見える審査の記録があります。アップロードを本格的に開放するまで、リスクを作者に押しつけることはしません。</p>
-          <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">投稿ガイドを読む</a>
-        </article>
+      <h2 class="sec-h rise">Laissez régler votre fond depuis l’inspecteur.</h2>
+      <p class="sec-p rise">Fonds web uniquement. <strong>Ce que vous déclarez dans le manifeste est exactement ce qui apparaît dans l’inspecteur de Swaylume</strong> — interrupteurs, curseurs, couleurs, sélecteurs de fichier, champs texte. Les valeurs atteignent la page pendant le glissement, sans rechargement.</p>
+
+      <div class="code rise"><span class="k">"properties"</span>: {
+  <span class="k">"speed"</span>:     { <span class="k">"number"</span>: { <span class="k">"_0"</span>: { <span class="k">"value"</span>: 0.35, <span class="k">"min"</span>: 0, <span class="k">"max"</span>: 1 } } },
+  <span class="k">"showtext"</span>:  { <span class="k">"bool"</span>:   { <span class="k">"_0"</span>: true } },
+  <span class="k">"greeting"</span>:  { <span class="k">"text"</span>:   { <span class="k">"_0"</span>: "hello" } },
+  <span class="k">"schemecolor"</span>: { <span class="k">"color"</span>: { <span class="k">"_0"</span>: "0.2 0.6 1" } },
+  <span class="k">"background"</span>:  { <span class="k">"file"</span>:  { <span class="k">"_0"</span>: { <span class="k">"fileType"</span>: "image" } } }
+}</div>
+
+      <div class="table-scroll rise" style="margin-top:24px">
+        <table><thead><tr><th>case</th><th>Type de <code>_0</code></th><th>Rendu dans l’inspecteur</th></tr></thead><tbody><tr><td>bool</td><td>Bool</td><td>Interrupteur</td></tr><tr><td>number</td><td><code>{ value, min, max }</code></td><td>Curseur</td></tr><tr><td>text</td><td>String</td><td>Champ texte</td></tr><tr><td>color</td><td>String, <code>"r g b"</code> — trois flottants 0…1</td><td>Sélecteur de couleur</td></tr><tr><td>file</td><td><code>{ fileType }</code></td><td>Sélecteur de fichier</td></tr><tr><td>directory</td><td><code>{ fileType }</code></td><td>Sélecteur de dossier</td></tr></tbody></table>
       </div>
+
+      <div class="note rise"><b>Pour <span class="mono">number</span>, <span class="mono">_0</span> est un objet, pas un nombre nu.</b> Un curseur ne se dessine pas sans sa plage — les curseurs de Wallpaper Engine se rencontrent en 0…1, 0…100, 0…359, 0…1000. Sans plage, l’inspecteur doit deviner, et chaque glissement tombe à côté.</div>
+      <div class="note rise"><b>Pour <span class="mono">file</span> / <span class="mono">directory</span>, vous n’écrivez que <span class="mono">fileType</span>.</b> Dès que l’utilisateur choisit quelque chose dans Swaylume, l’app y ajoute <span class="mono">bookmark</span> et <span class="mono">displayName</span> — un signet à portée de sécurité, présent uniquement dans la bibliothèque locale, qui <b>ne fait pas partie du format</b> et que l’export retire (il transporte vos noms de dossiers).</div>
+      <div class="note rise"><b>Les pages écrites pour Wallpaper Engine fonctionnent presque telles quelles.</b> Ces valeurs parviennent à la page sous la forme <span class="mono">{ name: { value, type } }</span> via <span class="mono">wallpaperPropertyListener.applyUserProperties</span>, conformément à la convention de Wallpaper Engine. Écoute des propriétés, tirage aléatoire de fichiers et rappels audio sont fournis par la couche de compatibilité.</div>
     </div>
   </div>
 </section>
 
-<!-- ============================== § 壁纸从哪来 ============================== -->
-<section class="sec" id="wallpapers">
+<!-- ============================== § 分层 ============================== -->
+<section class="sec" id="layered">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">03</span><span>壁紙を探す</span></div>
+    <div class="rail"><span class="rail-num">04</span><span>Calques</span></div>
     <div>
-      <h2 class="sec-h rise">Swaylume はコンテンツライブラリを同梱しません。素材はあなたが選びます。</h2>
-      <p class="sec-p rise">
-        mp4 も画像も HTML も、そのままドラッグして使えます。よく使われている場所をいくつか挙げておきます ——
-        <strong>これらのサイトのコンテンツをホストも転売も審査もしていません</strong>。道を示しているだけです。
-      </p>
-
-      <h3 class="src-h rise">ライセンスが明確</h3>
-      <p class="src-note rise">条項を 1 つずつ確認済みです：商用無料、クレジット表記不要、改変可。アプリ内のソース一覧に載せるのはこの区分だけです。</p>
-      <div class="gov-list rise">
-        <div class="gov-item src-item">
-          <b><a href="https://pixabay.com/videos/search/live%20wallpaper/" target="_blank" rel="noopener">Pixabay の動画 ↗</a></b>
-          <span>解像度で絞り込めば 4K が探せます。「live wallpaper」や「loop」で検索すると、そのまま使えるループ素材が多数見つかります。
-                <em>Pixabay Content License：商用無料、クレジット表記不要、改変可。ただし素材をそのまま単体で再配布・販売することは禁止されています。</em></span>
-        </div>
-        <div class="gov-item src-item">
-          <b><a href="https://www.pexels.com/videos/" target="_blank" rel="noopener">Pexels の動画 ↗</a></b>
-          <span>全体に品質が高く、向きや解像度で絞り込めます。
-                <em>Pexels License：無料で利用可、クレジット表記不要、改変可。ただし他の素材サイトや壁紙サイトでの再配布、および未改変コピーの販売は禁止されています。</em></span>
-        </div>
-      </div>
-
-      <h3 class="src-h rise">サードパーティのサイト</h3>
-      <p class="src-note rise">
-        アニメやゲーム風のライブ壁紙は、こうしたサイトに集まっています。これらは<strong>ライセンスを 1 点ずつ明示していません</strong>。
-        使う前にご自身で確認してください。
-      </p>
-      <div class="src-grid rise">
-        <a href="https://www.desktophut.com/" target="_blank" rel="noopener nofollow">DesktopHut ↗</a>
-        <a href="https://moewalls.com/" target="_blank" rel="noopener nofollow">MoeWalls ↗</a>
-        <a href="https://motionbgs.com/" target="_blank" rel="noopener nofollow">MotionBGS ↗</a>
-        <a href="https://livebgs.com/" target="_blank" rel="noopener nofollow">LiveBgs ↗</a>
-        <a href="https://livewallp.com/" target="_blank" rel="noopener nofollow">LiveWallp ↗</a>
-        <a href="https://livewallpapers4free.com/" target="_blank" rel="noopener nofollow">LiveWallpapers4Free ↗</a>
-        <a href="https://mylivewallpapers.com/" target="_blank" rel="noopener nofollow">MyLiveWallpapers ↗</a>
-        <a href="https://wallsflow.com/" target="_blank" rel="noopener nofollow">WallsFlow ↗</a>
-        <a href="https://wallpaperwaves.com/category/3840x2160/" target="_blank" rel="noopener nofollow">WallpaperWaves ↗</a>
-      </div>
-
-      <div class="note rise">
-        <b>これらのリンクは推奨を意味しません。</b>
-        Swaylume は上記サイトと一切関係がなく、運営にも関与しておらず、掲載物のライセンス状況・品質・安全性を保証できません。
-        <b>ダウンロード前にライセンスをご確認ください</b> —— 二次創作（アニメやゲームのキャラクターなど）の著作権は原作者に
-        帰属します。自分のマシンで使うことと、公開して配布することは別の話です。
-        問題のあるサイトを見つけたら、
-        <a href="https://github.com/futurebackrookie/swaylume-catalog/issues" target="_blank" rel="noopener">issue を立てて</a>お知らせください。取り下げます。
-      </div>
-
-      <div class="note rise" style="border-left-color:var(--slab)">
-        <b>自分でダウンロードして使える ≠ 投稿してよい。</b>
-        多くの無料素材サイトは、ダウンロードと利用は許可しても再配布は禁じています —— Pexels は
-        「他の素材サイトや壁紙サイトでの再配布」を明確に禁止しており、壁紙カタログはまさにそれに当たります。
-        コンテナ形式を変えることは「創作的な加工」には当たりません。ですので、この種の素材を
-        <b>カタログに投稿しないでください</b>。
-      </div>
+      <h2 class="sec-h rise">Parallaxe 2.5D : quelques images, chacune avec sa profondeur.</h2>
+      <p class="sec-p rise">Mettez <code>type</code> à <code>layered</code> et placez un <code>layers.json</code> et vos images détourées dans <code>content/</code>. <code>depth</code> va de 0 à 1 : <strong>0 est le plus loin et bouge à peine, 1 est le plus près et suit le curseur le plus</strong>. C’est le mouvement relatif entre les calques qui crée la profondeur — sans décodage vidéo, pour une consommation quasi nulle.</p>
+      <div class="code rise">
+<span class="c">// Toute la définition du format d’un fond d’écran en calques</span>
+{
+  <span class="k">"layers"</span>: [
+    { <span class="k">"image"</span>: "sky.png",   <span class="k">"depth"</span>: 0.0  },  <span class="c">// le plus loin, bouge à peine</span>
+    { <span class="k">"image"</span>: "hills.png", <span class="k">"depth"</span>: 0.45 },
+    { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// le plus près, bouge le plus</span>
+  ]
+}</div>
     </div>
   </div>
 </section>
 
-<!-- ============================== § 信任与边界 ============================== -->
-<section class="sec" id="trust">
+<!-- ============================== § 约定与投稿 ============================== -->
+<section class="sec" id="contract">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">04</span><span>境界線</span></div>
+    <div class="rail"><span class="rail-num">05</span><span>Engagement</span></div>
     <div>
-      <h2 class="sec-h rise">あなたのデスクトップは、誰かのクラウド素材庫ではありません。</h2>
-      <p class="sec-p rise">
-        ライブ壁紙は多くのローカルファイルに触れられます。だから Swaylume の既定方針は、権限は少なく、データは残さず、
-        大きなことは言わない。できることはきちんとやり、できないことははっきり伝えます。
-      </p>
-      <div class="trust-grid rise">
-        <article class="trust-card"><strong>ローカル優先。</strong><p>壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac の中にあります。自動アップロードはなく、広告トラッキングのスクリプトもありません。</p></article>
-        <article class="trust-card"><strong>公開 API のみ。</strong><p>デスクトップのウインドウレベル、複数 Space、省電力方針、ファイルアクセスはすべて macOS の公開機能を使っています。App Store 審査への道を塞ぎません。</p></article>
-        <article class="trust-card"><strong>診断は持ち出せます。</strong><p>黒画面や互換性の問題に当たったら、秘匿化済みのローカルレポートを書き出せます。含まれるのは状態とエラーで、壁紙ファイルは含まれません。</p></article>
-        <article class="trust-card"><strong>できないふりはしません。</strong><p>Windows のアプリケーション型壁紙と Scene のネイティブ描画には対応を約束しません。Scene には動画への事前レンダリングという正攻法があります。</p></article>
+      <h2 class="sec-h rise">Comment ce format a le droit d’évoluer.</h2>
+      <p class="sec-p rise">Seule une rupture touche à <code>formatVersion</code>. Autrement dit : <strong>un paquet créé aujourd’hui ne cessera pas de fonctionner parce que nous ajoutons un champ demain.</strong></p>
+
+      <div class="gov-list rise"><div class="gov-item"><b>Les nouveaux champs sont toujours facultatifs.</b><span>Le lecteur doit ignorer un champ inconnu plutôt qu’échouer. C’est une règle stricte, pas un conseil.</span></div><div class="gov-item"><b>formatVersion ne monte qu’en cas de rupture.</b><span>Ajouter un champ ne rompt rien. Si elle montait, les anciens paquets se chargeraient encore — sans la nouveauté.</span></div><div class="gov-item"><b>L’ancienne extension reste reconnue.</b><span>Les paquets exportés en .livewall avant le changement de nom contiennent le même format v1 ; association Finder et import fonctionnent comme avant. Seuls les nouveaux exports sont en .swaylume.</span></div><div class="gov-item"><b>L’écrivain et le lecteur ne font qu’un contrat.</b><span>Le convertisseur et le chemin d’import de l’app changent ensemble. Laisser un côté prendre de l’avance, c’est exporter des paquets qu’on ne sait plus relire.</span></div></div>
+
+      <div class="note rise"><b>Faites-le tourner chez vous avant de soumettre.</b> Glissez le <span class="mono">.swaylume</span> directement dans Swaylume : il doit se lire, et chaque paramètre de l’inspecteur doit faire ce que vous vouliez. La CI du dépôt du catalogue revérifie structure et sommes de contrôle, mais elle ne peut pas vérifier si le rendu est juste — vous seul le pouvez.</div>
+
+      <div class="btn-row rise" style="margin-top:30px">
+        <a class="btn btn-primary" href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener"><span>Lire le guide de contribution</span></a>
+        <a class="btn btn-line" href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener"><span>Parcourir le catalogue de fonds d’écran</span></a>
       </div>
-      <p class="trust-note rise">お問い合わせ：ご質問、ワークショップ内容の報告、著作権および削除依頼は futureback399@gmail.com までご連絡ください。ワークショップの内容は投稿者側でホストされており、こちらは索引のみを管理していますが、報告には対応します。</p>
-      <p class="trust-note rise">このサイトについて：このページはアクセス数の計測に Cloudflare Web Analytics を使っています。Cookie は使わず、サイトをまたいだ追跡も行わず、訪問者ごとのプロファイルも作りません。知りたいのは「何人が、どこから来たか」だけです。上の項目はアプリの動作について、この項目はウェブサイト自体についての説明です。</p>
     </div>
   </div>
 </section>
-
-<!-- ============================== § 常见问题 ============================== -->
-<section class="sec" id="faq">
-  <div class="sec-grid">
-    <div class="rail"><span class="rail-num">05</span><span>よくある質問</span></div>
-    <div>
-      <h2 class="sec-h rise">ダウンロードの前に、たぶん知りたいこと。</h2>
-      <div class="faq rise">
-        <details><summary>電力を食いませんか？</summary><div class="faq-a">デフォルトでは、誰にも見えないときは 1 フレームも描画しません。画面がウインドウで完全に覆われた場合、ロック画面、ディスプレイスリープ、システムスリープ、低電力モードにはそれぞれ停止理由があり、復帰時に自動再開します。任意の「ロック解除遅延ゼロ（プリウォーム）」もアニメーションとメディアを停止し、少量の追加メモリと引き換えにビデオパイプラインと Web プロセスだけを待機させます。システムスリープ中はプリウォームせず、有効化前に app が影響を説明します。判断はすべて 1 つのガバナーに集約され、停止理由はログに残ります。</div></details>
-        <details><summary>自分の動画や画像を使えますか？</summary><div class="faq-a">使えます。ウインドウにドラッグするだけです。動画は mp4 / mov / m4v（H.264 または HEVC）、画像は一般的な形式と GIF、ウェブ壁紙は HTML / WebGL に対応します。<strong>webm / VP9 はそのままでは再生できず</strong>、先に変換が必要です —— AVFoundation がこの 2 つのコーデックをデコードできないためで、プラットフォームの制限です。</div></details>
-        <details><summary>Wallpaper Engine と比べてどうですか？</summary><div class="faq-a">正直に言うと、それぞれに強みがあります。<strong>あちらにあってこちらにないもの</strong>：数百万点のワークショップ、ネイティブの Scene 描画、成熟したエディタ。<strong>こちらにあってあちらにないもの</strong>：Space ごとに別の壁紙（Windows では実現できません）、日の出・日の入りでの自動切り替え、そして明らかに真面目な省電力設計。さらに向こうには macOS 版がなく、手持ちのコレクションは変換ツールで持ってこられます。</div></details>
-        <details><summary>初回起動がブロックされました。壊れているのですか？</summary><div class="faq-a">いいえ。このビルドはまだ Apple の公証を受けていません —— 公証には有料の開発者アカウントが必要です。macOS は「開発元を検証できません」と表示しますが、「システム設定 →プライバシーとセキュリティ →セキュリティ」で一度「このまま開く」を押せば済みます。すべてマウス操作、ターミナル不要、初回だけです。詳しい手順はダウンロード欄にあります。</div></details>
-        <details><summary>データはアップロードされますか？</summary><div class="faq-a">されません。壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac に留まります。自動アップロードはなく、広告トラッキングのスクリプトもありません。通信するのは、あなたが自分で壁紙カタログを更新したときにインデックスを取得する場面だけです。診断レポートは自分で書き出したときだけ生成され、含まれるのは状態とエラーで、壁紙ファイルは含まれません。</div></details>
-        <details><summary>対応している Mac は？</summary><div class="faq-a">macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。</div></details>
-      </div>
-      <div class="note rise"><b>ここに答えがありませんか？</b> これはベータ版で、あなたの疑問はたぶん他の人の疑問でもあります —— <a href="https://github.com/futurebackrookie/swaylume-catalog/issues" target="_blank" rel="noopener">issue を立てて</a>いただければ、答えはこの欄に追加されます。</div>
-    </div>
-  </div>
-</section>
-
 
 </main>
 
@@ -1550,23 +1495,24 @@ body[data-page="details"] main { padding-top: 96px; }
 
 <footer>
   <div class="foot-in">
-    <span>Swaylume · macOS のライブ壁紙</span>
+    <span>Swaylume · fonds d’écran animés pour macOS</span>
     <div class="foot-links">
-      <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">ベータビルド</a>
-      <a href="/swaylume-site/ja/format/">壁紙を作る</a>
-      <a href="https://github.com/futurebackrookie/swaylume-catalog">壁紙カタログ</a>
-      <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">壁紙を投稿</a>
-      <a href="/swaylume-site/ja/#top">トップへ戻る</a>
+      <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Versions bêta</a>
+      <a href="/swaylume-site/fr/format/">En créer un</a>
+      <a href="https://github.com/futurebackrookie/swaylume-catalog">Catalogue de fonds d’écran</a>
+      <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Proposer un fond d’écran</a>
+      <a href="/swaylume-site/fr/#top">Retour en haut</a>
     </div>
     <p class="legal">
-      Swaylume は、Wallpaper Engine およびその開発元、ならびにいかなるサードパーティの壁紙プラットフォームとも
-      提携しておらず、それらから許諾や推奨を受けてもいません。本文中の製品名は互換性を説明する目的でのみ言及しており、
-      商標は各権利者に帰属します。変換ツールは、あなた自身のコンピュータ上で、あなたがすでに持っているファイルを処理します。
+      Swaylume n’est affiliée ni à Wallpaper Engine, ni à ses développeurs, ni à aucune plateforme tierce de fonds
+      d’écran, et n’est ni autorisée ni soutenue par eux. Les noms de produits ne sont mentionnés que pour décrire
+      la compatibilité ; les marques appartiennent à leurs détenteurs respectifs.
+      Le convertisseur traite des fichiers que vous possédez déjà, sur votre propre ordinateur.
     </p>
   </div>
 </footer>
 
-<script>window.__I18N={"js.preview1.kind":"WEBGL / ライブプレビュー","js.preview1.title":"オーロラ・シグナル","js.preview1.meta":"60 FPS · マウス視差 · 調整可能","js.preview2.kind":"VIDEO / シームレスループ","js.preview2.title":"ディープシー・エコー","js.preview2.meta":"4K · ハードウェアデコード · 隠れたら一時停止","js.preview3.kind":"WEBGL / ライブプレビュー","js.preview3.title":"ネオンレイン","js.preview3.meta":"60 FPS · 音に反応 · 低消費電力","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"ビトウィーン・デイブレイク","js.preview4.meta":"レイヤーの奥行き · マウス視差 · 消費電力はごくわずか","js.gov1.p":"再生中 · 60 FPS","js.gov1.m":"governor: 前面に表示、フルスピード","js.gov2.p":"一時停止 · ウインドウに覆われた","js.gov2.m":"occlusion: 不透明なウインドウが画面を完全に覆いました","js.gov3.p":"再生中 · 60 FPS","js.gov3.m":"occlusion: デスクトップが再び見えました","js.gov4.p":"省電力 · 30 FPS","js.gov4.m":"power: 低電力モードが有効になりました","js.gov5.p":"一時停止 · ディスプレイスリープ","js.gov5.m":"display: スリープに入りました","js.gov6.p":"一時停止 · 画面ロック","js.gov6.m":"session: 画面がロックされました","js.gov7.p":"再生中 · 60 FPS","js.gov7.m":"session: ロック解除、描画を再開しました","js.readout.above":"アイコンの上","js.readout.below":"アイコンの下","js.readout.occluded":"一時停止 · ウインドウに覆われた","js.readout.playing":"再生中","js.hint.touch":"上をタップして壁紙を切り替え","js.cmd.empty":"該当なし"};</script>
+<script>window.__I18N={"js.preview1.kind":"WEBGL / APERÇU EN DIRECT","js.preview1.title":"Signal d’aurore","js.preview1.meta":"60 FPS · parallaxe souris · réglable","js.preview2.kind":"VIDEO / BOUCLE SANS RACCORD","js.preview2.title":"Écho des abysses","js.preview2.meta":"4K · décodage matériel · pause si masqué","js.preview3.kind":"WEBGL / APERÇU EN DIRECT","js.preview3.title":"Pluie de néon","js.preview3.meta":"60 FPS · réactif au son · basse consommation","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"Entre deux aubes","js.preview4.meta":"Profondeur en calques · parallaxe souris · consommation quasi nulle","js.gov1.p":"En lecture · 60 FPS","js.gov1.m":"governor: visible au premier plan, pleine vitesse","js.gov2.p":"En pause · masqué par une fenêtre","js.gov2.m":"occlusion: écran entièrement couvert par une fenêtre opaque","js.gov3.p":"En lecture · 60 FPS","js.gov3.m":"occlusion: bureau de nouveau visible","js.gov4.p":"Bridé · 30 FPS","js.gov4.m":"power: mode économie d’énergie activé","js.gov5.p":"En pause · écran en veille","js.gov5.m":"display: passage en veille","js.gov6.p":"En pause · écran verrouillé","js.gov6.m":"session: écran verrouillé","js.gov7.p":"En lecture · 60 FPS","js.gov7.m":"session: déverrouillé, rendu repris","js.readout.above":"au-dessus des icônes","js.readout.below":"sous les icônes","js.readout.occluded":"en pause · masqué par une fenêtre","js.readout.playing":"en lecture","js.hint.touch":"Touchez ci-dessus pour changer","js.cmd.empty":"Aucun résultat"};</script>
 <script>
 (function () {
   "use strict";

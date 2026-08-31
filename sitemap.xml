@@ -101,4 +101,54 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/details/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/details/"/>
   </url>
+  <url>
+    <loc>https://futurebackrookie.github.io/swaylume-site/format/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/format/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/format/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/format/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/format/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+  </url>
+  <url>
+    <loc>https://futurebackrookie.github.io/swaylume-site/en/format/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/format/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/format/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/format/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/format/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+  </url>
+  <url>
+    <loc>https://futurebackrookie.github.io/swaylume-site/ja/format/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/format/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/format/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/format/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/format/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+  </url>
+  <url>
+    <loc>https://futurebackrookie.github.io/swaylume-site/de/format/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/format/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/format/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/format/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/format/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+  </url>
+  <url>
+    <loc>https://futurebackrookie.github.io/swaylume-site/fr/format/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/swaylume-site/en/format/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/swaylume-site/ja/format/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/swaylume-site/de/format/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/swaylume-site/fr/format/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/format/"/>
+  </url>
 </urlset>

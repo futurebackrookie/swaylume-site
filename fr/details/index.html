@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Swaylume","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Est-ce que ça consomme beaucoup ?","acceptedAnswer":{"@type":"Answer","text":"Par défaut, Swaylume ne dessine pas une seule image quand personne ne le voit. Couverture complète, écran verrouillé, veille de l’écran, veille du système et mode économie d’énergie ont chacun leur motif de pause et reprennent automatiquement. Le mode facultatif « Déverrouillage sans latence (préchauffage) » suspend toujours animations et médias, mais garde le pipeline vidéo et le processus web prêts pour une reprise plus rapide, au prix d’un peu de mémoire. Il ne préchauffe jamais pendant la veille du système, et l’app explique ce compromis avant l’activation. Toutes les décisions restent dans un seul régulateur, donc le motif exact est toujours consigné dans le journal."}},{"@type":"Question","name":"Puis-je utiliser mes propres vidéos ou images ?","acceptedAnswer":{"@type":"Answer","text":"Oui — glissez-les dans la fenêtre. Vidéo : mp4 / mov / m4v (H.264 ou HEVC). Images : les formats courants et le GIF. Fonds web : HTML / WebGL. Le webm / VP9 ne se lit pas directement et doit d’abord être transcodé — AVFoundation ne décode ni l’un ni l’autre, c’est une limite de la plateforme."}},{"@type":"Question","name":"Qu’est-ce que ça vaut face à Wallpaper Engine ?","acceptedAnswer":{"@type":"Answer","text":"Honnêtement, chacun a ses forces. Ce qu’il a et que nous n’avons pas : des millions de contenus Workshop, le rendu Scene natif, un éditeur mature. Ce que nous avons et qu’il n’a pas : un fond d’écran différent par Space (impossible sous Windows), le basculement automatique au lever et au coucher du soleil, et une stratégie d’énergie nettement plus sérieuse. Il n’a par ailleurs pas de version macOS — et votre collection actuelle peut vous suivre grâce au convertisseur."}},{"@type":"Question","name":"macOS a bloqué le premier lancement. L’app est cassée ?","acceptedAnswer":{"@type":"Answer","text":"Non. Cette version n’est pas encore notarisée par Apple — la notarisation exige un compte développeur payant. macOS indique « impossible de vérifier le développeur » ; ouvrez Réglages Système → Confidentialité et sécurité → Sécurité et cliquez une fois sur « Ouvrir quand même ». Tout à la souris, sans Terminal, et seulement la première fois. Les étapes détaillées sont dans la section de téléchargement."}},{"@type":"Question","name":"Est-ce que mes données sont envoyées quelque part ?","acceptedAnswer":{"@type":"Answer","text":"Non. Fonds d’écran, signets, historique d’import et diagnostics restent sur votre Mac. Rien n’est envoyé automatiquement et il n’y a aucun script de pistage publicitaire. La seule activité réseau est la récupération de l’index du catalogue quand vous le rafraîchissez vous-même ; sans rafraîchissement, l’app ne se connecte jamais. Les rapports de diagnostic ne sont produits que si vous les exportez, et contiennent des états et des erreurs, pas vos fichiers de fond d’écran."}},{"@type":"Question","name":"Quels Mac sont pris en charge ?","acceptedAnswer":{"@type":"Answer","text":"macOS 14 ou plus récent, sur Apple Silicon comme sur Intel (binaire universel). Les configurations multi-écrans et les écrans secondaires AirPlay ont été testés sur du vrai matériel."}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -310,7 +311,10 @@ code, .mono { font-family: var(--f-mono); }
 .lang-name { flex: 1; }
 .lang-code { font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em; }
 
-@media (max-width: 1080px) { .nav-links { display: none; } }
+/* 导航项现在有八个，德语和法语的词又长。先收紧再隐藏 ——
+   一步就整排消失的话，1100px 的笔电上导航会突然只剩一个 ⌘K。 */
+@media (max-width: 1340px) { .nav-links a { padding: 8px 7px; font-size: 12px; letter-spacing: 0; } }
+@media (max-width: 1120px) { .nav-links { display: none; } }
 @media (max-width: 560px) {
   .nav-in { height: 66px; gap: 10px; }
   .brand { font-size: 21px; }
@@ -1356,6 +1360,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="/swaylume-site/fr/details/#wallpapers">En trouver</a>
       <a href="/swaylume-site/fr/details/#trust">Confidentialité</a>
       <a href="/swaylume-site/fr/details/#faq">FAQ</a>
+      <a href="/swaylume-site/fr/format/">En créer un</a>
       <a href="/swaylume-site/fr/#get">Obtenir</a>
     </div>
     <button class="nav-k" id="nav-k" type="button" aria-label="Ouvrir la palette de commandes">⌘K</button>
@@ -1373,7 +1378,9 @@ body[data-page="details"] main { padding-top: 96px; }
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">01</span><span>Réactif au son</span></div>
     <div>
-      <h2 class="sec-h rise">FFT sur 4096 points, 64 bandes logarithmiques.</h2>
+      <!-- 提成 h1 是因为 /details 整页原本一个都没有（每节都是 h2），
+           文档大纲缺顶。.sec-h 样式不变，视觉上看不出区别。 -->
+      <h1 class="sec-h rise">FFT sur 4096 points, 64 bandes logarithmiques.</h1>
       <p class="sec-p rise">
         Fenêtre de Hann, FFT réelle, découpage logarithmique, lissage par décroissance des crêtes — le tout condensé
         dans les 128 valeurs qu’attend une page de fond d’écran. Les réglages permettent de choisir le périphérique
@@ -1540,6 +1547,7 @@ body[data-page="details"] main { padding-top: 96px; }
   </div>
 </section>
 
+
 </main>
 
 <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span></div></div>
@@ -1549,6 +1557,7 @@ body[data-page="details"] main { padding-top: 96px; }
     <span>Swaylume · fonds d’écran animés pour macOS</span>
     <div class="foot-links">
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Versions bêta</a>
+      <a href="/swaylume-site/fr/format/">En créer un</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">Catalogue de fonds d’écran</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Proposer un fond d’écran</a>
       <a href="/swaylume-site/fr/#top">Retour en haut</a>

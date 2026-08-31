@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Swaylume","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Zieht das nicht ordentlich Strom?","acceptedAnswer":{"@type":"Answer","text":"Standardmäßig zeichnet Swaylume kein einziges Bild, wenn niemand hinsieht. Vollständige Verdeckung, Sperrbildschirm, Bildschirm- und Systemruhezustand sowie Energiesparmodus haben eigene Pausengründe und setzen automatisch fort. Der optionale Modus „Entsperren ohne Verzögerung (Vorwärmen)“ pausiert Animation und Medien weiterhin, hält aber Video-Pipeline und Webprozess für schnelleres Entsperren bereit; das kostet etwas zusätzlichen Speicher. Im Systemruhezustand wird nie vorgewärmt, und die App erklärt den Kompromiss vor dem Einschalten. Alle Entscheidungen liegen in einem Governor, deshalb steht der genaue Pausengrund immer im Log."}},{"@type":"Question","name":"Kann ich eigene Videos oder Bilder verwenden?","acceptedAnswer":{"@type":"Answer","text":"Ja — einfach ins Fenster ziehen. Video: mp4 / mov / m4v (H.264 oder HEVC). Bilder: die üblichen Formate plus GIF. Web-Hintergründe: HTML / WebGL. webm / VP9 laufen nicht direkt und müssen zuerst umkodiert werden — AVFoundation kann beide Codecs nicht dekodieren, das ist eine Einschränkung der Plattform."}},{"@type":"Question","name":"Wie schlägt es sich gegen Wallpaper Engine?","acceptedAnswer":{"@type":"Answer","text":"Ehrlich gesagt hat jedes seine Stärken. Was es hat und wir nicht: Millionen Workshop-Inhalte, natives Scene-Rendering, ein ausgereifter Editor. Was wir haben und es nicht: ein eigener Hintergrund pro Space (unter Windows nicht machbar), automatisches Umschalten zu Sonnenauf- und -untergang und eine spürbar ernsthaftere Energiestrategie. Außerdem gibt es dort keine macOS-Version — und deine vorhandene Sammlung kann mit dem Konverter mitkommen."}},{"@type":"Question","name":"macOS hat den ersten Start blockiert. Ist die App kaputt?","acceptedAnswer":{"@type":"Answer","text":"Nein. Dieser Build ist noch nicht von Apple notarisiert — Notarisierung braucht einen kostenpflichtigen Entwickleraccount. macOS meldet „Entwickler kann nicht verifiziert werden“; öffne Systemeinstellungen → Datenschutz &amp; Sicherheit → Sicherheit und klick einmal auf „Trotzdem öffnen“. Alles per Maus, kein Terminal, und nur beim ersten Mal. Die vollständigen Schritte stehen im Download-Bereich."}},{"@type":"Question","name":"Werden Daten von mir hochgeladen?","acceptedAnswer":{"@type":"Answer","text":"Nein. Hintergründe, Lesezeichen, Importverlauf und Diagnosen bleiben auf deinem Mac. Nichts wird automatisch hochgeladen, und es gibt keine Werbe-Tracking-Skripte. Die einzige Netzwerkaktivität ist das Laden des Katalog-Index, wenn du selbst aktualisierst; ohne Aktualisierung geht die App nie online. Diagnoseberichte entstehen nur, wenn du sie exportierst, und enthalten Zustände und Fehler, nicht deine Hintergrunddateien."}},{"@type":"Question","name":"Welche Macs werden unterstützt?","acceptedAnswer":{"@type":"Answer","text":"macOS 14 oder neuer, auf Apple Silicon wie auf Intel (Universal Binary). Mehrere Bildschirme und AirPlay-Zweitbildschirme wurden beide auf echter Hardware getestet."}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -310,7 +311,10 @@ code, .mono { font-family: var(--f-mono); }
 .lang-name { flex: 1; }
 .lang-code { font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em; }
 
-@media (max-width: 1080px) { .nav-links { display: none; } }
+/* 导航项现在有八个，德语和法语的词又长。先收紧再隐藏 ——
+   一步就整排消失的话，1100px 的笔电上导航会突然只剩一个 ⌘K。 */
+@media (max-width: 1340px) { .nav-links a { padding: 8px 7px; font-size: 12px; letter-spacing: 0; } }
+@media (max-width: 1120px) { .nav-links { display: none; } }
 @media (max-width: 560px) {
   .nav-in { height: 66px; gap: 10px; }
   .brand { font-size: 21px; }
@@ -1356,6 +1360,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="/swaylume-site/de/details/#wallpapers">Finden</a>
       <a href="/swaylume-site/de/details/#trust">Datenschutz</a>
       <a href="/swaylume-site/de/details/#faq">FAQ</a>
+      <a href="/swaylume-site/de/format/">Selbst bauen</a>
       <a href="/swaylume-site/de/#get">Holen</a>
     </div>
     <button class="nav-k" id="nav-k" type="button" aria-label="Befehlspalette öffnen">⌘K</button>
@@ -1373,7 +1378,9 @@ body[data-page="details"] main { padding-top: 96px; }
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">01</span><span>Audioreaktiv</span></div>
     <div>
-      <h2 class="sec-h rise">4096-Punkt-FFT, 64 logarithmische Bänder.</h2>
+      <!-- 提成 h1 是因为 /details 整页原本一个都没有（每节都是 h2），
+           文档大纲缺顶。.sec-h 样式不变，视觉上看不出区别。 -->
+      <h1 class="sec-h rise">4096-Punkt-FFT, 64 logarithmische Bänder.</h1>
       <p class="sec-p rise">
         Hann-Fenster, reelle FFT, logarithmische Bänder, Peak-Decay-Glättung — verpackt in die 128 Werte, die eine
         Hintergrundseite erwartet. In den Einstellungen wählst du das Eingabegerät, direkt daneben läuft ein
@@ -1539,6 +1546,7 @@ body[data-page="details"] main { padding-top: 96px; }
   </div>
 </section>
 
+
 </main>
 
 <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span></div></div>
@@ -1548,6 +1556,7 @@ body[data-page="details"] main { padding-top: 96px; }
     <span>Swaylume · Live-Hintergründe für macOS</span>
     <div class="foot-links">
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Beta-Builds</a>
+      <a href="/swaylume-site/de/format/">Selbst bauen</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">Hintergrund-Katalog</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Hintergrund einreichen</a>
       <a href="/swaylume-site/de/#top">Nach oben</a>

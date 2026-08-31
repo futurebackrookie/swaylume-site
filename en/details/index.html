@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Swaylume","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it going to drain my battery?","acceptedAnswer":{"@type":"Answer","text":"By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log."}},{"@type":"Question","name":"Can I use my own videos or images?","acceptedAnswer":{"@type":"Answer","text":"Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC). Images: the usual formats plus GIF. Web wallpapers: HTML / WebGL. webm / VP9 will not play directly and must be transcoded first — AVFoundation cannot decode either codec, which is a platform limitation."}},{"@type":"Question","name":"How does it compare to Wallpaper Engine?","acceptedAnswer":{"@type":"Answer","text":"Honestly, each has its strengths. It has what we don’t: millions of Workshop items, native Scene rendering, a mature editor. We have what it doesn’t: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across with the converter."}},{"@type":"Question","name":"macOS blocked the first launch. Is the app broken?","acceptedAnswer":{"@type":"Answer","text":"No. This build isn’t notarised by Apple yet — notarisation needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway” once. All clicks, no Terminal, and only the first time. Full steps are in the download section."}},{"@type":"Question","name":"Does it upload any of my data?","acceptedAnswer":{"@type":"Answer","text":"No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalogue index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files."}},{"@type":"Question","name":"Which Macs are supported?","acceptedAnswer":{"@type":"Answer","text":"macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware."}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -310,7 +311,10 @@ code, .mono { font-family: var(--f-mono); }
 .lang-name { flex: 1; }
 .lang-code { font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em; }
 
-@media (max-width: 1080px) { .nav-links { display: none; } }
+/* 导航项现在有八个，德语和法语的词又长。先收紧再隐藏 ——
+   一步就整排消失的话，1100px 的笔电上导航会突然只剩一个 ⌘K。 */
+@media (max-width: 1340px) { .nav-links a { padding: 8px 7px; font-size: 12px; letter-spacing: 0; } }
+@media (max-width: 1120px) { .nav-links { display: none; } }
 @media (max-width: 560px) {
   .nav-in { height: 66px; gap: 10px; }
   .brand { font-size: 21px; }
@@ -1356,6 +1360,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="/swaylume-site/en/details/#wallpapers">Find wallpapers</a>
       <a href="/swaylume-site/en/details/#trust">Privacy</a>
       <a href="/swaylume-site/en/details/#faq">FAQ</a>
+      <a href="/swaylume-site/en/format/">Make one</a>
       <a href="/swaylume-site/en/#get">Download</a>
     </div>
     <button class="nav-k" id="nav-k" type="button" aria-label="Open command palette">⌘K</button>
@@ -1373,7 +1378,9 @@ body[data-page="details"] main { padding-top: 96px; }
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">01</span><span>Audio reactive</span></div>
     <div>
-      <h2 class="sec-h rise">4096-point FFT, 64 logarithmic bands.</h2>
+      <!-- 提成 h1 是因为 /details 整页原本一个都没有（每节都是 h2），
+           文档大纲缺顶。.sec-h 样式不变，视觉上看不出区别。 -->
+      <h1 class="sec-h rise">4096-point FFT, 64 logarithmic bands.</h1>
       <p class="sec-p rise">
         Hann window, real FFT, logarithmic banding, peak-decay smoothing — packed into the 128 values a wallpaper
         page expects. You can pick the input device in Settings, with a live spectrum bar right next to it so you
@@ -1538,6 +1545,7 @@ body[data-page="details"] main { padding-top: 96px; }
   </div>
 </section>
 
+
 </main>
 
 <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span></div></div>
@@ -1547,6 +1555,7 @@ body[data-page="details"] main { padding-top: 96px; }
     <span>Swaylume · live wallpapers for macOS</span>
     <div class="foot-links">
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Beta builds</a>
+      <a href="/swaylume-site/en/format/">Make one</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">Wallpaper catalogue</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Submit a wallpaper</a>
       <a href="/swaylume-site/en/#top">Back to top</a>

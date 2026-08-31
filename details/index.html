@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Swaylume","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"会不会很耗电？","acceptedAnswer":{"@type":"Answer","text":"默认看不见时一帧都不画。屏幕被窗口盖满、锁屏、显示器休眠、系统睡眠、低电量模式，各自对应一个暂停原因，醒来自动恢复；用电池时可选择暂停或降帧率。可选的「锁屏无延迟（预热）」仍会暂停动画与媒体，只保留视频管线和网页进程以加快解锁，代价是少量额外内存；系统真正睡眠时不预热。开启前 app 会明确提醒。所有判断集中在一个调速器里，「壁纸为什么停了」永远只有一个答案，而且写在日志里。"}},{"@type":"Question","name":"能用我自己的视频或图片吗？","acceptedAnswer":{"@type":"Answer","text":"能，拖进窗口就行。视频支持 mp4 / mov / m4v（H.264 或 HEVC），图片支持常见格式和 GIF，网页壁纸支持 HTML / WebGL。webm / VP9 不能直接播，需要先转码 —— AVFoundation 不解这两种编码，这是系统的限制。"}},{"@type":"Question","name":"和 Wallpaper Engine 比怎么样？","acceptedAnswer":{"@type":"Answer","text":"诚实地说，各有各的强项。它有我们没有的：几百万张创意工坊内容、原生 Scene 渲染、成熟的编辑器。我们有它没有的：每个桌面（Space）用不同壁纸（Windows 上做不到）、按日出日落自动切换、以及明显更认真的省电策略。另外它没有 macOS 版，你现有的收藏可以用转换工具带过来。"}},{"@type":"Question","name":"第一次打开被系统拦住，是软件坏了吗？","acceptedAnswer":{"@type":"Answer","text":"不是。这个版本还没有经过 Apple 公证 —— 公证需要付费的开发者账号。macOS 会提示「无法验证开发者」，在「系统设置 → 隐私与安全性 → 安全性」里点一次「仍要打开」即可，全程点鼠标不用开终端，只需做一次。详细步骤在下载区。"}},{"@type":"Question","name":"会上传我的数据吗？","acceptedAnswer":{"@type":"Answer","text":"不会。壁纸、书签、导入记录和诊断报告都留在你的 Mac 上，没有自动上传，也没有任何广告追踪脚本。唯一的联网行为是你主动刷新壁纸目录时去拉一份索引；不刷新就完全不联网。诊断报告需要你自己点导出，内容是状态和错误，不含壁纸文件。"}},{"@type":"Question","name":"支持哪些 Mac？","acceptedAnswer":{"@type":"Answer","text":"macOS 14 或更高，Apple 芯片和 Intel 都能跑（通用二进制）。多显示器和 AirPlay 副屏都已实测。"}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -310,7 +311,10 @@ code, .mono { font-family: var(--f-mono); }
 .lang-name { flex: 1; }
 .lang-code { font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em; }
 
-@media (max-width: 1080px) { .nav-links { display: none; } }
+/* 导航项现在有八个，德语和法语的词又长。先收紧再隐藏 ——
+   一步就整排消失的话，1100px 的笔电上导航会突然只剩一个 ⌘K。 */
+@media (max-width: 1340px) { .nav-links a { padding: 8px 7px; font-size: 12px; letter-spacing: 0; } }
+@media (max-width: 1120px) { .nav-links { display: none; } }
 @media (max-width: 560px) {
   .nav-in { height: 66px; gap: 10px; }
   .brand { font-size: 21px; }
@@ -1356,6 +1360,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="/swaylume-site/details/#wallpapers">找壁纸</a>
       <a href="/swaylume-site/details/#trust">隐私与兼容</a>
       <a href="/swaylume-site/details/#faq">常见问题</a>
+      <a href="/swaylume-site/format/">做壁纸</a>
       <a href="/swaylume-site/#get">拿到手</a>
     </div>
     <button class="nav-k" id="nav-k" type="button" aria-label="打开命令面板">⌘K</button>
@@ -1373,7 +1378,9 @@ body[data-page="details"] main { padding-top: 96px; }
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">01</span><span>音频响应</span></div>
     <div>
-      <h2 class="sec-h rise">4096 点 FFT，64 段对数分频。</h2>
+      <!-- 提成 h1 是因为 /details 整页原本一个都没有（每节都是 h2），
+           文档大纲缺顶。.sec-h 样式不变，视觉上看不出区别。 -->
+      <h1 class="sec-h rise">4096 点 FFT，64 段对数分频。</h1>
       <p class="sec-p rise">
         采样加 Hann 窗、实数 FFT、对数分频、峰值衰减平滑，拼成 128 个值推给壁纸页面。
         设置里能选输入设备，旁边就是实时频谱条 —— 让你一眼看出到底有没有信号进来。
@@ -1531,6 +1538,7 @@ body[data-page="details"] main { padding-top: 96px; }
   </div>
 </section>
 
+
 </main>
 
 <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span></div></div>
@@ -1540,6 +1548,7 @@ body[data-page="details"] main { padding-top: 96px; }
     <span>Swaylume · macOS 动态壁纸</span>
     <div class="foot-links">
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">Beta 构建</a>
+      <a href="/swaylume-site/format/">做壁纸</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">壁纸目录</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">投稿壁纸</a>
       <a href="/swaylume-site/#top">回到顶部</a>

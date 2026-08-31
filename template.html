@@ -278,7 +278,10 @@ code, .mono { font-family: var(--f-mono); }
 .lang-name { flex: 1; }
 .lang-code { font-family: var(--f-mono); font-size: 10.5px; color: var(--card-dim); letter-spacing: .04em; }
 
-@media (max-width: 1080px) { .nav-links { display: none; } }
+/* 导航项现在有八个，德语和法语的词又长。先收紧再隐藏 ——
+   一步就整排消失的话，1100px 的笔电上导航会突然只剩一个 ⌘K。 */
+@media (max-width: 1340px) { .nav-links a { padding: 8px 7px; font-size: 12px; letter-spacing: 0; } }
+@media (max-width: 1120px) { .nav-links { display: none; } }
 @media (max-width: 560px) {
   .nav-in { height: 66px; gap: 10px; }
   .brand { font-size: 21px; }
@@ -1324,6 +1327,7 @@ body[data-page="details"] main { padding-top: 96px; }
       <a href="%%DETAILS%%#wallpapers">{{nav.a4}}</a>
       <a href="%%DETAILS%%#trust">{{nav.a5}}</a>
       <a href="%%DETAILS%%#faq">{{nav.faq}}</a>
+      <a href="%%FORMAT%%">{{nav.format}}</a>
       <a href="%%HOME%%#get">{{nav.a6}}</a>
     </div>
     <button class="nav-k" id="nav-k" type="button" aria-label="{{cmd.open}}">⌘K</button>
@@ -1800,7 +1804,9 @@ body[data-page="details"] main { padding-top: 96px; }
   <div class="sec-grid">
     <div class="rail">{{audio.div1}}</div>
     <div>
-      <h2 class="sec-h rise">{{audio.h21}}</h2>
+      <!-- 提成 h1 是因为 /details 整页原本一个都没有（每节都是 h2），
+           文档大纲缺顶。.sec-h 样式不变，视觉上看不出区别。 -->
+      <h1 class="sec-h rise">{{audio.h21}}</h1>
       <p class="sec-p rise">{{audio.p1}}</p>
 
       <div class="spectrum-shell rise">
@@ -1921,6 +1927,116 @@ body[data-page="details"] main { padding-top: 96px; }
 </section>
 <!--/ONLY-->
 
+<!--ONLY:format-->
+<!-- ============================== § 包的结构 ============================== -->
+<section class="sec" id="layout">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">01</span><span>{{fmt.r1}}</span></div>
+    <div>
+      <h1 class="sec-h rise">{{fmt.h2}}</h1>
+      <p class="sec-p rise">{{fmt.p}}</p>
+
+      <h2 class="src-h rise">{{fmt.s1h}}</h2>
+      <p class="sec-p rise">{{fmt.s1p}}</p>
+
+      <div class="code rise">MyWallpaper.swaylume/
+├── <b>manifest.json</b>          <span class="c">// 必需 / required</span>
+├── preview.jpg            <span class="c">// 可选 / optional</span>
+└── <b>content/</b>              <span class="c">// 必需 / required</span>
+    ├── video.mp4              <span class="c">// type == "video"</span>
+    ├── index.html + assets/   <span class="c">// type == "web"</span>
+    ├── image.png              <span class="c">// type == "image"</span>
+    └── layers.json + *.png    <span class="c">// type == "layered"</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 清单 ============================== -->
+<section class="sec" id="manifest">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">02</span><span>{{fmt.r2}}</span></div>
+    <div>
+      <h2 class="sec-h rise">{{fmt.s2h}}</h2>
+      <p class="sec-p rise">{{fmt.s2p}}</p>
+
+      <div class="code rise">{
+  <span class="k">"formatVersion"</span>: 1,
+  <span class="k">"title"</span>:  "Neon City",
+  <span class="k">"author"</span>: "someone",
+  <span class="k">"type"</span>:   "video",
+  <span class="k">"entry"</span>:  "video.mp4",
+  <span class="k">"preview"</span>: "preview.jpg",
+  <span class="k">"fillMode"</span>: "fill",
+  <span class="k">"muted"</span>: true
+}</div>
+
+      <div class="table-scroll rise">
+        <table>{{fmt.table}}</table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 可调参数 ============================== -->
+<section class="sec" id="properties">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">03</span><span>{{fmt.r3}}</span></div>
+    <div>
+      <h2 class="sec-h rise">{{fmt.s3h}}</h2>
+      <p class="sec-p rise">{{fmt.s3p}}</p>
+
+      <div class="code rise"><span class="k">"properties"</span>: {
+  <span class="k">"speed"</span>:     { <span class="k">"number"</span>: { <span class="k">"_0"</span>: { <span class="k">"value"</span>: 0.35, <span class="k">"min"</span>: 0, <span class="k">"max"</span>: 1 } } },
+  <span class="k">"showtext"</span>:  { <span class="k">"bool"</span>:   { <span class="k">"_0"</span>: true } },
+  <span class="k">"greeting"</span>:  { <span class="k">"text"</span>:   { <span class="k">"_0"</span>: "hello" } },
+  <span class="k">"schemecolor"</span>: { <span class="k">"color"</span>: { <span class="k">"_0"</span>: "0.2 0.6 1" } },
+  <span class="k">"background"</span>:  { <span class="k">"file"</span>:  { <span class="k">"_0"</span>: { <span class="k">"fileType"</span>: "image" } } }
+}</div>
+
+      <div class="table-scroll rise" style="margin-top:24px">
+        <table>{{fmt.ptable}}</table>
+      </div>
+
+      <div class="note rise">{{fmt.note1}}</div>
+      <div class="note rise">{{fmt.note2}}</div>
+      <div class="note rise">{{fmt.note3}}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 分层 ============================== -->
+<section class="sec" id="layered">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">04</span><span>{{fmt.r4}}</span></div>
+    <div>
+      <h2 class="sec-h rise">{{fmt.s4h}}</h2>
+      <p class="sec-p rise">{{fmt.s4p}}</p>
+      <div class="code rise">{{renderers.div2}}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 约定与投稿 ============================== -->
+<section class="sec" id="contract">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">05</span><span>{{fmt.r5}}</span></div>
+    <div>
+      <h2 class="sec-h rise">{{fmt.s5h}}</h2>
+      <p class="sec-p rise">{{fmt.s5p}}</p>
+
+      <div class="gov-list rise">{{fmt.rules}}</div>
+
+      <div class="note rise">{{fmt.foot}}</div>
+
+      <div class="btn-row rise" style="margin-top:30px">
+        <a class="btn btn-primary" href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener"><span>{{paths.a3}}</span></a>
+        <a class="btn btn-line" href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener"><span>{{get.a2}}</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ONLY-->
+
 </main>
 
 <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span><span>SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ SWAYLUME ◆ macOS LIVE WALLPAPER ◆ 動く壁紙 ◆ </span></div></div>
@@ -1930,6 +2046,7 @@ body[data-page="details"] main { padding-top: 96px; }
     <span>{{x.span1}}</span>
     <div class="foot-links">
       <a href="https://github.com/futurebackrookie/swaylume-site/releases" target="_blank" rel="noopener">{{x.a2}}</a>
+      <a href="%%FORMAT%%">{{nav.format}}</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog">{{x.a3}}</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">{{x.a4}}</a>
       <a href="%%HOME%%#top">{{x.a5}}</a>
