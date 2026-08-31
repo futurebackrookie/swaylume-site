@@ -211,8 +211,8 @@ def head(code, entries, page="home"):
     lines.append(f'<link rel="alternate" hreflang="x-default" '
                  f'href="{page_href(SITE_URL, "", page)}">')
     lines += [
-        '<meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">',
-        '<meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">',
+        '<meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)">',
+        '<meta name="theme-color" content="#EBE4D3" media="(prefers-color-scheme: light)">',
         f'<meta property="og:title" content="{entries[title_key]}">',
         f'<meta property="og:description" content="{entries[desc_key]}">',
         '<meta property="og:type" content="website">',
