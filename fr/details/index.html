@@ -1396,10 +1396,14 @@ body[data-page="details"] main { padding-top: 96px; }
       </div>
 
       <div class="note rise">
-        <b>Soyons clairs : macOS n’autorise pas une app à capter le son que le système est en train de jouer.</b>
-        Sans un périphérique de bouclage comme BlackHole, ce que vous captez, c’est la pièce via votre micro, pas le
-        morceau que vous écoutez. La fonction est complète, mais ce prérequis vous revient — c’est une limite de la
-        plateforme, pas une fonctionnalité inachevée.
+        <b>Soyons honnêtes : le spectre du fond d'écran n'entend pas ce que joue votre système.</b>
+        Il échantillonne un <b>périphérique d'entrée</b> — sans pilote de bouclage comme
+        BlackHole, vous captez le bruit ambiant du micro, pas la chanson. C'est le prérequis
+        de ce chemin, et c'est à vous de le remplir.
+        <b>Le « danser sur la musique » du compagnon emprunte une autre voie</b> : un tap
+        audio de processus (macOS 14.2+) qui ne capture que les processus musique, vidéo et
+        navigateur, <b>sans aucun périphérique audio virtuel</b>. Les deux sont indépendants ;
+        tous deux analysent localement en temps réel, sans jamais enregistrer, conserver ni envoyer quoi que ce soit.
       </div>
     </div>
   </div>

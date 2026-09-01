@@ -1396,10 +1396,14 @@ body[data-page="details"] main { padding-top: 96px; }
       </div>
 
       <div class="note rise">
-        <b>Straight talk: macOS does not let an app capture the sound the system is playing.</b>
-        Without a loopback device like BlackHole, what you capture is the room through your microphone, not the
-        track you are listening to. The feature is complete, but that prerequisite is on you — it is a platform
-        limitation, not an unfinished feature.
+        <b>Being honest: the wallpaper spectrum cannot hear what your system is playing.</b>
+        It samples an <b>input device</b> — without a loopback driver like BlackHole you get
+        room noise from the microphone, not the song. That's the precondition for this path,
+        and it's on you to meet it.
+        <b>The pet's “dance to music” takes a different route</b>: a Core Audio process tap
+        (macOS 14.2+) that captures only music, video and browser processes, with
+        <b>no virtual audio device required</b>. The two are independent; both analyse
+        locally in real time and never record, save or upload anything.
       </div>
     </div>
   </div>

@@ -1396,10 +1396,14 @@ body[data-page="details"] main { padding-top: 96px; }
       </div>
 
       <div class="note rise">
-        <b>Ehrlich gesagt: macOS erlaubt Apps nicht, den Ton mitzuschneiden, den das System gerade abspielt.</b>
-        Ohne ein Loopback-Gerät wie BlackHole nimmst du den Raum über dein Mikrofon auf, nicht den Titel, den du hörst.
-        Die Funktion ist fertig, aber diese Voraussetzung musst du selbst schaffen — das ist eine Einschränkung der
-        Plattform, kein unfertiges Feature.
+        <b>Ehrlich gesagt: Das Hintergrund-Spektrum hört nicht, was dein System abspielt.</b>
+        Es greift ein <b>Eingabegerät</b> ab — ohne einen Loopback-Treiber wie BlackHole
+        bekommst du Raumgeräusche vom Mikrofon, nicht den Song. Das ist die Voraussetzung
+        dieses Wegs, und die musst du selbst schaffen.
+        <b>Das „Zur Musik tanzen“ des Haustiers geht einen anderen Weg</b>: ein Core-Audio-
+        Process-Tap (ab macOS 14.2), der nur Musik-, Video- und Browser-Prozesse erfasst —
+        <b>ganz ohne virtuelles Audiogerät</b>. Beide Wege sind unabhängig, analysieren
+        ausschließlich lokal in Echtzeit und nehmen nichts auf, speichern und laden nichts hoch.
       </div>
     </div>
   </div>
