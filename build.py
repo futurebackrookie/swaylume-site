@@ -318,6 +318,14 @@ def lang_switcher(code, page="home"):
         '</details>')
 
 
+def brand_mark():
+    """页头那个标记。缺文件就直接报错 —— 悄悄少一个 logo 比报错难发现得多。"""
+    path = ROOT / "brand-mark.svg"
+    if not path.exists():
+        raise SystemExit("缺 site/brand-mark.svg，先跑一次 swift Tools/make-icon.swift")
+    return path.read_text().strip()
+
+
 def render(template, entries, code, page="home"):
     template = select_page(template, page)
 
@@ -332,6 +340,12 @@ def render(template, entries, code, page="home"):
     # 只测根页面永远发现不了。
     out = out.replace("%%SITE%%", SITE_URL)
     out = out.replace("<!--LANG-SWITCHER-->", lang_switcher(code, page))
+    # 品牌标记内联进来，不走 <img>：它是 30px 的小图，多一次请求不划算，
+    # 而且内联之后能被 CSS 直接摸到。
+    # **文件由 Tools/make-icon.swift 和应用图标一起生成**，两边共用同一份
+    # 几何 —— 手画两份的话迟早会调了一边忘了另一边，而这种不一致没有任何
+    # 测试查得出来。
+    out = out.replace("<!--BRAND-MARK-->", brand_mark())
     # 跨页链接。导航里指向已经挪到 /details 的小节，必须写成完整路径 ——
     # 写 "#faq" 的话在首页上点了毫无反应（那个锚点已经不在这一页了）。
     base = "/" + SITE_URL.rstrip("/").split("/")[-1] if "github.io" in SITE_URL else ""
