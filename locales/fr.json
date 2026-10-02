@@ -256,5 +256,8 @@
   "h.get.b2": "Ouvrez Réglages Système → Confidentialité et sécurité.",
   "h.get.b3": "Descendez jusqu’à « Sécurité » et repérez la ligne indiquant que Swaylume a été bloquée.",
   "h.get.b4": "Cliquez sur « Ouvrir quand même » à côté, puis confirmez.",
-  "h.get.after": "Ensuite, elle s’ouvre d’un simple double-clic et ne demande plus rien. Swaylume n’est pas encore notarisée par Apple (il faut un compte développeur payant) : cela ne signifie pas que l’app pose problème."
+  "h.get.after": "Ensuite, elle s’ouvre d’un simple double-clic et ne demande plus rien. Swaylume n’est pas encore notarisée par Apple (il faut un compte développeur payant) : cela ne signifie pas que l’app pose problème.",
+  "langhint.text": "Ce site est aussi disponible en français.",
+  "langhint.go": "Voir en français",
+  "langhint.close": "Fermer"
 }

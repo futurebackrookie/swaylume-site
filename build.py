@@ -110,6 +110,11 @@ def copy_wallpapers(dest, slugs=None):
     """
     import shutil
     wanted = slugs if slugs is not None else list(dict.fromkeys([HERO, WEB_TILE, *FEATURED]))
+    # 换掉的精选不能留在目录里 —— deploy.sh 是整目录同步，留着就会跟着上线
+    if dest.exists() and slugs is None:
+        for old in dest.iterdir():
+            if old.is_dir() and old.name not in wanted:
+                shutil.rmtree(old)
     for slug in wanted:
         src = BUNDLED / slug / "content"
         if not (src / "index.html").is_file():
@@ -176,7 +181,8 @@ def check_keys(locales, template):
     # 页面标题/描述由 head() 经 PAGES 消费，从那里派生而不是再抄一遍 ——
     # 抄一遍的话，加一个页面就多一处会忘记同步的地方。
     PAGE_KEYS = {k for _, t, d in PAGES.values() for k in (t, d)}
-    CODE_KEYS = PAGE_KEYS | {"trust.analytics"}
+    # langhint.* 由 build.py 收集全部语言后注入 window.__LANGHINT（见 lang_hints）
+    CODE_KEYS = PAGE_KEYS | {"trust.analytics", "langhint.text", "langhint.go", "langhint.close"}
     # 豁免名单最容易变成孤儿词条的藏身处 —— 写进来却没人用，检查照样放行。
     # 所以反过来验一遍：豁免的 key 必须真的被本文件用到。
     #
@@ -442,9 +448,22 @@ def render(template, entries, code, page="home"):
     # 交互部分（层级读数、调速器日志、精选卡片）会突然变回中文。
     js_strings = {k: v for k, v in entries.items() if k.startswith("js.")}
     blob = json.dumps(js_strings, ensure_ascii=False, separators=(",", ":"))
+    hints = json.dumps(LANG_HINTS, ensure_ascii=False, separators=(",", ":"))
     out = out.replace("<!--I18N-DATA-->",
-                      f"<script>window.__I18N={blob};</script>")
+                      f"<script>window.__I18N={blob};window.__LANGHINT={hints};</script>")
     return out
+
+
+# 访客浏览器语言和当前页面不一样时，site.js 用**访客那种语言**提示「本站也有你的语言」。
+# 所以每一页都要带上所有语言的这三句话，不只是当前页的 —— 由 main() 加载完语言文件后填。
+# 只提示、不跳转：按浏览器语言强制跳转既伤收录又惹人烦（见 README「多语言是怎么做的」）。
+LANG_HINTS = {}
+
+
+def lang_hints(locales):
+    """{<html lang>: {text, go, close}}，键用页面上 hreflang 的写法，脚本拿它去找切换器里的链接。"""
+    return {LOCALES[code][1]: {"text": e["langhint.text"], "go": e["langhint.go"], "close": e["langhint.close"]}
+            for code, e in locales.items()}
 
 
 def content_mtime():
@@ -521,6 +540,7 @@ def main():
 
     partial = PREVIEW or len(codes) < len(LOCALES)
     copy_wallpapers(ROOT / "wallpapers")
+    LANG_HINTS.update(lang_hints(locales))
     for code in codes:
         subdir = LOCALES[code][0]
         for page, (pagedir, _, _) in PAGES.items():

@@ -16,6 +16,14 @@ class CopyWallpapersTests(unittest.TestCase):
             for slug in expected:
                 self.assertTrue((pathlib.Path(tmp) / slug / "index.html").is_file(), slug)
 
+    def test_stale_wallpapers_are_removed(self):
+        # 换掉的精选留在目录里的话，deploy.sh 整目录同步会把它一起推上线（2026-10-02 真发生过）
+        with tempfile.TemporaryDirectory() as tmp:
+            stale = pathlib.Path(tmp) / "winter-glass"
+            stale.mkdir()
+            build.copy_wallpapers(pathlib.Path(tmp))
+            self.assertFalse(stale.exists())
+
     def test_unknown_slug_fails_loudly(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(SystemExit):

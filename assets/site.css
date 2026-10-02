@@ -116,8 +116,9 @@ details.langs summary::-webkit-details-marker { display: none; }
 .lang-caret { width: 10px; height: 10px; transition: transform .32s var(--snappy); }
 details.langs[open] .lang-caret { transform: rotate(180deg); }
 .lang-menu { position: absolute; bottom: calc(100% + 8px); right: 0; z-index: 5; margin: 0; padding: 6px;
-             list-style: none; background: #fff; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.15); min-width: 180px; }
-.lang-menu a { display: grid; grid-template-columns: 16px 1fr auto; gap: 6px; padding: 7px 10px; border-radius: 8px; }
+             list-style: none; background: #fff; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.15); min-width: 200px; }
+.lang-menu a { display: grid; grid-template-columns: 16px 1fr auto; gap: 6px 14px; padding: 7px 10px; border-radius: 8px;
+               color: var(--ink); text-decoration: none; white-space: nowrap; font-size: 14px; }
 .lang-menu a:hover { background: var(--paper-2); text-decoration: none; }
 .lang-tick { color: var(--accent); }
 .lang-code { color: var(--ink-2); }
@@ -242,4 +243,32 @@ caption .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50
   .doc-head { padding: 88px 0 40px; }
   .sec-h { font-size: 32px; }
   .path-grid, .trust-grid, .key-list { grid-template-columns: 1fr; }
+}
+
+/* 导航右上角的语言切换：全世界的访客进门第一眼就要看得到。菜单往下开 */
+.nav details.langs { margin-left: 2px; }
+.nav details.langs summary { color: inherit; font-size: 12px; padding: 5px 9px; border-radius: 980px;
+                             opacity: .85; transition: opacity .2s, background-color .2s; }
+.nav details.langs summary:hover, .nav details.langs[open] summary { opacity: 1; background: rgba(127,127,127,.18); }
+.nav .lang-menu { top: calc(100% + 10px); bottom: auto; right: 0; color: var(--ink); }
+
+/* 「本站也有你的语言」提示条：用访客自己的语言写，只提示不跳转，关掉就记住 */
+.langhint { position: fixed; z-index: 49; top: var(--nav-h); left: 0; right: 0;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 16px;
+            padding: 10px 48px 10px 16px; font-size: 14px; color: var(--ink);
+            background: rgba(245,245,247,.92); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+            box-shadow: 0 1px 0 rgba(0,0,0,.08);
+            transform: translateY(-110%); opacity: 0; transition: transform .5s var(--smooth), opacity .5s var(--smooth); }
+.langhint.on { transform: none; opacity: 1; }
+.langhint a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.langhint a::after { content: "\00a0›"; }
+.langhint a:hover { text-decoration: underline; }
+.langhint button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px;
+                   border: 0; border-radius: 50%; background: transparent; color: var(--ink-2); font-size: 18px; line-height: 1; cursor: pointer; }
+.langhint button:hover { background: rgba(0,0,0,.06); color: var(--ink); }
+.nav { z-index: 50; }   /* 提示条从导航底下滑出来，不能盖住导航 */
+
+@media (max-width: 734px) {
+  .nav-in { gap: 12px; }
+  .nav details.langs summary { padding: 5px 7px; }
 }

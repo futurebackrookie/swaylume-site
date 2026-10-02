@@ -256,5 +256,8 @@
   "h.get.b2": "Systemeinstellungen → Datenschutz & Sicherheit öffnen.",
   "h.get.b3": "Nach unten zu „Sicherheit“ scrollen und die Zeile finden, dass Swaylume blockiert wurde.",
   "h.get.b4": "Daneben auf „Trotzdem öffnen“ klicken und bestätigen.",
-  "h.get.after": "Danach öffnet sich die App per Doppelklick und fragt nicht mehr. Swaylume ist noch nicht von Apple notarisiert (dafür braucht es einen kostenpflichtigen Entwickler-Account) – das heißt nicht, dass mit der App etwas nicht stimmt."
+  "h.get.after": "Danach öffnet sich die App per Doppelklick und fragt nicht mehr. Swaylume ist noch nicht von Apple notarisiert (dafür braucht es einen kostenpflichtigen Entwickler-Account) – das heißt nicht, dass mit der App etwas nicht stimmt.",
+  "langhint.text": "Diese Website gibt es auch auf Deutsch.",
+  "langhint.go": "Auf Deutsch ansehen",
+  "langhint.close": "Schließen"
 }

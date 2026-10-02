@@ -256,5 +256,8 @@
   "h.get.b2": "Open System Settings → Privacy & Security.",
   "h.get.b3": "Scroll down to Security and find the line saying Swaylume was blocked.",
   "h.get.b4": "Click Open Anyway next to it, then confirm.",
-  "h.get.after": "After that it opens with a normal double-click and won’t ask again. Swaylume isn’t notarized by Apple yet (that requires a paid developer account) — it doesn’t mean anything is wrong with the app."
+  "h.get.after": "After that it opens with a normal double-click and won’t ask again. Swaylume isn’t notarized by Apple yet (that requires a paid developer account) — it doesn’t mean anything is wrong with the app.",
+  "langhint.text": "This site is also available in English.",
+  "langhint.go": "View in English",
+  "langhint.close": "Dismiss"
 }

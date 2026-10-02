@@ -38,6 +38,50 @@
     }
   }
 
+  // 访客的浏览器语言和这一页不一样：在导航底下用**访客的语言**提示一句。只提示，不跳转。
+  // 首选语言站上没有（比如西语）就退到英文 —— 落在中文首页的外国访客最需要的就是这一句。
+  (function langHint() {
+    var hints = window.__LANGHINT || {}, here = document.documentElement.lang, KEY = "swaylume.langhint.dismissed";
+    try { if (localStorage.getItem(KEY)) return; } catch (e) { /* 隐私模式读不了也照常提示 */ }
+    var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+    var target = null;
+    for (var i = 0; i < prefs.length && !target; i++) {
+      var primary = String(prefs[i]).toLowerCase().split("-")[0];
+      var code = primary === "zh" ? "zh-Hans" : primary;
+      if (hints[code]) target = code;
+    }
+    if (!target) target = "en";
+    if (target === here || !hints[target]) return;
+    var link = document.querySelector('.nav a[hreflang="' + target + '"]');
+    if (!link) return;
+
+    var h = hints[target], bar = document.createElement("div");
+    bar.className = "langhint";
+    bar.setAttribute("role", "note");
+    bar.lang = target;
+    var text = document.createElement("span");
+    text.textContent = h.text;
+    var go = document.createElement("a");
+    go.href = link.getAttribute("href");
+    go.hreflang = target;
+    go.textContent = h.go;
+    var close = document.createElement("button");
+    close.type = "button";
+    close.setAttribute("aria-label", h.close);
+    close.textContent = "×";
+    close.addEventListener("click", function () {
+      bar.classList.remove("on");
+      try { localStorage.setItem(KEY, "1"); } catch (e) {}
+      setTimeout(function () { bar.remove(); }, 600);
+    });
+    bar.appendChild(text);
+    bar.appendChild(go);
+    bar.appendChild(close);
+    document.body.appendChild(bar);
+    // 晚一拍再滑出来：和首屏同时出现会抢走第一眼
+    setTimeout(function () { bar.classList.add("on"); }, 900);
+  })();
+
   // 语言菜单（<details>）：点外面、按 Esc 收起。坏了也只是关不掉，不会打不开。
   function closeLang(except) {
     document.querySelectorAll("details.langs[open]").forEach(function (d) {
