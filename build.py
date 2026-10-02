@@ -87,6 +87,66 @@ ANALYTICS = ("cloudflare", "aca979be3ab8462e811dcefcae9aa19b")
 ROOT = pathlib.Path(__file__).parent
 PLACEHOLDER = re.compile(r"\{\{([\w.\-]+)\}\}")
 
+# 本地预览：资源地址指向本机的 http.server（.claude/launch.json 里的 design-proto，
+# 仓库根目录、8765 端口）。只给 --preview 用 —— 生成结果里出现 localhost 的话
+# 线上整页裂图，所以 deploy.sh 永远走不带开关的正式构建。
+PREVIEW = "--preview" in sys.argv
+if PREVIEW:
+    SITE_URL = "http://localhost:8765/site"
+
+# 页面上实时跑的内置壁纸。它们就是产品本身，不是另做的宣传图。
+BUNDLED = ROOT.parent / "Sources" / "Resources" / "BundledWallpapers"
+# 开场用极光：没有哪张内置壁纸画着山脊，退而求其次取同一套青色，图标溶进去才像同一个镜头。
+# 画廊六张按「互相不像」挑：流体、液态金属、霓虹、光斑、玉色流体、等高线。
+HERO = "aurora"
+FEATURED = ["daybreak", "copper-fold", "neon-rain", "harbor-lamp", "jade-vein", "contour-map"]
+WEB_TILE = "silk-current"
+
+
+def copy_wallpapers(dest, slugs=None):
+    """把页面要用的壁纸从 app 的内置包里复制到 dest/<slug>/。
+
+    复制而不是链接：线上仓库只收 site/，引用不到主仓库的 Sources。
+    """
+    import shutil
+    wanted = slugs if slugs is not None else list(dict.fromkeys([HERO, WEB_TILE, *FEATURED]))
+    for slug in wanted:
+        src = BUNDLED / slug / "content"
+        if not (src / "index.html").is_file():
+            print(f"❌ 内置壁纸里没有 {slug}（{src}）")
+            sys.exit(1)
+        target = dest / slug
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.copytree(src, target)
+    return wanted
+
+
+def content_hash(data):
+    import hashlib
+    return hashlib.sha256(data).hexdigest()[:8]
+
+
+def asset_url(name):
+    """带内容哈希的资源地址。改了 css/js 浏览器一定重新取，不改就一直走缓存。"""
+    data = (ROOT / "assets" / name).read_bytes()
+    return f"{SITE_URL}/assets/{name}?v={content_hash(data)}"
+
+
+ASSET = re.compile(r"%%ASSET:([\w.\-]+)%%")
+
+
+def selected_locales(argv):
+    """--only <code> 只生成一种语言（第一阶段只有中文有新词条）。"""
+    if "--only" not in argv:
+        return list(LOCALES)
+    i = argv.index("--only") + 1
+    code = argv[i] if i < len(argv) else ""
+    if code not in LOCALES:
+        print(f"❌ --only 后面要跟语言代码，可选：{', '.join(LOCALES)}")
+        sys.exit(2)
+    return [code]
+
 
 def load_locales():
     out = {}
@@ -137,11 +197,14 @@ def check_keys(locales, template):
         errors.append(f"{DEFAULT} 有 {len(missing_in_template)} 条词条模板里用不到："
                       f"{sorted(missing_in_template)[:5]}")
 
-    # 但 js.* 必须真的被脚本用到，否则就是改代码时留下的孤儿词条
+    # 但 js.* 必须真的被用到，否则就是改代码时留下的孤儿词条。
+    # 脚本已经从模板里拆到 assets/*.js，T("…") 要去那里找；技术细节页的调速器日志
+    # 是静态表格，直接以 {{js.gov…}} 写在模板里，也算用到。
     import re as _re
-    referenced = set(_re.findall(r'T\("([\w.]+)"\)', template))
-    referenced |= {f"js.preview{n}.{f}" for n in "1234" for f in ("kind", "title", "meta")}
-    referenced |= {f"js.gov{n}.{f}" for n in "1234567" for f in ("p", "m")}
+    scripts = template + "".join(f.read_text() for f in sorted((ROOT / "assets").glob("*.js")))
+    referenced = set(_re.findall(r'T\("([\w.]+)"\)', scripts)) | used
+    # 查表再 T(…) 的写法（省电那幕的四个状态）：引号里出现过的 js.* 也算用到
+    referenced |= set(_re.findall(r'"(js\.[\w.]+)"', scripts))
     orphan = {k for k in base if k.startswith("js.")} - referenced
     if orphan:
         errors.append(f"js.* 有 {len(orphan)} 条没有任何脚本引用：{sorted(orphan)}")
@@ -171,7 +234,8 @@ def analytics_tag():
 
     defer 是必须的：统计脚本绝不该挡住首屏那个着色器的渲染。
     """
-    if not ANALYTICS:
+    # 本机预览不统计：否则自己刷新几十次全算进访问量，控制台还一片 CORS 报错
+    if not ANALYTICS or PREVIEW:
         return []
     kind, key = ANALYTICS
     if kind == "cloudflare":
@@ -223,7 +287,8 @@ def head(code, entries, page="home"):
     canonical = page_href(SITE_URL, subdir, page)
     lines = [
         "<!doctype html>",
-        f'<html lang="{lang}">',
+        # data-site：live.js 拼壁纸和海报地址用
+        f'<html lang="{lang}" data-site="{SITE_URL}">',
         "<head>",
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
@@ -242,8 +307,8 @@ def head(code, entries, page="home"):
     lines.append(f'<link rel="alternate" hreflang="x-default" '
                  f'href="{page_href(SITE_URL, "", page)}">')
     lines += [
-        '<meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)">',
-        '<meta name="theme-color" content="#EBE4D3" media="(prefers-color-scheme: light)">',
+        # 首屏是黑底的开场，浏览器顶栏跟着黑
+        '<meta name="theme-color" content="#000000">',
         f'<meta property="og:title" content="{entries[title_key]}">',
         f'<meta property="og:description" content="{entries[desc_key]}">',
         '<meta property="og:type" content="website">',
@@ -261,6 +326,8 @@ def head(code, entries, page="home"):
         '"downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases",'
         '"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>',
         f'<link rel="icon" type="image/png" href="{SITE_URL}/icon.png">',
+        f'<link rel="stylesheet" href="{asset_url("site.css")}">',
+        *([f'<link rel="stylesheet" href="{asset_url("home.css")}">'] if page == "home" else []),
         f'<link rel="apple-touch-icon" href="{SITE_URL}/icon.png">',
     ]
     # 常见问题只在 /details 上，结构化数据也只该出现在那一页 ——
@@ -277,6 +344,16 @@ def head(code, entries, page="home"):
     return "\n".join(lines)
 
 
+def site_base():
+    """站内链接的路径前缀：站点部署在哪个子路径下。
+
+    github.io 项目页是 /swaylume-site，绑了域名就是空串，本机预览是 /site ——
+    都从 SITE_URL 的路径部分来，不再只认 github.io（那样预览时导航全指到仓库根目录）。
+    """
+    from urllib.parse import urlparse
+    return urlparse(SITE_URL).path.rstrip("/")
+
+
 def lang_switcher(code, page="home"):
     """语言切换器：收起成一个按钮，点开才列出语言。
 
@@ -291,7 +368,7 @@ def lang_switcher(code, page="home"):
     顺带解决一个旧问题：五种语言并排在窄屏放不下，原来靠横向滚动加
     `order: -1` 把当前语言顶到最前。收起来之后这个补丁整个不需要了。
     """
-    base = "/" + SITE_URL.rstrip("/").split("/")[-1] if "github.io" in SITE_URL else ""
+    base = site_base()
     items = []
     for other, (subdir, lang, _, name) in LOCALES.items():
         # 切语言要停在**同一页**：在 /details 上切成英文该去 /en/details/，
@@ -339,6 +416,10 @@ def render(template, entries, code, page="home"):
     # 相对路径会解析到子目录里去 —— 根页面正常、四个语言页全裂图，
     # 只测根页面永远发现不了。
     out = out.replace("%%SITE%%", SITE_URL)
+    out = ASSET.sub(lambda m: asset_url(m.group(1)), out)
+    # 代码块是 white-space: pre，词条开头那个换行会变成一行空白。在这里修，不靠脚本
+    out = re.sub(r'(<div class="code[^"]*">)(.*?)(</div>)',
+                 lambda m: m.group(1) + m.group(2).strip() + m.group(3), out, flags=re.S)
     out = out.replace("<!--LANG-SWITCHER-->", lang_switcher(code, page))
     # 品牌标记内联进来，不走 <img>：它是 30px 的小图，多一次请求不划算，
     # 而且内联之后能被 CSS 直接摸到。
@@ -348,7 +429,7 @@ def render(template, entries, code, page="home"):
     out = out.replace("<!--BRAND-MARK-->", brand_mark())
     # 跨页链接。导航里指向已经挪到 /details 的小节，必须写成完整路径 ——
     # 写 "#faq" 的话在首页上点了毫无反应（那个锚点已经不在这一页了）。
-    base = "/" + SITE_URL.rstrip("/").split("/")[-1] if "github.io" in SITE_URL else ""
+    base = site_base()
     subdir = LOCALES[code][0]
     out = out.replace("%%HOME%%", page_href(base, subdir, "home"))
     out = out.replace("%%DETAILS%%", page_href(base, subdir, "details"))
@@ -421,7 +502,11 @@ def write_robots():
 
 def main():
     template = (ROOT / "template.html").read_text()
+    codes = selected_locales(sys.argv)
     locales = load_locales()
+    if len(codes) == 1:
+        # 只生成一种语言时，跨语言的词条对齐没有意义（其余语言还是旧词条）
+        locales = {c: locales[c] for c in dict.fromkeys([DEFAULT, codes[0]])}
 
     errors = check_keys(locales, template)
     if errors:
@@ -434,7 +519,10 @@ def main():
         print(f"✅ 词条校验通过（{len(LOCALES)} 种语言 × {len(locales[DEFAULT])} 条）")
         return 0
 
-    for code, (subdir, _, _, _) in LOCALES.items():
+    partial = PREVIEW or len(codes) < len(LOCALES)
+    copy_wallpapers(ROOT / "wallpapers")
+    for code in codes:
+        subdir = LOCALES[code][0]
         for page, (pagedir, _, _) in PAGES.items():
             body = render(template, locales[code], code, page)
             doc = head(code, locales[code], page) + "\n" + body + "\n</body>\n</html>\n"
@@ -445,7 +533,7 @@ def main():
             rel = "/".join(parts + ["index.html"]) if parts else "index.html"
             print(f"  {rel:24} {len(doc):>7,} 字节  {code}")
         body = render(template, locales[code], code, "home")
-        if code == DEFAULT:
+        if code == DEFAULT and not partial:
             # 预览片段自带 title/description；完整文档里这两项由 head() 负责，
             # 两边都放会产生两个 <title>。
             e = locales[code]
@@ -454,6 +542,11 @@ def main():
                 f'<meta name="description" content="{e["meta.description"]}">\n\n'
                 + body)
 
+    if partial:
+        # 预览 / 只生成一种语言：sitemap、robots、content.html 是线上要用的整站产物，
+        # 带着 localhost 或缺语言写进去就是一次悄悄的事故，这里一概不碰
+        print(f"✅ 只生成了 {', '.join(codes)}{'（本机预览地址）' if PREVIEW else ''}，sitemap / robots 未改")
+        return 0
     lastmod = write_sitemap()
     write_robots()
     print(f"  sitemap.xml         {len(LOCALES) * len(PAGES)} 条 URL  lastmod {lastmod}")

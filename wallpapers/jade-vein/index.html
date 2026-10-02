@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>玉脉</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #08070E; }
+  canvas { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(function () {
+  "use strict";
+  var VERT = "attribute vec2 p;\nvoid main(){ gl_Position = vec4(p, 0.0, 1.0); }\n\n";
+  var FRAG = "// \u6d41\u573a \u2014\u2014 \u4e1d\u7ef8\u822c\u7684\u6d41\u52a8\u6761\u7eb9\u3002\n//\n// \u7528\u566a\u58f0\u5f53\u65b9\u5411\u573a\uff0c\u628a\u5750\u6807\u6cbf\u7740\u65b9\u5411\u79ef\u5206\u82e5\u5e72\u6b65\uff0c\u518d\u5bf9\u79ef\u5206\u540e\u7684\u5750\u6807\u53d6\u5468\u671f\u51fd\u6570\uff0c\n// \u5c31\u5f97\u5230\u987a\u7740\u573a\u8d70\u7684\u7ec6\u5e26\u3002\u89c6\u89c9\u4e0a\u50cf\u4e1d\u7ef8\u6216\u8005\u6d0b\u6d41\u3002\n//\n// \u5173\u952e\u662f**\u4f4e\u5bf9\u6bd4\u5ea6**\uff1a\u6761\u7eb9\u53ea\u5728\u5e95\u8272\u4e0a\u52a0\u4e00\u70b9\u70b9\u4eae\uff0c\u4e0d\u662f\u9ed1\u767d\u5206\u660e\u7684\u7ebf\u6761\u3002\n// \u5206\u660e\u7684\u7ebf\u6761\u538b\u5728\u684c\u9762\u4e0a\u4f1a\u55a7\u5bbe\u593a\u4e3b\u3002\nprecision highp float;\n\nuniform vec2  uRes;\nuniform float uTime;\nuniform vec2  uMouse;\nuniform vec3  uBg;\nuniform vec3  uInk;     // \u6761\u7eb9\u7684\u989c\u8272\nuniform vec3  uAccent;  // \u9ad8\u5149\u5904\u504f\u5411\u7684\u989c\u8272\nuniform float uSpeed;\nuniform float uGrain;\nuniform vec3  uSeed;   // xy = \u57df\u504f\u79fb\uff0cz = \u65cb\u8f6c\u89d2\nuniform float uWarp;    // \u6761\u7eb9\u5bc6\u5ea6\n\n/// \u52a0\u79cd\u5b50\u7684\u91c7\u6837\u5750\u6807\u3002**\u53ea\u7528\u5728\u566a\u58f0\u57df\u4e0a**\uff0c\u4e0d\u80fd\u62ff\u53bb\u7b97\u6697\u89d2\u6216\u8005\u6446\u5149\u56e2\uff1a\n/// \u504f\u79fb\u91cf\u6bd4 uv \u672c\u8eab\u7684\u8303\u56f4\uff08\u7ea6 \u00b10.8\uff09\u5927\u5f97\u591a\uff0c`1 - 0.30*dot(uv,uv)*0.5`\n/// \u8fd9\u79cd\u6697\u89d2\u9879\u4f1a\u88ab\u63a8\u6210\u8d1f\u6570\uff0cclamp \u5b8c\u6574\u5f20\u5c31\u662f\u9ed1\u7684\u3002\u7b2c\u4e00\u7248\u5168\u683d\u5728\u8fd9\u513f\u3002\nvec2 seeded(vec2 p) {\n    float c = cos(uSeed.z), s = sin(uSeed.z);\n    return mat2(c, -s, s, c) * p + uSeed.xy;\n}\n\nfloat hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }\n\nfloat noise(vec2 p) {\n    vec2 i = floor(p), f = fract(p);\n    vec2 u = f * f * (3.0 - 2.0 * f);\n    return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),\n               mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);\n}\n\nfloat fbm(vec2 p) {\n    float v = 0.0, a = 0.5;\n    for (int i = 0; i < 4; i++) { v += a * noise(p); p *= 2.02; a *= 0.5; }\n    return v;\n}\n\nvoid main() {\n    vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);\n    uv += uMouse * 0.04;\n    float t = uTime * uSpeed;\n\n    // \u6cbf\u65b9\u5411\u573a\u79ef\u5206\u3002\u6b65\u6570\u5c11\u3001\u6b65\u957f\u5c0f \u2014\u2014 \u6b65\u5b50\u8fc8\u5927\u4e86\u6761\u7eb9\u4f1a\u65ad\u6210\u865a\u7ebf\u3002\n    vec2 q = seeded(uv) * 1.15;\n    for (int i = 0; i < 14; i++) {\n        float a = fbm(q * 1.4 + vec2(t * 0.08, -t * 0.05)) * 6.28318;\n        q += vec2(cos(a), sin(a)) * 0.016;\n    }\n\n    // \u5bf9\u79ef\u5206\u540e\u7684\u5750\u6807\u53d6\u5468\u671f\u51fd\u6570 \u2192 \u987a\u7740\u573a\u8d70\u7684\u5e26\u5b50\n    float band = fract(fbm(q * 1.8) * uWarp + t * 0.12);\n    float line = smoothstep(0.0, 0.45, band) * smoothstep(1.0, 0.55, band);\n\n    // \u573a\u7684\"\u901f\u5ea6\"\u51b3\u5b9a\u4eae\u5ea6\uff1a\u8f6c\u5f97\u6025\u7684\u5730\u65b9\u4eae\u4e00\u70b9\uff0c\u50cf\u4e1d\u7ef8\u7684\u9ad8\u5149\n    float bend = fbm(q * 3.0 + 4.0);\n\n    // \u6696\u8272\u8981**\u66ff\u6389**\u51b7\u8272\uff0c\u4e0d\u80fd\u5f80\u51b7\u8272\u4e0a\u52a0\u3002\n    // \u52a0\u4e0a\u53bb\u7684\u8bdd\u84dd\u628a\u6a59\u538b\u6b7b\uff0c\u6574\u5f20\u53ea\u5269\u4e00\u4e2a\u9752\u7070\u8c03 \u2014\u2014 \u7b2c\u4e00\u7248\u5c31\u662f\u8fd9\u4e48\u7cca\u7684\u3002\n    vec3 tint = mix(uInk, uAccent, smoothstep(0.34, 0.78, bend));\n    vec3 col = uBg + tint * line * 0.80;\n    // \u8f6c\u5f97\u6700\u6025\u7684\u90a3\u4e00\u5c0f\u6761\u518d\u63d0\u4e00\u6863\uff0c\u4e1d\u7ef8\u7684\u9ad8\u5149\u662f\u5f88\u7a84\u7684\u4e00\u6761\uff0c\u4e0d\u662f\u4e00\u5927\u7247\n    col += uAccent * pow(line, 3.0) * smoothstep(0.55, 0.95, bend) * 0.55;\n\n    // \u4e2d\u592e\u53ea\u8f7b\u538b\u4e00\u70b9\u3002\u538b\u5230 0.26 \u4f1a\u628a\u9ad8\u5149\u4e00\u8d77\u5403\u6389\uff0c\u6574\u5f20\u5c31\u6ca1\u5149\u6cfd\u4e86\u3002\n    col *= 1.0 - 0.10 * exp(-dot(uv, uv) * 1.5);\n    col *= 1.0 - 0.30 * dot(uv, uv) * 0.5;\n    col += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) * uGrain;\n    gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);\n}\n";
+  var S = {"uBg": [0.03, 0.048, 0.042], "uInk": [0.16, 0.3, 0.26], "uAccent": [0.4, 0.44, 0.32], "uSpeed": 0.2, "uGrain": 0.02, "uWarp": 4.2, "uSeed": [2.64, -1.37, 1.42]};
+
+  // 这三个由 Swaylume 的属性面板实时驱动（manifest.json 里声明）。
+  // 装完就能拖滑块改速度和颗粒 —— 属性面板这个功能不演示一下没人知道。
+  var speedScale = 1.0, grainScale = 1.0, parallax = 1.0;
+
+  var canvas = document.getElementById("c");
+  var gl = canvas.getContext("webgl", { antialias: false, alpha: false, depth: false,
+                                        powerPreference: "low-power" });
+  if (!gl) { document.body.style.background = "#1a1030"; return; }
+
+  function compile(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.error(gl.getShaderInfoLog(s)); return null;
+    }
+    return s;
+  }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, "p");
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  // uniform 名直接来自场景字典 —— 加新家族不用回来改这里。
+  var U = { uRes: gl.getUniformLocation(prog, "uRes"),
+            uTime: gl.getUniformLocation(prog, "uTime"),
+            uMouse: gl.getUniformLocation(prog, "uMouse") };
+  for (var key in S) { U[key] = gl.getUniformLocation(prog, key); }
+
+  var mouse = { x: 0, y: 0, tx: 0, ty: 0 }, t0 = performance.now();
+
+  // 家族附加运行时（交互壁纸用）。没有就是两个 null，一行开销都不产生。
+  var extraInit = null, extraFrame = null;
+
+  if (extraInit) { extraInit(); }
+
+  // 窗口点击穿透，页面收不到真实鼠标事件 —— 宿主会合成 mousemove 派发进来。
+  window.addEventListener("mousemove", function (e) {
+    mouse.tx = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.ty = 1 - (e.clientY / window.innerHeight) * 2;
+  }, { passive: true });
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.max(1, Math.round(canvas.clientWidth * dpr));
+    var h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h);
+    }
+  }
+
+  function frame(now) {
+    resize();
+    mouse.x += (mouse.tx - mouse.x) * 0.06;
+    mouse.y += (mouse.ty - mouse.y) * 0.06;
+    gl.uniform2f(U.uRes, canvas.width, canvas.height);
+    gl.uniform1f(U.uTime, (now - t0) / 1000);
+    gl.uniform2f(U.uMouse, mouse.x * parallax, mouse.y * parallax);
+    for (var k in S) {
+      var v = S[k];
+      // 速度和颗粒要乘上属性面板的倍数，其余原样下发。
+      if (k === "uSpeed")      gl.uniform1f(U[k], v * speedScale);
+      else if (k === "uGrain") gl.uniform1f(U[k], v * grainScale);
+      else if (typeof v === "number") gl.uniform1f(U[k], v);
+      else gl.uniform3fv(U[k], v);
+    }
+    if (extraFrame) { extraFrame((now - t0) / 1000); }
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Swaylume 的属性面板通过这个接口下发用户改动（Wallpaper Engine 的约定）。
+  window.wallpaperPropertyListener = {
+    applyUserProperties: function (p) {
+      if (p.speed && typeof p.speed.value === "number") speedScale = p.speed.value;
+      if (p.grain && typeof p.grain.value === "number") grainScale = p.grain.value;
+      if (p.parallax && typeof p.parallax.value === "number") parallax = p.parallax.value;
+    }
+  };
+})();
+</script>
+</body>
+</html>

@@ -7,17 +7,45 @@
 
 | 文件 | 说明 |
 |---|---|
-| `template.html` | **唯一的结构源文件**，文案位置是 `{{键名}}` 占位符 |
+| `template.html` | **唯一的结构源文件**，文案位置是 `{{键名}}` 占位符，三页（首页、技术细节、格式）共用 |
+| `assets/` | 全站样式与脚本：`site.css`（设计令牌、导航、文档页）、`home.css`（首页各幕）、`scenes.js`（滚动引擎）、`live.js`（实时壁纸调度）、`site.js`、`home.js`。页面引用时带内容哈希，改了浏览器一定重新取 |
+| `posters/` | 壁纸海报与 480 宽缩略图，**用 app 自己的渲染器导出**（见下），不是另画的 |
+| `wallpapers/` | 构建时从 `Sources/Resources/BundledWallpapers` 复制的实时壁纸，不进版本库 |
 | `locales/*.json` | 五种语言的文案。`zh-Hans` 是基准 |
 | `build.py` | 生成各语言页面，**不要手改生成结果** |
+| `tools/test_build.py` · `tools/test_scenes.mjs` | 构建链路与滚动数学的单测（`python3 site/tools/test_build.py`、`node --test site/tools/test_scenes.mjs`） |
 | `tools/lint_locales.py` | 语言文件体检（词条完整性、HTML 结构、语言串味） |
-| `tools/extract.py` | 一次性脚本，当初把中文页拆成模板 + 词条用的 |
 | `tools/analytics.py` | 拉 Cloudflare Web Analytics 的访问量（需 API token，见文件开头） |
 | `deploy.sh` | 校验 → 生成 → 同步到公开的 swaylume-site 仓库 |
 | `icon.png` / `og-cover.*` | favicon 与社交分享卡片 |
 
-生成结果（都别手改）：`index.html`（中文）、`en/` `ja/` `de/` `fr/`、
-`content.html`（中文片段，供预览页用）、`sitemap.xml`、`robots.txt`。
+生成结果（都别手改）：`index.html`（中文）、`en/` `ja/` `de/` `fr/`、`details/`、`format/`、
+`content.html`、`sitemap.xml`、`robots.txt`。
+
+### 本机预览
+
+```bash
+python3 site/build.py --preview            # 资源地址指向 http://localhost:8765/site，不挂统计
+python3 site/build.py --preview --only en  # 只生成一种语言
+```
+
+然后用 `.claude/launch.json` 里的 `design-proto`（仓库根目录起 8765 端口）打开 `/site/`。
+**预览构建不写 sitemap / robots / content.html，生成的页面里是 localhost 地址 —— 别提交。**
+提交前跑一次不带开关的 `python3 site/build.py`；`deploy.sh` 永远走正式构建。
+
+### 重新导出壁纸海报
+
+换了精选壁纸（`build.py` 里的 `HERO` / `FEATURED` / `WEB_TILE`）就要重导，
+同步改 `Tests/SwaylumeTests/SitePosterDumpTests.swift` 的名单：
+
+```bash
+TEST_RUNNER_SWAYLUME_POSTER_DUMP="$PWD/site/posters" xcodebuild test -project Swaylume.xcodeproj \
+  -scheme Swaylume -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO \
+  -only-testing:SwaylumeTests/SitePosterDumpTests
+for f in site/posters/*.jpg; do sips -Z 480 -s formatOptions 70 "$f" --out site/posters/thumbs/; sips -Z 1600 -s formatOptions 65 "$f"; done
+```
+
+加 `TEST_RUNNER_SWAYLUME_POSTER_ALL=1` 会把 26 张全导出来，挑的时候用。
 
 ## 改文案
 
@@ -26,6 +54,7 @@
 ```bash
 python3 site/tools/lint_locales.py && \
 python3 site/tools/test_external_links.py && \
+python3 site/tools/test_build.py && node --test site/tools/test_scenes.mjs && \
 python3 site/build.py
 ```
 
@@ -97,19 +126,22 @@ SWAYLUME_SITE_URL=https://your-domain.com python3 site/build.py
 
 ## 页面里有什么
 
-首屏、「精选壁纸」和「图层」各跑一个 WebGL 片元着色器（域扭曲 fbm + 余弦调色板）。
-精选区的四张壁纸可点击切换，首屏同步淡入淡出；画布离开视口即停止渲染。
+首页是苹果产品页式的滚动叙事，十二幕：开场（图标打开成整屏实时壁纸，和 app 启动动画同一个母题）、
+逐词点亮的一句话、精选壁纸（显示器里跑的是内置壁纸本身，点缩略图交叉淡入）、在图标之下（钉住的桌面）、
+三种壁纸（WebGL 卡的滑块走壁纸自己的 `wallpaperPropertyListener`，和 app 同一个接口；视频和 2.5D 是
+标明了「示意」的动画 —— 内置壁纸全是 WebGL，不放假视频）、桌宠（app 里同一套精灵图）、多屏、
+省电（窗口盖上来，帧率滚到 0）、快捷键（在页面上按 ⌥⌘ 键帽会沉下去）、迁移、下载。
+旧首页上的技术故事（窗口层级与 122px 白边、调速器日志、转换表）都在技术细节页的「工作原理」里。
 
-「图层」那块桌面是可交互的：扳开关能看到壁纸在图标层上下切换，读数会跟着显示
-真实的窗口层级值（`−2147483604` ↔ `−2147483601`）。
+**实时壁纸同一时刻只挂一个 iframe**（`live.js`）：哪个位置在视口里露得最多就是哪个，其余显示海报；
+滚出视口、标签页切走就卸载。页面自己遵守它宣传的省电规矩。
 
-页面自己也遵守它宣传的省电规矩 —— 画布滚出视野、标签页切走、
-或者演示里那个窗口铺满时，`requestAnimationFrame` 就停了。
-`prefers-reduced-motion` 下只画一帧。
+**减弱动态效果**（系统开关，或 URL 带 `?reduce`）：不钉住、不挂 iframe，所有幕直接显示最终状态。
 
-第三方运行时依赖只有一个：Cloudflare Web Analytics 的 beacon（无 Cookie、
-不跨站追踪、不给单个访客建档）。除此之外没有追踪像素，也没有别的外部脚本。
-不想要统计就把 `build.py` 里的 `ANALYTICS` 置空，页面上那句说明会一起消失。
+**入场动画不能决定内容看不看得见**：初始隐藏态只写在 `html.js` 下，观察器回调不来时还有定时兜底。
+
+第三方运行时依赖只有一个：Cloudflare Web Analytics 的 beacon（无 Cookie、不跨站追踪、
+不给单个访客建档）。不想要统计就把 `build.py` 里的 `ANALYTICS` 置空，技术细节页上那句说明会一起消失。
 
 ## 排版上的雷（都踩过）
 

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>港灯</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #08070E; }
+  canvas { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(function () {
+  "use strict";
+  var VERT = "attribute vec2 p;\nvoid main(){ gl_Position = vec4(p, 0.0, 1.0); }\n\n";
+  var FRAG = "// \u96e8\u6253\u73bb\u7483 \u2014\u2014 \u9694\u7740\u4e00\u5c42\u6e7f\u73bb\u7483\u770b\u7a97\u5916\u7684\u706f\u3002\n//\n// \u6ca1\u6709\u8d34\u56fe\u53ef\u91c7\uff0c\u6240\u4ee5\"\u7a97\u5916\"\u662f\u4e00\u4e2a\u51fd\u6570\u3002\u6c34\u73e0\u7684\u505a\u6cd5\u662f**\u504f\u79fb\u4f20\u7ed9\u8fd9\u4e2a\u51fd\u6570\u7684\u5750\u6807**\uff1a\n// \u6298\u5c04\u672c\u6765\u5c31\u662f\"\u770b\u5230\u7684\u662f\u522b\u5904\u7684\u5149\"\uff0c\u7528\u5750\u6807\u504f\u79fb\u8868\u8fbe\u5b83\u662f\u51c6\u786e\u7684\u3002\n//\n// \u7b2c\u4e00\u7248\u5931\u8d25\u5728\u8fd9\u91cc\uff0c\u503c\u5f97\u8bb0\u4e0b\u6765\uff1a\u80cc\u666f\u662f\u4e94\u56e2\u6781\u7cca\u7684\u5149\uff0c\u4e8e\u662f\u504f\u79fb\u5750\u6807\u4e4b\u540e\n// \u53d6\u5230\u7684\u989c\u8272\u51e0\u4e4e\u6ca1\u53d8\uff0c\u6c34\u73e0\u53ea\u5269\u4e0b\u4e00\u5708\u4eae\u8fb9\u2014\u2014\u770b\u7740\u50cf\u8d34\u5728\u73bb\u7483\u4e0a\u7684\u5706\u73af\uff0c\u4e0d\u662f\u6c34\u3002\n// **\u6298\u5c04\u8981\u770b\u5f97\u89c1\uff0c\u80cc\u666f\u5fc5\u987b\u6709\u9ad8\u9891\u7ed3\u6784\u3002** \u6240\u4ee5\u73b0\u5728\u7a97\u5916\u662f\u5341\u51e0\u76cf\u5c0f\u800c\u4eae\u7684\u706f\uff0c\n// \u4e0d\u662f\u51e0\u56e2\u5927\u800c\u7cca\u7684\u96fe\u3002\n//\n// \u73e0\u5b50\u5185\u90e8\u8fd8\u505a\u4e86\u4e00\u6b21\u7ffb\u8f6c\uff1a\u771f\u5b9e\u7684\u6c34\u73e0\u662f\u4e2a\u51f8\u900f\u955c\uff0c\u770b\u5230\u7684\u662f**\u5012\u8fc7\u6765\u7684**\u50cf\u3002\n// \u53ea\u505a\u504f\u79fb\u4e0d\u505a\u7ffb\u8f6c\u7684\u8bdd\uff0c\u73e0\u5b50\u91cc\u90a3\u4e00\u5c0f\u5757\u548c\u5468\u56f4\u8fde\u6210\u4e00\u7247\uff0c\u7acb\u4e0d\u8d77\u6765\u3002\nprecision highp float;\n\nuniform vec2  uRes;\nuniform float uTime;\nuniform vec2  uMouse;\nuniform vec3  uBg;\nuniform vec3  uGlow;    // \u6696\u706f\nuniform vec3  uCool;    // \u51b7\u706f\u3002\u51b7\u6696\u4ea4\u66ff\uff0c\u753b\u9762\u624d\u4e0d\u4f1a\u7cca\u6210\u4e00\u7247\u571f\u9ec4\nuniform float uSpeed;\nuniform float uGrain;\nuniform vec3  uSeed;   // xy = \u57df\u504f\u79fb\uff0cz = \u65cb\u8f6c\u89d2\nuniform float uDrops;   // \u6c34\u73e0\u5bc6\u5ea6\n\n/// \u52a0\u79cd\u5b50\u7684\u91c7\u6837\u5750\u6807\u3002**\u53ea\u7528\u5728\u566a\u58f0\u57df\u4e0a**\uff0c\u4e0d\u80fd\u62ff\u53bb\u7b97\u6697\u89d2\u6216\u8005\u6446\u5149\u56e2\uff1a\n/// \u504f\u79fb\u91cf\u6bd4 uv \u672c\u8eab\u7684\u8303\u56f4\uff08\u7ea6 \u00b10.8\uff09\u5927\u5f97\u591a\uff0c`1 - 0.30*dot(uv,uv)*0.5`\n/// \u8fd9\u79cd\u6697\u89d2\u9879\u4f1a\u88ab\u63a8\u6210\u8d1f\u6570\uff0cclamp \u5b8c\u6574\u5f20\u5c31\u662f\u9ed1\u7684\u3002\u7b2c\u4e00\u7248\u5168\u683d\u5728\u8fd9\u513f\u3002\nvec2 seeded(vec2 p) {\n    float c = cos(uSeed.z), s = sin(uSeed.z);\n    return mat2(c, -s, s, c) * p + uSeed.xy;\n}\n\nfloat hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }\nvec2 hash2(vec2 p) {\n    return fract(sin(vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)))) * 43758.5453);\n}\n\n/// \u7a97\u5916\uff1a\u5341\u51e0\u76cf\u6563\u7126\u7684\u706f\u3002\u5c0f\u800c\u4eae \u2014\u2014 \u8fd9\u662f\u6c34\u73e0\u80fd\"\u770b\u5f97\u51fa\u5728\u6298\u5c04\"\u7684\u524d\u63d0\u3002\nvec3 backdrop(vec2 uv) {\n    vec3 col = uBg;\n    for (int i = 0; i < 14; i++) {\n        float fi = float(i);\n        vec2 h = hash2(vec2(fi * 1.7, 3.3 + uSeed.x * 5.0));\n        vec2 at = (h - 0.5) * vec2(2.0, 1.25);\n        vec2 d = uv - at;\n        float r = 0.030 + h.x * 0.055;\n        float glow = exp(-dot(d, d) / (r * r + 1e-4) * 0.5);\n        vec3 tint = mix(uGlow, uCool, step(0.62, h.y));\n        col += tint * glow * (0.45 + h.y * 0.55);\n    }\n    // \u4e00\u5c42\u5f88\u6de1\u7684\u5929\u5149\uff0c\u907f\u514d\u56db\u89d2\u6b7b\u9ed1\n    vec2 sky = uv - vec2(0.28, 0.42);\n    col += uGlow * 0.08 * exp(-dot(sky, sky) * 1.1);\n    // \u57ce\u5e02\u7684\u6563\u5c04\u5149\u4ece\u4e0b\u5f80\u4e0a\u62ac\u4e00\u6863\u3002\u6ca1\u6709\u8fd9\u5c42\u7684\u8bdd\u5de6\u534a\u8fb9\u6574\u7247\u6b7b\u9ed1\uff0c\n    // \u6c34\u73e0\u98d8\u5728\u7eaf\u9ed1\u4e0a\u50cf\u8d34\u7eb8\uff0c\u800c\u4e14\u622a\u56fe\u91cc\u770b\u7740\u50cf\u5f20\u6ca1\u505a\u5b8c\u7684\u56fe\u3002\n    col += uCool * 0.10 * smoothstep(0.55, -0.45, uv.y);\n    return col;\n}\n\n/// \u4e00\u5c42\u6c34\u73e0\u3002xy = \u6298\u5c04\u504f\u79fb\uff0cz = \u4eae\u8fb9\u5f3a\u5ea6\u3002\n///\n/// \u5fc5\u987b\u626b 3\u00d73 \u4e2a\u90bb\u683c\uff0c\u4e0d\u80fd\u53ea\u770b\u81ea\u5df1\u90a3\u4e00\u683c\uff1a\u73e0\u5b50\u7684\u4e2d\u5fc3\u53ef\u4ee5\u8d34\u5728\u683c\u5b50\u8fb9\u4e0a\n/// \uff08\u4e0b\u6dcc\u7684\u73e0\u5b50 at.y \u4f1a\u4e00\u8def\u8d70\u5230 \u00b10.5\uff09\uff0c\u53ea\u53d6\u672c\u683c\u7684\u8bdd\u73e0\u5b50\u4f1a\u88ab\u683c\u7ebf\u5207\u6389\u534a\u8fb9\uff0c\n/// \u753b\u9762\u4e0a\u5c31\u662f\u4e00\u6761\u7b14\u76f4\u7684\u63a5\u7f1d \u2014\u2014 \u53f3\u8fb9\u7f18\u90a3\u6761\u6a2a\u7ebf\u5c31\u662f\u8fd9\u4e48\u6765\u7684\u3002\nvec3 dropLayer(vec2 uv, float scale, float t, float fall, float density) {\n    vec2 gv = uv * scale;\n    vec2 base = floor(gv);\n    vec2 f = fract(gv) - 0.5;\n\n    vec3 acc = vec3(0.0);\n    for (int oy = -1; oy <= 1; oy++) {\n        for (int ox = -1; ox <= 1; ox++) {\n            vec2 o = vec2(float(ox), float(oy));\n            vec2 id = base + o;\n\n            // \u5927\u90e8\u5206\u683c\u5b50\u662f\u7a7a\u7684\u3002\u94fa\u6ee1\u6bcf\u4e00\u683c\u4f1a\u53d8\u6210\u89c4\u5219\u56fe\u6848\uff0c\u4e0d\u50cf\u96e8\u3002\n            if (hash(id + 7.1) > density) continue;\n\n            vec2 rnd = hash2(id);\n            float drift = fract(rnd.y + t * fall * (0.35 + rnd.x * 0.65));\n            vec2 at = o + vec2((rnd.x - 0.5) * 0.55,\n                               fall > 0.0 ? 0.5 - drift : (rnd.y - 0.5) * 0.55);\n            float r = (0.13 + rnd.x * 0.14) * uDrops;\n\n            vec2 d = f - at;\n            float dist = length(d);\n            if (dist > r) continue;\n\n            float inside = smoothstep(r, r * 0.78, dist);\n            // \u51f8\u900f\u955c\uff1a\u73e0\u5b50\u91cc\u770b\u5230\u7684\u662f\u5012\u8fc7\u6765\u7684\u3001\u653e\u5927\u7684\u50cf\n            vec2 lens = -d * 2.4 * inside / scale;\n            float rim = smoothstep(r, r * 0.88, dist) - smoothstep(r * 0.88, r * 0.62, dist);\n            acc += vec3(lens, rim * inside);\n        }\n    }\n    return acc;\n}\n\nvoid main() {\n    vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);\n    uv += uMouse * 0.02;\n    float t = uTime * uSpeed;\n\n    // \u4e24\u5c42\uff1a\u5c0f\u96fe\u73e0\u4e0d\u52a8\uff08\u5bc6\uff09\uff0c\u5927\u73e0\u5f80\u4e0b\u6dcc\uff08\u7a00\uff09\n    // \u6c34\u73e0\u7684\u683c\u5b50\u4e5f\u632a\u4e00\u632a\uff0c\u5426\u5219\u51e0\u5f20\u7684\u73e0\u5b50\u843d\u70b9\u4e00\u6a21\u4e00\u6837\n    vec3 mist = dropLayer(uv + uSeed.xy * 0.31, 13.0, t, 0.0, 0.45);\n    vec3 fall = dropLayer(uv + 0.31 - uSeed.yx * 0.23, 4.5, t, 0.30, 0.32);\n    vec2 offset = mist.xy * 0.45 + fall.xy;\n    float rim = mist.z * 0.25 + fall.z * 0.60;\n\n    vec3 col = backdrop(uv + offset);\n\n    // \u4eae\u8fb9\u7684\u5f3a\u5ea6\u8981\u8ddf\u7740\u80cc\u666f\u8d70\u3002\u771f\u5b9e\u7684\u6c34\u73e0\u53ea\u6709\u5728\u6709\u5149\u7684\u5730\u65b9\u624d\u53cd\u5149\uff1b\n    // \u7ed9\u5b83\u4e00\u4e2a\u56fa\u5b9a\u4eae\u5ea6\u7684\u8bdd\uff0c\u9ed1\u7684\u5730\u65b9\u5c31\u5269\u4e00\u5708\u7070\u73af\uff0c\u770b\u7740\u50cf\u810f\u955c\u5934\u4e0d\u50cf\u96e8\u3002\n    float lum = dot(col, vec3(0.30, 0.59, 0.11));\n    col += (uGlow + uCool) * 0.5 * rim * (0.03 + lum * 2.1);\n    col *= 0.94;                       // \u6e7f\u73bb\u7483\u672c\u6765\u5c31\u4e0d\u900f\u4eae\n\n    col *= 1.0 - 0.22 * exp(-dot(uv, uv) * 1.5);\n    col *= 1.0 - 0.30 * dot(uv, uv) * 0.5;\n    col += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) * uGrain;\n    gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);\n}\n";
+  var S = {"uBg": [0.026, 0.04, 0.044], "uGlow": [0.62, 0.5, 0.2], "uCool": [0.14, 0.46, 0.4], "uSpeed": 0.22, "uGrain": 0.02, "uDrops": 1.2, "uSeed": [-1.94, 2.72, 2.94]};
+
+  // 这三个由 Swaylume 的属性面板实时驱动（manifest.json 里声明）。
+  // 装完就能拖滑块改速度和颗粒 —— 属性面板这个功能不演示一下没人知道。
+  var speedScale = 1.0, grainScale = 1.0, parallax = 1.0;
+
+  var canvas = document.getElementById("c");
+  var gl = canvas.getContext("webgl", { antialias: false, alpha: false, depth: false,
+                                        powerPreference: "low-power" });
+  if (!gl) { document.body.style.background = "#1a1030"; return; }
+
+  function compile(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.error(gl.getShaderInfoLog(s)); return null;
+    }
+    return s;
+  }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, "p");
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  // uniform 名直接来自场景字典 —— 加新家族不用回来改这里。
+  var U = { uRes: gl.getUniformLocation(prog, "uRes"),
+            uTime: gl.getUniformLocation(prog, "uTime"),
+            uMouse: gl.getUniformLocation(prog, "uMouse") };
+  for (var key in S) { U[key] = gl.getUniformLocation(prog, key); }
+
+  var mouse = { x: 0, y: 0, tx: 0, ty: 0 }, t0 = performance.now();
+
+  // 家族附加运行时（交互壁纸用）。没有就是两个 null，一行开销都不产生。
+  var extraInit = null, extraFrame = null;
+
+  if (extraInit) { extraInit(); }
+
+  // 窗口点击穿透，页面收不到真实鼠标事件 —— 宿主会合成 mousemove 派发进来。
+  window.addEventListener("mousemove", function (e) {
+    mouse.tx = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.ty = 1 - (e.clientY / window.innerHeight) * 2;
+  }, { passive: true });
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.max(1, Math.round(canvas.clientWidth * dpr));
+    var h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h);
+    }
+  }
+
+  function frame(now) {
+    resize();
+    mouse.x += (mouse.tx - mouse.x) * 0.06;
+    mouse.y += (mouse.ty - mouse.y) * 0.06;
+    gl.uniform2f(U.uRes, canvas.width, canvas.height);
+    gl.uniform1f(U.uTime, (now - t0) / 1000);
+    gl.uniform2f(U.uMouse, mouse.x * parallax, mouse.y * parallax);
+    for (var k in S) {
+      var v = S[k];
+      // 速度和颗粒要乘上属性面板的倍数，其余原样下发。
+      if (k === "uSpeed")      gl.uniform1f(U[k], v * speedScale);
+      else if (k === "uGrain") gl.uniform1f(U[k], v * grainScale);
+      else if (typeof v === "number") gl.uniform1f(U[k], v);
+      else gl.uniform3fv(U[k], v);
+    }
+    if (extraFrame) { extraFrame((now - t0) / 1000); }
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Swaylume 的属性面板通过这个接口下发用户改动（Wallpaper Engine 的约定）。
+  window.wallpaperPropertyListener = {
+    applyUserProperties: function (p) {
+      if (p.speed && typeof p.speed.value === "number") speedScale = p.speed.value;
+      if (p.grain && typeof p.grain.value === "number") grainScale = p.grain.value;
+      if (p.parallax && typeof p.parallax.value === "number") parallax = p.parallax.value;
+    }
+  };
+})();
+</script>
+</body>
+</html>
