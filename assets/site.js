@@ -9,19 +9,25 @@
   var themed = document.querySelectorAll("main [data-theme]");
   // 文档页没有深浅交替的区块，整页是白纸：导航用浅色
   if (nav && !themed.length) nav.setAttribute("data-theme", "light");
-  if (nav && themed.length && "IntersectionObserver" in window) {
-    var io;
-    var watch = function () {
-      if (io) io.disconnect();
-      io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) nav.setAttribute("data-theme", e.target.getAttribute("data-theme"));
-        });
-      }, { rootMargin: "-26px 0px " + (26 - window.innerHeight) + "px 0px" });
-      for (var i = 0; i < themed.length; i++) io.observe(themed[i]);
-    };
-    watch();
-    window.addEventListener("resize", watch, { passive: true });
+  if (nav && themed.length) {
+    var themeQueued = false;
+    function updateTheme() {
+      themeQueued = false;
+      var probe = nav.offsetHeight / 2;
+      for (var i = 0; i < themed.length; i++) {
+        var r = themed[i].getBoundingClientRect();
+        if (r.top <= probe && r.bottom > probe) {
+          nav.setAttribute("data-theme", themed[i].getAttribute("data-theme")); return;
+        }
+      }
+      if (window.scrollY > 0) nav.setAttribute("data-theme", "light");
+    }
+    function queueTheme() {
+      if (!themeQueued) { themeQueued = true; requestAnimationFrame(updateTheme); }
+    }
+    window.addEventListener("scroll", queueTheme, { passive: true });
+    window.addEventListener("resize", queueTheme, { passive: true });
+    updateTheme();
   }
 
   // 技术细节页的频谱装饰：几十根柱子各自起伏，纯 CSS 动画，不跑脚本循环

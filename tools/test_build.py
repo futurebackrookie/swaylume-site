@@ -1,5 +1,8 @@
 """build.py 的构建链路。python3 site/tools/test_build.py"""
 import importlib.util, pathlib, tempfile, unittest
+from html.parser import HTMLParser
+from urllib.parse import urlsplit
+from collections import Counter
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("build", ROOT / "build.py")
@@ -50,6 +53,79 @@ class OnlyFlagTests(unittest.TestCase):
     def test_only_rejects_unknown_locale(self):
         with self.assertRaises(SystemExit):
             build.selected_locales(["--only", "xx"])
+
+
+class ParsedPage(HTMLParser):
+    def __init__(self, html):
+        super().__init__()
+        self.ids = []
+        self.links = []
+        self.resources = []
+        self.wallpapers = []
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if "id" in attrs:
+            self.ids.append(attrs["id"])
+        if tag == "a" and "href" in attrs:
+            self.links.append(attrs["href"])
+        if tag in ("img", "script") and "src" in attrs:
+            self.resources.append(attrs["src"])
+        if tag == "link" and attrs.get("rel") in ("stylesheet", "icon"):
+            self.resources.append(attrs["href"])
+        for attr in ("data-live", "data-slug"):
+            if attr in attrs:
+                self.wallpapers.append(attrs[attr])
+
+
+class RenderIntegrityTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        template = (ROOT / "template.html").read_text()
+        locales = build.load_locales()
+        cls.pages = {}
+        cls.base = urlsplit(build.SITE_URL).path.rstrip("/")
+        for code, entries in locales.items():
+            for page in build.PAGES:
+                html = build.head(code, entries, page) + build.render(template, entries, code, page)
+                path = urlsplit(build.page_href(cls.base, build.LOCALES[code][0], page)).path
+                cls.pages[path] = (html, ParsedPage(html))
+
+    def test_every_language_has_resolved_copy_and_unique_ids(self):
+        for path, (html, parsed) in self.pages.items():
+            with self.subTest(path=path):
+                self.assertNotIn("{{", html)
+                self.assertNotIn("%%", html)
+                self.assertNotIn("localhost", html)
+                duplicates = [k for k, v in Counter(parsed.ids).items() if v > 1]
+                self.assertEqual(duplicates, [])
+
+    def test_internal_navigation_targets_exist_across_pages_and_languages(self):
+        for path, (_, parsed) in self.pages.items():
+            for href in parsed.links:
+                url = urlsplit(href)
+                if url.netloc or not url.fragment:
+                    continue
+                target = url.path or path
+                with self.subTest(source=path, href=href):
+                    self.assertIn(target, self.pages)
+                    self.assertIn(url.fragment, self.pages[target][1].ids)
+
+    def test_all_local_media_and_live_wallpapers_exist(self):
+        included = {build.HERO, build.WEB_TILE, *build.FEATURED}
+        for path, (_, parsed) in self.pages.items():
+            for resource in parsed.resources:
+                url = urlsplit(resource)
+                if not url.path.startswith(self.base + "/"):
+                    continue
+                relative = url.path[len(self.base) + 1:]
+                with self.subTest(page=path, resource=resource):
+                    self.assertTrue((ROOT / relative).is_file())
+            for slug in parsed.wallpapers:
+                with self.subTest(page=path, slug=slug):
+                    self.assertIn(slug, included)
+                    self.assertTrue((build.BUNDLED / slug / "content" / "index.html").is_file())
 
 
 if __name__ == "__main__":

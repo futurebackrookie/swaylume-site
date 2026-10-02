@@ -13,7 +13,7 @@
 | `wallpapers/` | 构建时从 `Sources/Resources/BundledWallpapers` 复制的实时壁纸，不进版本库 |
 | `locales/*.json` | 五种语言的文案。`zh-Hans` 是基准 |
 | `build.py` | 生成各语言页面，**不要手改生成结果** |
-| `tools/test_build.py` · `tools/test_scenes.mjs` | 构建链路与滚动数学的单测（`python3 site/tools/test_build.py`、`node --test site/tools/test_scenes.mjs`） |
+| `tools/test_build.py` · `tools/test_scenes.mjs` · `tools/test_live.mjs` | 构建链路、滚动数学与实时渲染生命周期的单测 |
 | `tools/lint_locales.py` | 语言文件体检（词条完整性、HTML 结构、语言串味） |
 | `tools/analytics.py` | 拉 Cloudflare Web Analytics 的访问量（需 API token，见文件开头） |
 | `deploy.sh` | 校验 → 生成 → 同步到公开的 swaylume-site 仓库 |
@@ -25,11 +25,14 @@
 ### 本机预览
 
 ```bash
+python3 site/tools/preview.py              # 独立预览生成到 build/site-preview，不改正式页面
 python3 site/build.py --preview            # 资源地址指向 http://localhost:8765/site，不挂统计
 python3 site/build.py --preview --only en  # 只生成一种语言
 ```
 
-然后用 `.claude/launch.json` 里的 `design-proto`（仓库根目录起 8765 端口）打开 `/site/`。
+独立预览打开 `http://localhost:8765/build/site-preview/`。
+
+旧方式用 `.claude/launch.json` 里的 `design-proto`（仓库根目录起 8765 端口）打开 `/site/`。
 **预览构建不写 sitemap / robots / content.html，生成的页面里是 localhost 地址 —— 别提交。**
 提交前跑一次不带开关的 `python3 site/build.py`；`deploy.sh` 永远走正式构建。
 
@@ -54,7 +57,7 @@ for f in site/posters/*.jpg; do sips -Z 480 -s formatOptions 70 "$f" --out site/
 ```bash
 python3 site/tools/lint_locales.py && \
 python3 site/tools/test_external_links.py && \
-python3 site/tools/test_build.py && node --test site/tools/test_scenes.mjs && \
+python3 site/tools/test_build.py && node --test site/tools/test_scenes.mjs site/tools/test_live.mjs && \
 python3 site/build.py
 ```
 
@@ -130,19 +133,22 @@ SWAYLUME_SITE_URL=https://your-domain.com python3 site/build.py
 
 ## 页面里有什么
 
-首页是苹果产品页式的滚动叙事，十二幕：开场（图标打开成整屏实时壁纸，和 app 启动动画同一个母题）、
-逐词点亮的一句话、精选壁纸（显示器里跑的是内置壁纸本身，点缩略图交叉淡入）、在图标之下（钉住的桌面）、
-三种壁纸（WebGL 卡的滑块走壁纸自己的 `wallpaperPropertyListener`，和 app 同一个接口；视频和 2.5D 是
-标明了「示意」的动画 —— 内置壁纸全是 WebGL，不放假视频）、桌宠（app 里同一套精灵图）、多屏、
-省电（窗口盖上来，帧率滚到 0）、快捷键（在页面上按 ⌥⌘ 键帽会沉下去）、迁移、下载。
-旧首页上的技术故事（窗口层级与 122px 白边、调速器日志、转换表）都在技术细节页的「工作原理」里。
+首页是一座可以操作的桌面展厅。深墨绿与暖白交替，原生字体与衬线大标题，正常滚动，没有强制的滚动过场。
 
-**实时壁纸同一时刻只挂一个 iframe**（`live.js`）：哪个位置在视口里露得最多就是哪个，其余显示海报；
-滚出视口、标签页切走就卸载。页面自己遵守它宣传的省电规矩。
+- **山海首屏**：原创 SVG 品牌风景，分层鼠标视差、昼夜切换；重播时风景从图标位置展开。明确标为品牌场景。
+- **真实壁纸展厅**：六张内置 WebGL 壁纸，交叉淡入、速度/颗粒/视差滑块、暂停/继续。文件夹可以打开，窗口可以拖动；这些桌面控件明确标为网页演示。
+- **沉浸预览**：原生 `<dialog>` 铺满网页视口，参数与桌面控件继续可用；按钮或 Esc 返回，恢复焦点和原位置。
+- **多屏**：各放各的 / 同一张 / 拼接。第二块屏可拖动或用方向键移动，Home 复位；每次移动重新计算同一张海报的取景，接缝保持连续。
+- **省电**：主动点选播放、遮挡、低电量、锁屏。遮挡/锁屏卸载渲染器，低电量将实际 WebGL RAF 回调限制到 24 FPS。数字是策略示意，明确标注不是设备性能测量。
+- **桌宠**：应用同一套精灵图，跟随光标、点击回应、按钮召唤；离开视口或标签页隐藏时停下帧循环。
+- **原生操作与下载**：真实应用截图、响应实际按键的键帽、迁移入口和安装说明。
 
-**减弱动态效果**（系统开关，或 URL 带 `?reduce`）：不钉住、不挂 iframe，所有幕直接显示最终状态。
+**实时壁纸同一时刻只有一个活动位置**（`live.js`），交叉淡入时最多两个 iframe。
+快速连续换图只保留最后一张已绘制的画面和一张新画面；暂停、滚出视口、隐藏标签页立即卸载。
+生命周期测试覆盖快速切换、过期加载事件、暂停恢复、多个位置竞争、后台释放、减弱动态效果与真实帧率限流。
 
-**入场动画不能决定内容看不看得见**：初始隐藏态只写在 `html.js` 下，观察器回调不来时还有定时兜底。
+**减弱动态效果**（系统开关，或 URL 带 `?reduce`）：静态海报、不挂 WebGL、不跟随光标、不展开图标。
+按钮、滑块状态、文件夹、多屏和沉浸预览仍可操作。
 
 第三方运行时依赖只有一个：Cloudflare Web Analytics 的 beacon（无 Cookie、不跨站追踪、
 不给单个访客建档）。不想要统计就把 `build.py` 里的 `ANALYTICS` 置空，技术细节页上那句说明会一起消失。
@@ -161,5 +167,5 @@ SWAYLUME_SITE_URL=https://your-domain.com python3 site/build.py
 
 - 上架后把「Mac App Store」入口补上（现在只有 GitHub Releases）
 - 改 `og-cover.svg` 后记得同步导出 1200×630 的 `og-cover.png`，社交平台读的是 PNG
-- 首屏是实时演示。等录好真实的 4K 桌面操作视频，可在首屏加「观看实录」按钮，
+- 壁纸展厅是真实演示。等录好真实的 4K 桌面操作视频，可在首屏加「观看实录」按钮，
   但不要用 AI 生成的假 App 截图替代真实录屏

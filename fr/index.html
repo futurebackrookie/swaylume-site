@@ -26,7 +26,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Swaylume","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="stylesheet" href="https://futurebackrookie.github.io/swaylume-site/assets/site.css?v=e2692d50">
-<link rel="stylesheet" href="https://futurebackrookie.github.io/swaylume-site/assets/home.css?v=c3711396">
+<link rel="stylesheet" href="https://futurebackrookie.github.io/swaylume-site/assets/home.css?v=d2d064fe">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
@@ -62,233 +62,108 @@
 
 <main id="main-content" tabindex="-1">
 
-<!-- ① 开场：图标是一扇小窗，往下滚，窗口打开就是整片风景（与 app 启动动画同一个母题） -->
-<section class="hero dark" id="overview" data-theme="dark" data-scene="pin" style="--len:320vh">
-  <div class="pin">
-    <div class="hero-window" data-live="aurora">
-      <img class="poster" src="https://futurebackrookie.github.io/swaylume-site/posters/aurora.jpg" alt="" fetchpriority="high">
-    </div>
-    <img class="hero-icon" src="https://futurebackrookie.github.io/swaylume-site/icon.png" alt="" width="180" height="180">
-    <p class="hero-name" aria-hidden="true">Swaylume</p>
-    <div class="hero-copy">
-      <h1 class="h-hero">Votre bureau, vivant.</h1>
-      <p class="lede">Des fonds d’écran vidéo, WebGL et 2.5D qui vivent juste sous les icônes de votre bureau. Conçu pour le Mac, à partir de zéro.</p>
-      <p class="hero-cta"><a class="btn" href="#download">Télécharger gratuitement</a></p>
-    </div>
-    <p class="hero-hint" aria-hidden="true">Faites défiler</p>
+<section class="hero dark" id="overview" data-theme="dark">
+  <div class="world" id="hero-world" aria-hidden="true">
+    <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" class="landscape">
+      <defs>
+        <linearGradient id="world-sky" x2="0" y2="1"><stop class="sky-top" stop-color="#123d43"/><stop class="sky-mid" offset=".58" stop-color="#61867c"/><stop class="sky-bottom" offset="1" stop-color="#b4b597"/></linearGradient>
+        <linearGradient id="far-fill" x2=".2" y2="1"><stop stop-color="#567f71"/><stop offset="1" stop-color="#234e47"/></linearGradient>
+        <linearGradient id="middle-fill" x2=".7" y2="1"><stop stop-color="#2d6056"/><stop offset="1" stop-color="#102e2e"/></linearGradient>
+        <linearGradient id="near-fill" x2=".65" y2="1"><stop stop-color="#1e4d45"/><stop offset="1" stop-color="#061b1d"/></linearGradient>
+        <radialGradient id="sun-halo"><stop stop-color="#efe6b5" stop-opacity=".33"/><stop offset="1" stop-color="#efe6b5" stop-opacity="0"/></radialGradient>
+        <linearGradient id="sea-fill" x2="0" y2="1"><stop stop-color="#8fae91"/><stop offset=".36" stop-color="#345e54"/><stop offset="1" stop-color="#0c2629"/></linearGradient>
+        <linearGradient id="sun-reflect" x2="0" y2="1"><stop stop-color="#e6dab4" stop-opacity=".65"/><stop offset="1" stop-color="#e6dab4" stop-opacity="0"/></linearGradient>
+      </defs>
+      <rect width="1600" height="1000" fill="url(#world-sky)"/>
+      <g class="sky-stars" fill="#e8ece1"><circle cx="160" cy="180" r="1.5"/><circle cx="550" cy="110" r="1"/><circle cx="920" cy="190" r="1.8"/><circle cx="1360" cy="110" r="1"/><circle cx="1420" cy="260" r="1.4"/><circle cx="700" cy="230" r="1.2"/><circle cx="1020" cy="70" r="1.5"/><circle cx="360" cy="300" r="1"/><circle cx="1240" cy="320" r="1.2"/></g>
+      <g class="world-sun"><circle cx="1120" cy="405" r="285" fill="url(#sun-halo)"/><circle cx="1120" cy="405" r="115" fill="#eee7c9"/></g>
+      <g class="world-far" data-world-depth="14"><path d="M-100 650C90 605 155 490 260 465S450 520 555 503S770 325 920 410S1120 584 1260 505S1430 330 1700 460V1100H-100Z" fill="url(#far-fill)"/>
+        <path d="M860 432C965 442 991 508 1091 538M245 493C324 491 399 544 472 541M1310 497C1381 451 1479 411 1576 432" fill="none" stroke="#b5c3a0" stroke-opacity=".14" stroke-width="2"/>
+      </g>
+      <path d="M690 571C980 537 1164 604 1470 584L1700 1020H290Z" fill="url(#sea-fill)"/>
+      <path class="water-light" d="M1050 560L1170 560L1320 1000H810Z" fill="url(#sun-reflect)"/>
+      <g class="water-lines" fill="none" stroke="#c5d3b4" stroke-opacity=".18"><path d="M800 624Q1050 612 1370 627M738 674Q1060 658 1440 677M675 729Q1100 711 1480 734M627 796Q1040 778 1560 805M560 872Q1080 847 1660 894"/></g>
+      <g class="world-middle" data-world-depth="28"><path d="M-100 675C79 634 191 555 321 599S527 737 670 766S811 805 870 837C659 830 515 845 368 873S40 964-100 991Z" fill="url(#middle-fill)"/>
+        <path d="M1600 542C1450 540 1447 584 1384 617S1282 650 1315 694S1490 751 1450 790S1290 823 1190 873L1650 927Z" fill="url(#middle-fill)"/>
+      </g>
+      <g class="world-near" data-world-depth="46"><path d="M-100 725C90 696 131 752 257 799S441 849 535 897S601 948 800 962L945 1080H-100Z" fill="url(#near-fill)"/>
+        <path d="M1700 772C1490 730 1368 798 1225 843S1025 950 785 994L733 1100H1700Z" fill="url(#near-fill)"/>
+        <g fill="none" stroke="#6c9b7c" stroke-opacity=".16"><path d="M-20 782C180 725 200 874 439 904M-20 809C180 752 200 900 439 930M-20 836C180 779 200 927 439 957M1304 868C1413 813 1490 804 1650 818M1240 911C1380 848 1490 840 1650 854M1170 958C1350 894 1490 881 1650 897"/></g>
+      </g>
+    </svg>
   </div>
-</section>
-<!-- ② 一句话：随滚动逐词点亮 -->
-<section class="statement dark" data-theme="dark" data-scene="pass">
-  <p class="wrap statement-text" data-words>Pas une vidéo enregistrée. Pas un effet web. Votre bureau, qui respire.</p>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="hero-coordinate mono" aria-hidden="true"><span>SWAY / LUME</span><span>EST. 2026 · BUILT FOR MAC</span></div>
+  <div class="hero-body wide">
+    <p class="kicker"><span class="status-spark"></span>FONDS ANIMÉS ET PETITS COMPAGNONS POUR MAC</p>
+    <h1 class="h-hero"><span>Un bureau.</span><em>Un univers.</em></h1>
+    <p class="hero-sub">Des fonds vivants, des plans en profondeur et un petit compagnon qui réagit. Un autre quotidien pour votre Mac.</p>
+    <div class="hero-actions"><a class="btn btn-light magnetic" href="#wallpapers">Entrer dans la galerie<span aria-hidden="true">↗</span></a><a class="hero-download" href="#download">Télécharger gratuitement<span aria-hidden="true">↓</span></a></div>
+  </div>
+  <div class="hero-aside" aria-hidden="true"><span>01 / 05</span><i></i><span>THE LIVING DESKTOP</span></div>
+  <div class="hero-bottom wide">
+    <a class="hero-scroll" href="#wallpapers"><span class="scroll-arrow" aria-hidden="true">↓</span><span>Descendez. Essayez vous-même.</span></a>
+    <div class="world-controls">
+      <button type="button" id="world-time" aria-pressed="false"><span class="time-symbol" aria-hidden="true">☼</span><span>Passer à la nuit</span></button>
+      <span class="control-rule"></span>
+      <button type="button" id="world-launch"><img src="https://futurebackrookie.github.io/swaylume-site/icon.png" width="24" height="24" alt=""><span>Rejouer l’ouverture</span><span aria-hidden="true">↗</span></button>
+    </div>
+    <p class="world-caption"><span>Bougez le curseur. Le paysage vous répond.</span><span class="mono">PAYSAGE INTERACTIF DE LA MARQUE</span></p>
+  </div>
+  <div class="launch-curtain" aria-hidden="true"><svg class="launch-mask"><defs><mask id="launch-mask" maskUnits="userSpaceOnUse"><rect width="100%" height="100%" fill="white"/><rect id="launch-aperture" fill="black"/></mask></defs><rect width="100%" height="100%" fill="#071b1b" mask="url(#launch-mask)"/></svg><img src="https://futurebackrookie.github.io/swaylume-site/icon.png" width="148" height="148" alt=""><span>Swaylume</span></div>
 </section>
 
-<!-- ③ 精选壁纸：显示器里跑的是 app 的内置壁纸本身，点缩略图像 app 一样交叉淡入 -->
-<section class="gallery dark sec" id="wallpapers" data-theme="dark">
-  <div class="wrap center reveal">
-    <p class="eyebrow">Fonds d’écran à la une</p>
-    <h2 class="h-sec">Choisissez-en un. Votre bureau fait le reste.</h2>
-    <p class="lede">Ce qui tourne sur cet écran est un fond d’écran fourni avec l’app, pas une animation promotionnelle. Choisissez-en un et regardez-le changer.</p>
+<section class="gallery light sec" id="wallpapers" data-theme="light">
+  <div class="wide section-heading">
+    <div><p class="chapter"><span>01</span>Fonds d’écran à la une</p><h2 class="h-sec"><span>Le paysage.</span><em>Entre vos mains.</em></h2></div>
+    <div class="section-intro"><p>Six vrais fonds inclus dans l’app, animés ici même. Choisissez-en un. Réglez vitesse, grain et profondeur. Comme sur votre Mac.</p><p class="quiet">26 fonds d’écran intégrés dès l’installation, plus vos propres vidéos, images et pages web.</p></div>
   </div>
-  <figure class="display wide reveal d1">
-    <div class="display-screen" data-live="daybreak" id="gallery-live">
-      <img class="poster" src="https://futurebackrookie.github.io/swaylume-site/posters/daybreak.jpg" alt="Aube" loading="lazy">
+  <div class="wide gallery-shell">
+    <div class="demo-toolbar"><span class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>Démo du bureau web · Fonds Swaylume</span><span class="live-indicator"><i></i>WEBGL</span></div>
+    <div class="display-screen" data-live="jade-vein" id="gallery-live">
+      <img class="poster" src="https://futurebackrookie.github.io/swaylume-site/posters/jade-vein.jpg" alt="Veine de jade" loading="lazy">
+      <div class="desktop-icons"><button type="button" class="desktop-icon" id="demo-folder"><span class="folder-shape" aria-hidden="true"></span>Projets</button><span class="desktop-icon"><span class="document-shape" aria-hidden="true"></span>Notes.txt</span></div>
+      <div class="demo-window" hidden><div class="window-grip" tabindex="0" role="group" aria-label="Déplacez la barre de titre, ou utilisez ses flèches."><span class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></span><strong>Projets</strong><button type="button" class="window-close" aria-label="Fermer la fenêtre de démonstration">×</button></div><div class="window-files"><span><i class="folder-shape"></i>Projets</span><span><i class="document-shape"></i>Notes.txt</span><span><i class="image-shape"></i>Capture d’écran</span></div><p>Déplacez la barre de titre, ou utilisez ses flèches.</p></div>
+      <div class="inspector-demo"><div class="inspector-head"><span>À votre image</span><span aria-hidden="true">≋</span></div><div class="props"><label><span>Vitesse</span><input type="range" min="0.1" max="3" step="0.05" value="1" data-prop="speed"><output>1.00×</output></label><label><span>Grain</span><input type="range" min="0" max="2" step="0.05" value="1" data-prop="grain"><output>1.00×</output></label><label><span>Parallaxe</span><input type="range" min="0" max="3" step="0.05" value="1" data-prop="parallax"><output>1.00×</output></label></div><span class="inspector-note">Ces réglages modifient le vrai fond animé.</span></div>
+      <div class="wallpaper-now"><span class="mono" id="wallpaper-number">01 / 06</span><strong id="wallpaper-name">Veine de jade</strong></div>
+      <button type="button" class="preview-expand" id="preview-expand" aria-label="Aperçu immersif"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4M4 4l6 6M20 4l-6 6M4 20l6-6M20 20l-6-6"/></svg></button>
+      <button type="button" class="preview-pause" id="preview-pause" aria-pressed="false" aria-label="Mettre l’aperçu en pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="pause-lines" d="M9 6v12M15 6v12"/><path class="play-triangle" d="m9 6 9 6-9 6Z"/></svg></button>
     </div>
-    <div class="display-neck" aria-hidden="true"></div>
-    <div class="display-foot" aria-hidden="true"></div>
-  </figure>
-  <div class="thumbs wide" role="radiogroup" aria-label="Choisir un fond d’écran à prévisualiser">
-    <button class="thumb" role="radio" aria-checked="true" tabindex="0" data-slug="daybreak">
-      <img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/daybreak.jpg" alt="" loading="lazy" width="480" height="270"><span>Aube</span></button>
-    <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="copper-fold">
-      <img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/copper-fold.jpg" alt="" loading="lazy" width="480" height="270"><span>Plis de cuivre</span></button>
-    <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="neon-rain">
-      <img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/neon-rain.jpg" alt="" loading="lazy" width="480" height="270"><span>Pluie néon</span></button>
-    <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="harbor-lamp">
-      <img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/harbor-lamp.jpg" alt="" loading="lazy" width="480" height="270"><span>Lumières du port</span></button>
-    <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="jade-vein">
-      <img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/jade-vein.jpg" alt="" loading="lazy" width="480" height="270"><span>Veine de jade</span></button>
-    <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="contour-map">
-      <img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/contour-map.jpg" alt="" loading="lazy" width="480" height="270"><span>Courbes de niveau</span></button>
+    <div class="thumbs" role="radiogroup" aria-label="Choisir un fond d’écran à prévisualiser">
+      <button class="thumb" role="radio" aria-checked="true" tabindex="0" data-slug="jade-vein"><img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/jade-vein.jpg" alt="" width="480" height="270" loading="lazy"><span><small>01</small>Veine de jade</span></button>
+      <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="daybreak"><img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/daybreak.jpg" alt="" width="480" height="270" loading="lazy"><span><small>02</small>Aube</span></button>
+      <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="copper-fold"><img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/copper-fold.jpg" alt="" width="480" height="270" loading="lazy"><span><small>03</small>Plis de cuivre</span></button>
+      <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="neon-rain"><img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/neon-rain.jpg" alt="" width="480" height="270" loading="lazy"><span><small>04</small>Pluie néon</span></button>
+      <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="harbor-lamp"><img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/harbor-lamp.jpg" alt="" width="480" height="270" loading="lazy"><span><small>05</small>Lumières du port</span></button>
+      <button class="thumb" role="radio" aria-checked="false" tabindex="-1" data-slug="contour-map"><img src="https://futurebackrookie.github.io/swaylume-site/posters/thumbs/contour-map.jpg" alt="" width="480" height="270" loading="lazy"><span><small>06</small>Courbes de niveau</span></button>
+    </div>
+    <p class="lab-note"><span class="status-spark"></span>Sous vos icônes. Derrière vos fenêtres.<span>Ouvrez le dossier. Le bureau fonctionne toujours.</span></p>
   </div>
-  <p class="wrap center caption reveal">26 fonds d’écran intégrés dès l’installation, plus vos propres vidéos, images et pages web.</p>
+  <div class="wide format-row"><div><span class="format-number">01 / WEBGL</span><h3>WebGL, réglé à la main.</h3><p>Les curseurs déclarés par un fond d’écran apparaissent dans l’inspecteur. Faites-en glisser un : il modifie le fond ci-dessus, par la même interface que l’app.</p></div><div><span class="format-number">02 / VIDEO</span><h3>La vidéo, en boucle sans raccord.</h3><p>Lecture native avec AVPlayer, boucle et réglage du volume. Gardez un instant préféré sur votre bureau.</p></div><div><span class="format-number">03 / 2.5D</span><h3>La 2.5D, presque sans énergie.</h3><p>Des plans avec leur propre profondeur suivent doucement le curseur. Core Animation donne du relief à une image fixe.</p></div></div>
 </section>
-<!-- ④ 在图标之下：钉住一块桌面，壁纸从图标下面铺上来，最后点一下图标 —— 点击照样穿得过去 -->
-<section class="under light" data-theme="light" data-scene="pin" style="--len:280vh">
-  <div class="pin">
-    <div class="wrap center under-copy">
-      <h2 class="h-sec">Sous vos icônes. Derrière vos fenêtres.</h2>
-      <p class="lede">Le fond d’écran vit dans la couche entre l’image du bureau et les icônes du bureau. Les fenêtres fonctionnent comme d’habitude, les icônes restent cliquables, rien n’a à se pousser.</p>
-    </div>
-    <div class="desk" aria-hidden="true">
-      <div class="desk-system"></div>
-      <div class="desk-live"><img src="https://futurebackrookie.github.io/swaylume-site/posters/deep-sea.jpg" alt="" loading="lazy"></div>
-      <div class="desk-icons">
-        <span class="ico"><i class="ico-folder"></i>Projets</span>
-        <span class="ico"><i class="ico-doc"></i>Notes.txt</span>
-        <span class="ico"><i class="ico-img"></i>Capture d’écran</span>
-      </div>
-      <div class="desk-win"><b></b><span></span><span></span><span></span><span></span></div>
-      <div class="desk-bar"><strong>Swaylume</strong><span>Fichier</span><span>Édition</span><span>Présentation</span></div>
-      <div class="desk-cursor"></div>
-    </div>
-    <ol class="under-steps wrap">
-      <li>Le fond glisse sous les icônes</li>
-      <li>Les fenêtres restent au-dessus</li>
-      <li>Les clics passent à travers</li>
-    </ol>
+
+<section class="multi dark sec" id="displays" data-theme="dark">
+  <div class="wide section-heading"><div><p class="chapter"><span>02</span>AU-DELÀ D’UN ÉCRAN</p><h2 class="h-sec"><span>Un paysage.</span><em>Plusieurs écrans.</em></h2></div><div class="section-intro"><p>Donnez à chaque écran son propre fond, utilisez le même partout ou étirez une seule image sur tous les écrans. Chaque Space peut aussi être différent.</p><div class="seg" role="radiogroup" aria-label="Mode multi-écran"><button role="radio" aria-checked="true" data-mode="each">Par écran</button><button role="radio" aria-checked="false" data-mode="same">Le même partout</button><button role="radio" aria-checked="false" data-mode="span">Étendre</button></div></div></div>
+  <div class="screens wide" data-mode="each"><div class="scr scr-wide"><i class="each"></i><i class="same"></i><i class="span"></i><em class="mono">3440 × 1440</em><span class="screen-index mono">DISPLAY 01</span></div><div class="scr scr-std"><i class="each"></i><i class="same"></i><i class="span"></i><em class="mono">1920 × 1080</em><button class="screen-handle" type="button" aria-label="Déplacer le deuxième écran ; flèches pour ajuster, Home pour réinitialiser"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></button><span class="screen-index mono">DISPLAY 02</span></div></div>
+  <div class="wide multi-caption"><p>Déplacez le deuxième écran, ou utilisez ses flèches. En mode « Panorama », le paysage se prolonge sur les deux.</p><p>Les vidéos et images s’étendent directement ; un fond web doit déclarer qu’il le prend en charge, sinon chaque écran dessine sa propre copie.</p></div>
+</section>
+
+<section class="power light sec" id="power" data-theme="light">
+  <div class="wide power-grid"><div class="power-copy"><p class="chapter"><span>03</span>SAVOIR SE REPOSER</p><h2 class="h-sec"><span>Vivant à propos.</span><em>Au repos, sinon.</em></h2><p class="power-sub">Choisissez un état. Visible, le fond s’anime. Invisible, il libère les ressources.</p><div class="power-steps" role="group" aria-label="Choisir un état de la démo d’économie d’énergie"><button type="button" data-power="playing" aria-pressed="true"><span class="state-icon" aria-hidden="true">↗</span><span><b>Vous regardez, il bouge</b><small>Il suit la fréquence de rafraîchissement de votre écran, ou la limite que vous fixez.</small></span></button><button type="button" data-power="covered" aria-pressed="false"><span class="state-icon" aria-hidden="true">▣</span><span><b>Couvert par une fenêtre, en pause aussitôt</b><small>La plus grosse économie de toutes, activée par défaut.</small></span></button><button type="button" data-power="lowpower" aria-pressed="false"><span class="state-icon" aria-hidden="true">◐</span><span><b>Moins d’énergie. Plus de calme.</b><small>Suit le mode économie d’énergie. La lecture peut aussi être mise en pause sur batterie.</small></span></button><button type="button" data-power="locked" aria-pressed="false"><span class="state-icon" aria-hidden="true">⏾</span><span><b>Verrouillé ou en veille, totalement arrêté</b><small>Quand le Mac dort, rien ne reste en arrière-plan.</small></span></button></div></div>
+  <div class="power-stage" data-state="playing"><div class="pdesk" data-live="neon-rain" id="power-live"><img class="poster" src="https://futurebackrookie.github.io/swaylume-site/posters/neon-rain.jpg" alt="" loading="lazy"><div class="power-cover" aria-hidden="true"><div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div><span class="cover-title">Une fenêtre au premier plan</span><div class="cover-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div><span class="cover-pause">En pause · couvert par une fenêtre</span></div><div class="plock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div></div><div class="fps"><span class="fps-n">60</span><span class="fps-u">FPS</span><span class="power-dot"></span></div><p class="fps-state" aria-live="polite">Lecture</p><p class="power-demo">DÉMO DE FONCTIONNEMENT · PAS UNE MESURE DE PERFORMANCE</p><div class="power-chart" aria-hidden="true"></div></div>
   </div>
 </section>
-<!-- ⑤ 三种壁纸。内置壁纸全是 WebGL：视频卡和 2.5D 卡是标明了「示意」的动画，不放假视频 -->
-<section class="kinds light alt sec" id="kinds" data-theme="light">
-  <div class="wrap center reveal">
-    <h2 class="h-sec">Trois types de fond d’écran. Chacun sa voie.</h2>
-    <p class="lede">La vidéo va au décodeur matériel, les pages web à WebKit, les images en calques à Core Animation. Personne ne se contente du moteur d’un autre.</p>
-  </div>
-  <div class="bento wide">
-    <article class="tile tile-web reveal">
-      <div class="tile-media" data-live="silk-current" id="web-live">
-        <img class="poster" src="https://futurebackrookie.github.io/swaylume-site/posters/silk-current.jpg" alt="" loading="lazy">
-      </div>
-      <div class="tile-body">
-        <h3 class="h-sub">WebGL, réglé à la main.</h3>
-        <p>Les curseurs déclarés par un fond d’écran apparaissent dans l’inspecteur. Faites-en glisser un : il modifie le fond ci-dessus, par la même interface que l’app.</p>
-        <div class="props">
-          <label><span>Vitesse</span><input type="range" min="0.1" max="3" step="0.05" value="1" data-prop="speed"><output>1.00×</output></label>
-          <label><span>Grain</span><input type="range" min="0" max="2" step="0.05" value="1" data-prop="grain"><output>1.00×</output></label>
-          <label><span>Parallaxe</span><input type="range" min="0" max="3" step="0.05" value="1" data-prop="parallax"><output>1.00×</output></label>
-        </div>
-      </div>
-    </article>
-    <article class="tile tile-video reveal d1">
-      <div class="loop" aria-hidden="true">
-        <svg viewBox="0 0 120 120"><circle class="loop-track" cx="60" cy="60" r="50"/><circle class="loop-arc" cx="60" cy="60" r="50"/><circle class="loop-seam" cx="60" cy="10" r="4"/></svg>
-        <span class="loop-label">Raccord</span>
-      </div>
-      <h3 class="h-sub">La vidéo, en boucle sans raccord.</h3>
-      <p>Aucune image noire ni saccade au raccord. La 4K60 est confiée au GPU, le processeur le remarque à peine.</p>
-      <p class="demo-tag">Illustration</p>
-    </article>
-    <article class="tile tile-layer reveal d2">
-      <svg class="ridges" viewBox="0 0 400 220" aria-hidden="true">
-        <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A2833"/><stop offset="1" stop-color="#1F6A80"/></linearGradient></defs>
-        <rect width="400" height="220" fill="url(#sky)"/>
-        <circle cx="290" cy="74" r="30" fill="#F7D79B" data-depth="0.08"/>
-        <path data-depth="0.35" fill="#3B93A8" d="M-60 160 L60 100 L150 150 L250 92 L360 140 L460 110 L460 240 L-60 240Z"/>
-        <path data-depth="0.65" fill="#1F6A80" d="M-60 186 L40 150 L140 182 L230 140 L330 178 L460 152 L460 240 L-60 240Z"/>
-        <path data-depth="1" fill="#0D3F53" d="M-60 212 L80 176 L190 208 L300 172 L460 200 L460 240 L-60 240Z"/>
-      </svg>
-      <h3 class="h-sub">La 2.5D, presque sans énergie.</h3>
-      <p>Quelques images, chacune avec sa propre profondeur, se décalent avec votre pointeur. Passez le pointeur dessus pour voir.</p>
-      <p class="demo-tag">Illustration</p>
-    </article>
-  </div>
-</section>
-<!-- ⑥ 桌宠：app 里同一套精灵图导出的帧，不是为官网另画的 -->
+
 <section class="petsec light sec" id="pet" data-theme="light">
-  <div class="wrap center reveal">
-    <p class="eyebrow">Animal de bureau</p>
-    <h2 class="h-sec">D’une photo à un animal de bureau.</h2>
-    <p class="lede">Donnez-lui quelques photos de votre chat. Swaylume mesure le pelage, la silhouette et la queue, et fait naître un chat en pixels qui lui ressemble. Il vit sur votre bureau et ne vole jamais le focus.</p>
-  </div>
-  <div class="yard wide reveal d1" id="pet-yard">
-    <p class="yard-hint">Entrez avec le pointeur, puis cliquez dessus</p>
-    <div class="cat" id="pet-cat" data-pose="idle" role="img" aria-label="Animal de bureau en pixels"></div>
-    <p class="cat-say" id="pet-say" aria-live="polite"></p>
-  </div>
-  <div class="wrap pet-points">
-    <div class="reveal"><h3>À l’image de votre chat</h3><p>Couleurs du pelage, proportions tête-corps et longueur des pattes sont mesurées sur les photos, pas tirées d’un modèle.</p></div>
-    <div class="reveal d1"><h3>Il vient vous trouver</h3><p>Il se promène, fait sa toilette, somnole — et marche vers votre pointeur quand il est curieux.</p></div>
-    <div class="reveal d2"><h3>Il aime les caresses</h3><p>Caressez-lui la tête et il plisse les yeux en ronronnant ; cliquez dessus et il miaule. ⌥⌘C l’appelle vers votre pointeur.</p></div>
-  </div>
-</section>
-<!-- ⑦ 多屏：三种模式，纯状态切换，过渡交给 CSS；拼接时每块屏取同一张画的不同部分 -->
-<section class="multi dark sec" data-theme="dark">
-  <div class="wrap center reveal">
-    <h2 class="h-sec">Chaque écran, le sien.</h2>
-    <p class="lede">Donnez à chaque écran son propre fond, utilisez le même partout ou étirez une seule image sur tous les écrans. Chaque Space peut aussi être différent.</p>
-  </div>
-  <div class="seg reveal d1" role="radiogroup" aria-label="Mode multi-écran">
-    <button role="radio" aria-checked="true" data-mode="each">Par écran</button>
-    <button role="radio" aria-checked="false" data-mode="same">Le même partout</button>
-    <button role="radio" aria-checked="false" data-mode="span">Étendre</button>
-  </div>
-  <div class="screens wide reveal d2" data-mode="each" aria-hidden="true">
-    <div class="scr scr-wide"><i class="each"></i><i class="same"></i><i class="span"></i><em>3440 × 1440</em></div>
-    <div class="scr scr-std"><i class="each"></i><i class="same"></i><i class="span"></i><em>1920 × 1080</em></div>
-  </div>
-  <p class="wrap center caption reveal">Les vidéos et images s’étendent directement ; un fond web doit déclarer qu’il le prend en charge, sinon chaque écran dessine sa propre copie.</p>
-</section>
-<!-- ⑧ 省电：钉住一块桌面，滚动推着它经历四种状态，帧率数字一格一格滚过去 -->
-<section class="power dark" data-theme="dark" data-scene="pin" style="--len:360vh">
-  <div class="pin">
-    <div class="wide power-grid">
-      <div class="power-copy">
-        <h2 class="h-sec">Quand personne ne regarde, pas une seule image.</h2>
-        <ol class="power-steps">
-          <li><b>Vous regardez, il bouge</b><span>Il suit la fréquence de rafraîchissement de votre écran, ou la limite que vous fixez.</span></li>
-          <li><b>Couvert par une fenêtre, en pause aussitôt</b><span>La plus grosse économie de toutes, activée par défaut.</span></li>
-          <li><b>Mode économie d’énergie, réduit à 30</b><span>Suit le réglage du système ; sur batterie, vous pouvez aussi choisir la pause.</span></li>
-          <li><b>Verrouillé ou en veille, totalement arrêté</b><span>Quand le Mac dort, rien ne reste en arrière-plan.</span></li>
-        </ol>
-      </div>
-      <div class="power-stage" aria-hidden="true">
-        <div class="pdesk">
-          <img src="https://futurebackrookie.github.io/swaylume-site/posters/neon-rain.jpg" alt="" loading="lazy">
-          <div class="pwin"><b></b><span></span><span></span><span></span></div>
-          <div class="pbatt"><i></i></div>
-          <div class="plock"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
-        </div>
-        <div class="fps"><span class="fps-n">60</span><span class="fps-u">FPS</span></div>
-        <p class="fps-state">&nbsp;</p>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ⑨ 快捷键：在页面上按组合键，键帽跟着按下去 -->
-<section class="keys light sec" data-theme="light">
-  <div class="wrap center reveal">
-    <h2 class="h-sec">Sans ouvrir les réglages.</h2>
-    <p class="lede">Quatre raccourcis globaux, quelle que soit l’app au premier plan. Essayez de maintenir ⌥ et ⌘ sur cette page.</p>
-  </div>
-  <div class="keyrow wide">
-    <div class="combo reveal"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="p">P</kbd></span><span class="combo-l">Pause / reprise</span></div>
-    <div class="combo reveal d1"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="ArrowRight">→</kbd></span><span class="combo-l">Fond suivant</span></div>
-    <div class="combo reveal d2"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="m">M</kbd></span><span class="combo-l">Muet</span></div>
-    <div class="combo reveal d3"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="c">C</kbd></span><span class="combo-l">Appeler l’animal</span></div>
-  </div>
-  <p class="wrap center caption-l reveal">Ils passent par l’enregistrement des raccourcis du système : aucune autorisation d’Accessibilité n’est nécessaire. Une app de fond d’écran ne devrait pas pouvoir lire tout ce que vous tapez.</p>
+  <div class="wide pet-grid"><div class="pet-copy"><p class="chapter"><span>04</span>Animal de bureau</p><h2 class="h-sec"><span>Un petit compagnon.</span><em>Un grand caractère.</em></h2><p class="lede">Donnez-lui quelques photos de votre chat. Swaylume mesure le pelage, la silhouette et la queue, et fait naître un chat en pixels qui lui ressemble. Il vit sur votre bureau et ne vole jamais le focus.</p><button class="btn btn-dark" id="pet-call" type="button">Viens par ici<span aria-hidden="true">↗</span></button><p class="pet-key mono">⌥ + ⌘ + C</p></div><div class="yard" id="pet-yard"><div class="yard-orbit orbit-one" aria-hidden="true"></div><div class="yard-orbit orbit-two" aria-hidden="true"></div><span class="yard-cross" aria-hidden="true">+</span><p class="yard-hint">Approchez le curseur. Faites une caresse au chat.</p><button class="cat" id="pet-cat" data-pose="idle" type="button" aria-label="Animal de bureau en pixels"></button><p class="cat-say" id="pet-say" aria-live="polite"></p><span class="yard-label mono">A LITTLE COMPANY.</span></div></div>
+  <div class="wide pet-points"><div><span class="point-number">01</span><h3>À l’image de votre chat</h3><p>Couleurs du pelage, proportions tête-corps et longueur des pattes sont mesurées sur les photos, pas tirées d’un modèle.</p></div><div><span class="point-number">02</span><h3>Il vient vous trouver</h3><p>Il se promène, fait sa toilette, somnole — et marche vers votre pointeur quand il est curieux.</p></div><div><span class="point-number">03</span><h3>Il aime les caresses</h3><p>Caressez-lui la tête et il plisse les yeux en ronronnant ; cliquez dessus et il miaule. ⌥⌘C l’appelle vers votre pointeur.</p></div></div>
 </section>
 
-<!-- ⑩ 从 Wallpaper Engine 来：一句话，细节在技术细节页 -->
-<section class="migrate light alt sec" data-theme="light">
-  <div class="wrap center reveal">
-    <h2 class="h-sec">Vous venez de Wallpaper Engine ?</h2>
-    <p class="lede">Un outil en ligne de commande convertit les fonds vidéo et web déjà présents sur votre machine en paquets que Swaylume comprend. Sans réseau, sans Steam.</p>
-    <p class="migrate-link"><a class="link" href="/swaylume-site/fr/details/#how-migrate">Voir ce qui se convertit</a></p>
-  </div>
-</section>
+<section class="craft dark sec" id="craft" data-theme="dark"><div class="wide section-heading"><div><p class="chapter"><span>05</span>LE SOIN DU DÉTAIL</p><h2 class="h-sec"><span>Bien plus qu’une</span><em>première impression.</em></h2></div><div class="section-intro"><p>Bibliothèque, propriétés, gestion des écrans et raccourcis globaux. Une app Mac native pensée pour les gestes du quotidien.</p><a class="link" href="/swaylume-site/fr/details/">Détails techniques</a></div></div><div class="wide app-portrait"><img src="https://futurebackrookie.github.io/swaylume-site/screenshot-library.png" alt="Capture de la bibliothèque de fonds de l’app native Swaylume" width="1040" height="264" loading="lazy"><span class="app-portrait-caption">APP NATIVE SWAYLUME · VRAIE CAPTURE</span></div><div class="wide keyrow"><div class="combo"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="p">P</kbd></span><span class="combo-l">Pause / reprise</span></div><div class="combo"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="ArrowRight">→</kbd></span><span class="combo-l">Fond suivant</span></div><div class="combo"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="m">M</kbd></span><span class="combo-l">Muet</span></div><div class="combo"><span class="caps"><kbd data-k="Alt">⌥</kbd><kbd data-k="Meta">⌘</kbd><kbd data-k="c">C</kbd></span><span class="combo-l">Appeler l’animal</span></div></div><p class="wide keys-note">Ils passent par l’enregistrement des raccourcis du système : aucune autorisation d’Accessibilité n’est nécessaire. Une app de fond d’écran ne devrait pas pouvoir lire tout ce que vous tapez.</p></section>
 
-<!-- ⑪ 下载 -->
-<section class="get dark sec" id="download" data-theme="dark">
-  <div class="wrap center get-in reveal">
-    <img class="get-icon" src="https://futurebackrookie.github.io/swaylume-site/icon.png" alt="" width="160" height="160" loading="lazy">
-    <h2 class="h-sec">Donnez vie à votre bureau.</h2>
-    <p class="lede">Gratuit. Rien de groupé, aucun module promotionnel.</p>
-    <p><a class="btn btn-lg" href="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg">Télécharger Swaylume</a></p>
-    <p class="get-meta">macOS 14 ou ultérieur · puces Apple et Intel · dmg</p>
-    <details class="first-open">
-      <summary>Bloquée au premier lancement ? C’est normal</summary>
-      <ol>
-        <li>Double-cliquez sur Swaylume et laissez-la être refusée une fois. Ne sautez pas cette étape : le système doit d’abord enregistrer le blocage pour que le bouton apparaisse.</li>
-        <li>Ouvrez Réglages Système → Confidentialité et sécurité.</li>
-        <li>Descendez jusqu’à « Sécurité » et repérez la ligne indiquant que Swaylume a été bloquée.</li>
-        <li>Cliquez sur « Ouvrir quand même » à côté, puis confirmez.</li>
-      </ol>
-      <p>Ensuite, elle s’ouvre d’un simple double-clic et ne demande plus rien. Swaylume n’est pas encore notarisée par Apple (il faut un compte développeur payant) : cela ne signifie pas que l’app pose problème.</p>
-    </details>
-  </div>
-</section>
+<section class="migrate light" data-theme="light"><div class="wide migrate-row"><span class="migration-mark" aria-hidden="true">↳</span><div><h2>Vous venez de Wallpaper Engine ?</h2><p>Un outil en ligne de commande convertit les fonds vidéo et web déjà présents sur votre machine en paquets que Swaylume comprend. Sans réseau, sans Steam.</p></div><a class="link" href="/swaylume-site/fr/details/#how-migrate">Voir ce qui se convertit</a></div></section>
+
+<section class="get dark sec" id="download" data-theme="dark"><div class="get-landscape" aria-hidden="true"><span></span><i></i><i></i><i></i></div><div class="wide get-in"><img class="get-icon" src="https://futurebackrookie.github.io/swaylume-site/icon.png" alt="" width="88" height="88" loading="lazy"><p class="kicker">VOTRE BUREAU. LE PROCHAIN CHAPITRE.</p><h2 class="h-sec"><span>Invitez le paysage</span><em>sur votre bureau.</em></h2><p class="lede">Gratuit. Rien de groupé, aucun module promotionnel.</p><a class="btn btn-light magnetic" href="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg">Télécharger Swaylume<span aria-hidden="true">↓</span></a><p class="get-meta">macOS 14 ou ultérieur · puces Apple et Intel · dmg</p><details class="first-open"><summary>Bloquée au premier lancement ? C’est normal</summary><ol><li>Double-cliquez sur Swaylume et laissez-la être refusée une fois. Ne sautez pas cette étape : le système doit d’abord enregistrer le blocage pour que le bouton apparaisse.</li><li>Ouvrez Réglages Système → Confidentialité et sécurité.</li><li>Descendez jusqu’à « Sécurité » et repérez la ligne indiquant que Swaylume a été bloquée.</li><li>Cliquez sur « Ouvrir quand même » à côté, puis confirmez.</li></ol><p>Ensuite, elle s’ouvre d’un simple double-clic et ne demande plus rien. Swaylume n’est pas encore notarisée par Apple (il faut un compte développeur payant) : cela ne signifie pas que l’app pose problème.</p></details></div><div class="get-wordmark" aria-hidden="true">Swaylume</div></section>
 
 
 
@@ -318,11 +193,11 @@
   </div>
 </footer>
 
-<script>window.__I18N={"js.gov1.p":"En lecture · 60 FPS","js.gov1.m":"governor: visible au premier plan, pleine vitesse","js.gov2.p":"En pause · masqué par une fenêtre","js.gov2.m":"occlusion: écran entièrement couvert par une fenêtre opaque","js.gov3.p":"En lecture · 60 FPS","js.gov3.m":"occlusion: bureau de nouveau visible","js.gov4.p":"Bridé · 30 FPS","js.gov4.m":"power: mode économie d’énergie activé","js.gov5.p":"En pause · écran en veille","js.gov5.m":"display: passage en veille","js.gov6.p":"En pause · écran verrouillé","js.gov6.m":"session: écran verrouillé","js.gov7.p":"En lecture · 60 FPS","js.gov7.m":"session: déverrouillé, rendu repris","js.pet.meow":"Miaou","js.power.playing":"Lecture","js.power.covered":"En pause · couvert par une fenêtre","js.power.lowpower":"Économie · mode économie d’énergie","js.power.locked":"En pause · écran verrouillé"};window.__LANGHINT={"zh-Hans":{"text":"这个网站有简体中文版。","go":"切换到简体中文","close":"关闭"},"en":{"text":"This site is also available in English.","go":"View in English","close":"Dismiss"},"ja":{"text":"このサイトは日本語でもご覧いただけます。","go":"日本語で見る","close":"閉じる"},"de":{"text":"Diese Website gibt es auch auf Deutsch.","go":"Auf Deutsch ansehen","close":"Schließen"},"fr":{"text":"Ce site est aussi disponible en français.","go":"Voir en français","close":"Fermer"}};</script>
+<script>window.__I18N={"js.gov1.p":"En lecture · 60 FPS","js.gov1.m":"governor: visible au premier plan, pleine vitesse","js.gov2.p":"En pause · masqué par une fenêtre","js.gov2.m":"occlusion: écran entièrement couvert par une fenêtre opaque","js.gov3.p":"En lecture · 60 FPS","js.gov3.m":"occlusion: bureau de nouveau visible","js.gov4.p":"Bridé · 30 FPS","js.gov4.m":"power: mode économie d’énergie activé","js.gov5.p":"En pause · écran en veille","js.gov5.m":"display: passage en veille","js.gov6.p":"En pause · écran verrouillé","js.gov6.m":"session: écran verrouillé","js.gov7.p":"En lecture · 60 FPS","js.gov7.m":"session: déverrouillé, rendu repris","js.pet.meow":"Miaou","js.power.playing":"Lecture","js.power.covered":"En pause · couvert par une fenêtre","js.power.lowpower":"Économie · mode économie d’énergie","js.power.locked":"En pause · écran verrouillé","js.world.day":"Revenir au jour","js.world.night":"Passer à la nuit","js.preview.pause":"Mettre l’aperçu en pause","js.preview.resume":"Reprendre l’aperçu","js.preview.immersive":"Aperçu immersif","js.preview.exit":"Quitter l’aperçu immersif"};window.__LANGHINT={"zh-Hans":{"text":"这个网站有简体中文版。","go":"切换到简体中文","close":"关闭"},"en":{"text":"This site is also available in English.","go":"View in English","close":"Dismiss"},"ja":{"text":"このサイトは日本語でもご覧いただけます。","go":"日本語で見る","close":"閉じる"},"de":{"text":"Diese Website gibt es auch auf Deutsch.","go":"Auf Deutsch ansehen","close":"Schließen"},"fr":{"text":"Ce site est aussi disponible en français.","go":"Voir en français","close":"Fermer"}};</script>
 <script src="https://futurebackrookie.github.io/swaylume-site/assets/scenes.js?v=8534397f"></script>
-<script src="https://futurebackrookie.github.io/swaylume-site/assets/live.js?v=a29b522f"></script>
-<script src="https://futurebackrookie.github.io/swaylume-site/assets/site.js?v=b64c28b7"></script>
-<script src="https://futurebackrookie.github.io/swaylume-site/assets/home.js?v=d07b129a"></script>
+<script src="https://futurebackrookie.github.io/swaylume-site/assets/live.js?v=6ef40c67"></script>
+<script src="https://futurebackrookie.github.io/swaylume-site/assets/site.js?v=d308e77e"></script>
+<script src="https://futurebackrookie.github.io/swaylume-site/assets/home.js?v=d78b18cb"></script>
 
 </body>
 </html>
