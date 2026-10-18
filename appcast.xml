@@ -7,41 +7,25 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sun, 18 Oct 2026 08:36:38 +0000</pubDate>
-      <sparkle:version>27</sparkle:version>
+      <pubDate>Sun, 18 Oct 2026 21:50:49 +0000</pubDate>
+      <sparkle:version>28</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 27
+      <description><![CDATA[Beta 28
 
-这一版的桌宠认得更多动物了：兔子、雪貂、仓鼠、龙猫，狗也按品种画。
+这一版可以在养过的宠物之间来回换了。
 
 新增
-· 桌宠支持兔子、雪貂、仓鼠和龙猫：给几张照片，认出是哪种，画成同一种
-  像素画风的它。每种都会坐、走、睡、被摸，会眨眼、跟着光标看、跟着音乐跳。
-  兔子蹦着走，雪貂弓着背小跑，仓鼠和龙猫迈碎步。
-· 狗按品种画：金毛、伯恩山、哈士奇、泰迪、柯基、柴犬、德牧、边牧，花色、
-  耳朵和尾巴都对得上品种。认不出的品种按最像的一种画，也可以在导入页点
-  「换一种」手动选。
-· 导入照片时：有把握就直接生成，预览上写「认出来是：兔子」；拿不准先问你；
-  鸟、乌龟这类暂时不支持的会说清楚，也可以手动选一种。
-· 几张照片看着不是同一只（比如金毛和哈士奇混在一起）会提示你，不再合成一只。
-· 叫声跟着动物走：狗叫「汪」，兔子冒一颗心，仓鼠和龙猫「吱」，雪貂「咕」。
-· 领养体型不同的动物时，桌宠大小自动换成合适的尺寸（仓鼠小一些，兔子中等）。
-  猫和狗之间换，不动你调好的大小。
-
-改进
-· 认动物更准：以前名字里带「狗」的东西（比如热狗）也会被当成狗。
-· 放歌时桌宠设置页不再一直整页重画，CPU 占用更低。
-
-移除
-· 3D 手办「云端小王子」。
+· 桌宠设置页新增「你的宠物」：领养过的每一只都留着，一只一张卡片，点一下就换上
+  桌面。以前领养了新的一只，旧的其实还存着，界面上却找不到。
+· 菜单栏新增「换一只」：不用打开设置页也能换宠物。
+· 换宠物时，体型不同的动物会自动换成合适的大小；猫和狗之间换，不动你调好的大小。
 
 修复
-· 照片里的动物在画面右边、或者拍得比较近时，导入失败或者颜色取错。
-· 英文界面下有几句说明没有翻译。
-· 修掉几处多线程下可能出错的地方。]]></description>
+· 「忘掉这一只」以前会把存着的所有宠物一起删掉，现在只删你选的那一只。
+  卡片上右键也能忘掉某一只。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="5979546"
+                 length="6089295"
                  type="application/octet-stream"/>
     </item>
   </channel>
