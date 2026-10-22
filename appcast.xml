@@ -7,25 +7,21 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sun, 18 Oct 2026 21:50:49 +0000</pubDate>
-      <sparkle:version>28</sparkle:version>
+      <pubDate>Thu, 22 Oct 2026 02:49:39 +0000</pubDate>
+      <sparkle:version>29</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 28
+      <description><![CDATA[Beta 29
 
-这一版可以在养过的宠物之间来回换了。
-
-新增
-· 桌宠设置页新增「你的宠物」：领养过的每一只都留着，一只一张卡片，点一下就换上
-  桌面。以前领养了新的一只，旧的其实还存着，界面上却找不到。
-· 菜单栏新增「换一只」：不用打开设置页也能换宠物。
-· 换宠物时，体型不同的动物会自动换成合适的大小；猫和狗之间换，不动你调好的大小。
+修复一个严重问题，建议尽快更新。
 
 修复
-· 「忘掉这一只」以前会把存着的所有宠物一起删掉，现在只删你选的那一只。
-  卡片上右键也能忘掉某一只。]]></description>
+· 添加、移除或修改壁纸后，app 会在一瞬间自动退出，刚才的改动也没有保存。
+  这个问题从 Beta 27 开始出现，现在修好了。之前没加上的壁纸，原文件都还在，
+  重新添加一次就好。
+· 打开「壁纸随音乐律动」后，开始采集声音时 app 会自动退出。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="6089295"
+                 length="6088153"
                  type="application/octet-stream"/>
     </item>
   </channel>
