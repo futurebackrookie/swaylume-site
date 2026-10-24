@@ -78,7 +78,7 @@
   "x.a3": "壁纸目录",
   "x.a4": "投稿壁纸",
   "x.p1": "\n      Swaylume 与 Wallpaper Engine 及其开发者、以及任何第三方壁纸平台均无关联，也未获其授权或背书。\n      文中提及的产品名称仅用于说明兼容性，商标归各自持有者所有。\n      转换工具在你自己的电脑上处理你自己已有的文件。\n    ",
-  "meta.description": "Mac 上的动态壁纸应用，也是 Wallpaper Engine 的 macOS 平替：视频、WebGL、分层视差壁纸跑在桌面图标之下，已有收藏可转换导入。",
+  "meta.description": "Mac 上的动态壁纸应用：视频、WebGL、分层视差壁纸跑在桌面图标之下，还有一只照着你家宠物长的像素桌宠。也能导入 Wallpaper Engine 里的视频和网页壁纸。",
   "js.gov1.p": "播放中 · 60 FPS",
   "js.gov1.m": "governor: 前台可见,全速",
   "js.gov2.p": "已暂停 · 被窗口遮挡",

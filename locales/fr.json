@@ -78,7 +78,7 @@
   "x.a3": "Catalogue de fonds d’écran",
   "x.a4": "Proposer un fond d’écran",
   "x.p1": "\n      Swaylume n’est affiliée ni à Wallpaper Engine, ni à ses développeurs, ni à aucune plateforme tierce de fonds\n      d’écran, et n’est ni autorisée ni soutenue par eux. Les noms de produits ne sont mentionnés que pour décrire\n      la compatibilité ; les marques appartiennent à leurs détenteurs respectifs.\n      Le convertisseur traite des fichiers que vous possédez déjà, sur votre propre ordinateur.\n    ",
-  "meta.description": "Une app de fonds d’écran animés pour Mac, et une alternative macOS à Wallpaper Engine : vidéo, WebGL et parallaxe en calques sous les icônes du bureau, avec un convertisseur pour la collection que vous avez déjà.",
+  "meta.description": "Une app de fonds d’écran animés pour Mac : vidéo, WebGL et parallaxe en calques sous les icônes du bureau, et un animal de compagnie en pixels à l’image du vôtre. Elle importe aussi les fonds vidéo et web de votre collection Wallpaper Engine.",
   "js.gov1.p": "En lecture · 60 FPS",
   "js.gov1.m": "governor: visible au premier plan, pleine vitesse",
   "js.gov2.p": "En pause · masqué par une fenêtre",

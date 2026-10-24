@@ -78,7 +78,7 @@
   "x.a3": "Wallpaper catalogue",
   "x.a4": "Submit a wallpaper",
   "x.p1": "\n      Swaylume is not affiliated with, authorised by, or endorsed by Wallpaper Engine, its developers, or any\n      third-party wallpaper platform. Product names are mentioned only to describe compatibility; trademarks\n      belong to their respective owners.\n      The converter processes files you already have, on your own computer.\n    ",
-  "meta.description": "A live wallpaper app for the Mac, and a macOS alternative to Wallpaper Engine: video, WebGL and layered parallax wallpapers beneath your desktop icons, with a converter for the collection you already have.",
+  "meta.description": "A live wallpaper app for the Mac: video, WebGL and layered parallax wallpapers beneath your desktop icons, plus a pixel desktop pet modeled on your own. It can also import the video and web wallpapers from your Wallpaper Engine collection.",
   "js.gov1.p": "Playing · 60 FPS",
   "js.gov1.m": "governor: visible in front, full speed",
   "js.gov2.p": "Paused · covered by a window",

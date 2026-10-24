@@ -7,18 +7,21 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sat, 24 Oct 2026 06:54:10 +0000</pubDate>
-      <sparkle:version>31</sparkle:version>
+      <pubDate>Sat, 24 Oct 2026 07:17:20 +0000</pubDate>
+      <sparkle:version>32</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 31
+      <description><![CDATA[Beta 32
 
-改进
-· 英文界面下，麦克风和系统音频的权限弹窗也显示英文了，不再是中文。
-· 「关于与诊断」里的记录更干净：锁屏背景同步不再误报「未确认」，
-  播放没有节拍的声音（说话、播客）也不再记成警告。真有问题时更容易看出来。]]></description>
+修复
+· 开了多个桌面（调度中心里的桌面 1、桌面 2……）时，退出 Swaylume 后别的桌面
+  可能变成空白或默认壁纸 —— 同步锁屏静帧时会把别的桌面正在用的图删掉。现在只换
+  当前桌面自己的那张。
+· 每个桌面退出时恢复它自己原来的壁纸，不会再拿别的桌面的壁纸盖上来。
+  （macOS 只允许改当前桌面：退出时不在眼前的桌面会先停在最后一帧，
+  下次在那个桌面上退出时再恢复。）]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="6097909"
+                 length="6135227"
                  type="application/octet-stream"/>
     </item>
   </channel>

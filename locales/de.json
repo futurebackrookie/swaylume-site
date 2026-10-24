@@ -78,7 +78,7 @@
   "x.a3": "Hintergrund-Katalog",
   "x.a4": "Hintergrund einreichen",
   "x.p1": "\n      Swaylume steht in keiner Verbindung zu Wallpaper Engine, dessen Entwicklern oder irgendeiner Plattform\n      Dritter für Hintergrundbilder und ist von diesen weder autorisiert noch unterstützt. Produktnamen werden\n      ausschließlich zur Beschreibung von Kompatibilität genannt; Marken gehören ihren jeweiligen Inhabern.\n      Der Konverter verarbeitet Dateien, die du bereits hast, auf deinem eigenen Rechner.\n    ",
-  "meta.description": "Eine Live-Hintergrund-App für den Mac und eine macOS-Alternative zu Wallpaper Engine: Video-, WebGL- und Ebenen-Parallax-Hintergründe unter den Schreibtischsymbolen, samt Konverter für deine vorhandene Sammlung.",
+  "meta.description": "Eine Live-Hintergrund-App für den Mac: Video-, WebGL- und Ebenen-Parallax-Hintergründe unter den Schreibtischsymbolen, dazu ein Pixel-Haustier nach dem Vorbild deines eigenen. Video- und Web-Hintergründe aus deiner Wallpaper-Engine-Sammlung lassen sich ebenfalls importieren.",
   "js.gov1.p": "Läuft · 60 FPS",
   "js.gov1.m": "governor: sichtbar im Vordergrund, volle Geschwindigkeit",
   "js.gov2.p": "Pausiert · von einem Fenster verdeckt",
