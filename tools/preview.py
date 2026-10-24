@@ -28,7 +28,7 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     for name in ('assets', 'posters'):
         shutil.copytree(ROOT / name, output / name, dirs_exist_ok=True)
-    for name in ('icon.png', 'og-cover.png', 'screenshot-library.png', 'pet-idle.png', 'pet-walk.png', 'pet-petted.png'):
+    for name in ('icon.png', 'og-cover.png', 'screenshot-library.png', 'pet-idle.png', 'pet-walk.png', 'pet-petted.png', 'pet-lineup.png'):
         shutil.copy2(ROOT / name, output / name)
     build.copy_wallpapers(output / 'wallpapers')
     for code, (langdir, _, _, _) in build.LOCALES.items():

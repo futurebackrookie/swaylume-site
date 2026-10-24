@@ -7,17 +7,18 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Thu, 22 Oct 2026 03:21:39 +0000</pubDate>
-      <sparkle:version>30</sparkle:version>
+      <pubDate>Sat, 24 Oct 2026 06:54:10 +0000</pubDate>
+      <sparkle:version>31</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 30
+      <description><![CDATA[Beta 31
 
 改进
-· 添加壁纸全部成功后，壁纸库底下的进度条显示「导入完成」，3 秒后自己收起来，
-  不用再手动点「关闭」。有导入失败的会留着，方便你看清是哪个文件、为什么失败。]]></description>
+· 英文界面下，麦克风和系统音频的权限弹窗也显示英文了，不再是中文。
+· 「关于与诊断」里的记录更干净：锁屏背景同步不再误报「未确认」，
+  播放没有节拍的声音（说话、播客）也不再记成警告。真有问题时更容易看出来。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="6093490"
+                 length="6097909"
                  type="application/octet-stream"/>
     </item>
   </channel>
