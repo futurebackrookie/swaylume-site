@@ -7,21 +7,22 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sat, 24 Oct 2026 07:17:20 +0000</pubDate>
-      <sparkle:version>32</sparkle:version>
+      <pubDate>Sun, 25 Oct 2026 10:02:13 +0000</pubDate>
+      <sparkle:version>33</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 32
+      <description><![CDATA[Beta 33
 
-修复
-· 开了多个桌面（调度中心里的桌面 1、桌面 2……）时，退出 Swaylume 后别的桌面
-  可能变成空白或默认壁纸 —— 同步锁屏静帧时会把别的桌面正在用的图删掉。现在只换
-  当前桌面自己的那张。
-· 每个桌面退出时恢复它自己原来的壁纸，不会再拿别的桌面的壁纸盖上来。
-  （macOS 只允许改当前桌面：退出时不在眼前的桌面会先停在最后一帧，
-  下次在那个桌面上退出时再恢复。）]]></description>
+新功能
+· 可以直接导入 WebM 视频了。拖进窗口或用「添加」选择 .webm 文件即可：
+  VP9、AV1 编码的会在导入时自动转成 MP4，成为一张普通视频壁纸 ——
+  循环、省电、缩略图、锁屏静帧都和其他视频一样。原文件不动。
+  转换时进度条会显示百分比，随时可以取消。4K 视频大约是片长的一半到同样长的时间。
+· 较老的 VP8 编码会改用网页引擎直接播放。
+· AV1 需要 M3 或更新的芯片；更早的 Mac 导入时会提示原因。
+· 转出来的壁纸不带声音（壁纸默认也是静音）。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="6135227"
+                 length="6234248"
                  type="application/octet-stream"/>
     </item>
   </channel>
