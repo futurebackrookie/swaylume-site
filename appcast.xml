@@ -7,18 +7,29 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Mon, 26 Oct 2026 01:47:33 +0000</pubDate>
-      <sparkle:version>34</sparkle:version>
+      <pubDate>Mon, 26 Oct 2026 08:47:22 +0000</pubDate>
+      <sparkle:version>35</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 34
+      <description><![CDATA[Beta 35
+
+新功能
+· 可以直接导入 .mkv 了。里面的 H.264、HEVC 不重新编码，直接封装成 MP4，几秒钟完事、画质不变。
+· VP8 编码的 WebM 也转成 MP4 了，当壁纸更省电（以前是交给网页引擎边播边解）。
+· 透明的 WebM 保留透明，检查器里可以选透明处显示的底色。
+· 视频里的声音一起带过来（Opus、Vorbis、AAC、FLAC、MP3、AC-3 等）。壁纸仍默认静音，想听在检查器里打开。
+· AV1 在 M1、M2 和 Intel Mac 上也能导入了。
+· 壁纸的「音频响应」可以直接听系统正在播放的声音（macOS 14.2 起），不用再装 BlackHole 之类的虚拟声卡：
+  到「设置 → 音频」把声音来源选成「系统播放的声音」。
+
+改进
+· 从库里移除的壁纸，撤销期过后移到废纸篓，不再直接删除。
+· VP8 视频页面的「填充方式」现在真的生效；别的网页壁纸不再显示这个不起作用的菜单。
 
 修复
-· 网页引擎播放的 WebM 视频循环第二遍时会停在最后一帧（WebKit 自身的问题）。
-  Beta 33 里导入的 VP8 视频播一会儿就不动了，现在会一直循环。
-  Wallpaper Engine 网页壁纸里用 WebM 做循环背景的，也一并修好。]]></description>
+· 带 HDR10 元数据的 WebM 导入时会提示「文件已损坏」。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="6236043"
+                 length="7861898"
                  type="application/octet-stream"/>
     </item>
   </channel>
