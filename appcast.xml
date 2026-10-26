@@ -7,22 +7,18 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sun, 25 Oct 2026 10:02:13 +0000</pubDate>
-      <sparkle:version>33</sparkle:version>
+      <pubDate>Mon, 26 Oct 2026 01:47:33 +0000</pubDate>
+      <sparkle:version>34</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 33
+      <description><![CDATA[Beta 34
 
-新功能
-· 可以直接导入 WebM 视频了。拖进窗口或用「添加」选择 .webm 文件即可：
-  VP9、AV1 编码的会在导入时自动转成 MP4，成为一张普通视频壁纸 ——
-  循环、省电、缩略图、锁屏静帧都和其他视频一样。原文件不动。
-  转换时进度条会显示百分比，随时可以取消。4K 视频大约是片长的一半到同样长的时间。
-· 较老的 VP8 编码会改用网页引擎直接播放。
-· AV1 需要 M3 或更新的芯片；更早的 Mac 导入时会提示原因。
-· 转出来的壁纸不带声音（壁纸默认也是静音）。]]></description>
+修复
+· 网页引擎播放的 WebM 视频循环第二遍时会停在最后一帧（WebKit 自身的问题）。
+  Beta 33 里导入的 VP8 视频播一会儿就不动了，现在会一直循环。
+  Wallpaper Engine 网页壁纸里用 WebM 做循环背景的，也一并修好。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="6234248"
+                 length="6236043"
                  type="application/octet-stream"/>
     </item>
   </channel>
