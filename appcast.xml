@@ -7,23 +7,18 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Mon, 26 Oct 2026 10:09:46 +0000</pubDate>
-      <sparkle:version>36</sparkle:version>
+      <pubDate>Tue, 27 Oct 2026 21:45:42 +0000</pubDate>
+      <sparkle:version>37</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 36
-
-改进
-· 视频和 2.5D 壁纸选「居中」时，现在真的按原始尺寸摆在正中（以前和「填充」效果一样）。
-· Beta 33、34 导入的 VP8 视频壁纸会在后台自动转成 MP4，更省电；标题、标签和摆放都不变。
-· 很长的视频带声音导入时不再占用大量内存；转换声音时也能看到进度、随时取消。
-· 老版本 mkvmerge 生成的 mkv（「头部剥离」写法）现在也能导入。
+      <description><![CDATA[Beta 37
 
 修复
-· mkv 导入出错时，提示不再写成「WebM」。
-· 声音轨读不了时，导入记录里会写明原因，而不是悄悄丢掉。]]></description>
+· 在较老的 macOS 上导入带 Opus 声音的视频，声音可能被丢掉；现在会换一种方式解码，声音照样带过来。
+· 图片壁纸选「居中」时，现在按图片的像素尺寸显示，不再受图片文件里标的分辨率（DPI）影响，和视频、2.5D 一致。
+· 同时接着 Retina 屏和普通屏时，副屏上「居中」的图片和 2.5D 壁纸可能按错的像素倍率显示。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="7984723"
+                 length="7985038"
                  type="application/octet-stream"/>
     </item>
   </channel>
