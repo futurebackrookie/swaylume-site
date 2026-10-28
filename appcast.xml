@@ -7,18 +7,19 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Tue, 27 Oct 2026 21:45:42 +0000</pubDate>
-      <sparkle:version>37</sparkle:version>
+      <pubDate>Wed, 28 Oct 2026 04:19:29 +0000</pubDate>
+      <sparkle:version>38</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 37
+      <description><![CDATA[Beta 38
+
+改进
+· 检查器里每张视频壁纸的「静音」开关改名为「播放声音」：打开才有声音，不容易弄反。原来的设置不变，原来出声的照样出声。
 
 修复
-· 在较老的 macOS 上导入带 Opus 声音的视频，声音可能被丢掉；现在会换一种方式解码，声音照样带过来。
-· 图片壁纸选「居中」时，现在按图片的像素尺寸显示，不再受图片文件里标的分辨率（DPI）影响，和视频、2.5D 一致。
-· 同时接着 Retina 屏和普通屏时，副屏上「居中」的图片和 2.5D 壁纸可能按错的像素倍率显示。]]></description>
+· 别的 app 全屏时（比如全屏看视频）导入网页壁纸，缩略图可能要等十几秒，出来还是全黑的；现在马上出图、画面正确。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="7985038"
+                 length="7987069"
                  type="application/octet-stream"/>
     </item>
   </channel>
