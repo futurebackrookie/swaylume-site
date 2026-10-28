@@ -7,17 +7,20 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Wed, 28 Oct 2026 12:16:14 +0000</pubDate>
-      <sparkle:version>39</sparkle:version>
+      <pubDate>Wed, 28 Oct 2026 13:05:09 +0000</pubDate>
+      <sparkle:version>40</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 39
+      <description><![CDATA[Beta 40
 
 改进
-· 动图 GIF 导入时转成视频：「填充」「适应」「拉伸」「居中」都按选的来（以前选「填充」实际是「适应」，会留黑边），播放也改用硬件解码。带透明的 GIF 照样透明。以前导入的动图会在后台自动转换。
-· 网页壁纸里自带的 WebM 视频（Wallpaper Engine 的网页壁纸常用它当背景）在播到时于后台转成系统能硬件解码的视频，转好后自动换上、接着原来的位置播。1080p 60 帧的视频，CPU 占用从约 23% 降到约 4%。只转用到的那几段。]]></description>
+· 动态 WebP 和 APNG 动图也在导入时转成视频：动态 WebP 以前只显示第一帧，现在正常播放；APNG 的「填充」不再变成「适应」，播放改用硬件解码。以前导入的会在后台自动转换。
+
+修复
+· 带半透明的动图转成视频后，半透明的边缘会发暗。
+· 网页壁纸里的 WebM 视频换成转好的视频时，画面会空一下（约四分之一秒）；现在换的这一下看不出来。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8073929"
+                 length="8089938"
                  type="application/octet-stream"/>
     </item>
   </channel>
