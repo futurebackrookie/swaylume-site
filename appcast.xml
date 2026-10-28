@@ -7,19 +7,17 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Wed, 28 Oct 2026 04:19:29 +0000</pubDate>
-      <sparkle:version>38</sparkle:version>
+      <pubDate>Wed, 28 Oct 2026 12:16:14 +0000</pubDate>
+      <sparkle:version>39</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 38
+      <description><![CDATA[Beta 39
 
 改进
-· 检查器里每张视频壁纸的「静音」开关改名为「播放声音」：打开才有声音，不容易弄反。原来的设置不变，原来出声的照样出声。
-
-修复
-· 别的 app 全屏时（比如全屏看视频）导入网页壁纸，缩略图可能要等十几秒，出来还是全黑的；现在马上出图、画面正确。]]></description>
+· 动图 GIF 导入时转成视频：「填充」「适应」「拉伸」「居中」都按选的来（以前选「填充」实际是「适应」，会留黑边），播放也改用硬件解码。带透明的 GIF 照样透明。以前导入的动图会在后台自动转换。
+· 网页壁纸里自带的 WebM 视频（Wallpaper Engine 的网页壁纸常用它当背景）在播到时于后台转成系统能硬件解码的视频，转好后自动换上、接着原来的位置播。1080p 60 帧的视频，CPU 占用从约 23% 降到约 4%。只转用到的那几段。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="7987069"
+                 length="8073929"
                  type="application/octet-stream"/>
     </item>
   </channel>
