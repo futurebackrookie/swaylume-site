@@ -7,20 +7,17 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Wed, 28 Oct 2026 13:05:09 +0000</pubDate>
-      <sparkle:version>40</sparkle:version>
+      <pubDate>Wed, 28 Oct 2026 23:22:46 +0000</pubDate>
+      <sparkle:version>41</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 40
-
-改进
-· 动态 WebP 和 APNG 动图也在导入时转成视频：动态 WebP 以前只显示第一帧，现在正常播放；APNG 的「填充」不再变成「适应」，播放改用硬件解码。以前导入的会在后台自动转换。
+      <description><![CDATA[Beta 41
 
 修复
-· 带半透明的动图转成视频后，半透明的边缘会发暗。
-· 网页壁纸里的 WebM 视频换成转好的视频时，画面会空一下（约四分之一秒）；现在换的这一下看不出来。]]></description>
+· 网页壁纸里带透明的 WebM 视频换成转好的视频时，画面会空一下；现在带透明的换的这一下也看不出来。
+· 导入或转换带 Vorbis 声音的 WebM 时，整段声音要一次解完，长视频会占用很多内存（一小时的约 1.6 GB）；现在一分钟一段解，一小时的只占约 100 MB。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8089938"
+                 length="8135565"
                  type="application/octet-stream"/>
     </item>
   </channel>
