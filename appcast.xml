@@ -7,17 +7,17 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Wed, 28 Oct 2026 23:22:46 +0000</pubDate>
-      <sparkle:version>41</sparkle:version>
+      <pubDate>Thu, 29 Oct 2026 00:18:57 +0000</pubDate>
+      <sparkle:version>42</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 41
+      <description><![CDATA[Beta 42
 
 修复
-· 网页壁纸里带透明的 WebM 视频换成转好的视频时，画面会空一下；现在带透明的换的这一下也看不出来。
-· 导入或转换带 Vorbis 声音的 WebM 时，整段声音要一次解完，长视频会占用很多内存（一小时的约 1.6 GB）；现在一分钟一段解，一小时的只占约 100 MB。]]></description>
+· 静音的视频壁纸如果带声音轨，声音照样在后台解码，扬声器一直被占着；现在静音时把声音轨整个关掉，打开「播放声音」再开回来。
+· 导入或转换带多声道 Opus 声音（比如 5.1）的 WebM 时，整段声音要一次解完，长视频会占用好几 GB 内存；现在一分钟一段解，20 分钟的从约 2.5 GB 降到约 130 MB。老系统上的 Opus 声音也一样分段解。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8135565"
+                 length="8153737"
                  type="application/octet-stream"/>
     </item>
   </channel>
