@@ -7,17 +7,16 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Thu, 29 Oct 2026 00:18:57 +0000</pubDate>
-      <sparkle:version>42</sparkle:version>
+      <pubDate>Sat, 31 Oct 2026 22:02:37 +0000</pubDate>
+      <sparkle:version>43</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 42
+      <description><![CDATA[Beta 43
 
 修复
-· 静音的视频壁纸如果带声音轨，声音照样在后台解码，扬声器一直被占着；现在静音时把声音轨整个关掉，打开「播放声音」再开回来。
-· 导入或转换带多声道 Opus 声音（比如 5.1）的 WebM 时，整段声音要一次解完，长视频会占用好几 GB 内存；现在一分钟一段解，20 分钟的从约 2.5 GB 降到约 130 MB。老系统上的 Opus 声音也一样分段解。]]></description>
+· 视频壁纸偶尔没能画到屏幕上时（比如系统刚更新完的头一段时间），桌面会整屏发黑，连桌面图标一起被盖住；现在露出来的是视频的第一帧，最坏也只是壁纸暂时不动。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8153737"
+                 length="8156413"
                  type="application/octet-stream"/>
     </item>
   </channel>
