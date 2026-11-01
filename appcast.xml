@@ -7,16 +7,20 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sat, 31 Oct 2026 22:02:37 +0000</pubDate>
-      <sparkle:version>43</sparkle:version>
+      <pubDate>Sat, 31 Oct 2026 22:57:52 +0000</pubDate>
+      <sparkle:version>44</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 43
+      <description><![CDATA[Beta 44
 
 修复
-· 视频壁纸偶尔没能画到屏幕上时（比如系统刚更新完的头一段时间），桌面会整屏发黑，连桌面图标一起被盖住；现在露出来的是视频的第一帧，最坏也只是壁纸暂时不动。]]></description>
+· 网页壁纸的网页引擎退出后（比如系统回收内存），壁纸会停在一片白，开着「盖住桌面图标」时图标也一起被盖住；现在会自动重新加载。
+· 菜单里的「全部静音」对网页壁纸不总是管用：页面还没加载完、或者视频是页面后来才放的，照样出声；现在一定全部静音，网页音频也一起停。
+
+改进
+· 设置里下载新版本的地方写明了：装好后第一次打开，还要在「系统设置 → 隐私与安全性」里再点一次「仍要打开」。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8156413"
+                 length="8191250"
                  type="application/octet-stream"/>
     </item>
   </channel>
