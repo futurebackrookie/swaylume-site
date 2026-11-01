@@ -7,16 +7,22 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sun, 01 Nov 2026 10:41:35 +0000</pubDate>
-      <sparkle:version>45</sparkle:version>
+      <pubDate>Sun, 01 Nov 2026 20:38:59 +0000</pubDate>
+      <sparkle:version>46</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 45
+      <description><![CDATA[Beta 46
 
 修复
-· 带声音的网页壁纸，导入时或在检查器里改了设置之后，后台会重新生成一张缩略图，那几秒里壁纸的声音会响出来，开着「全部静音」也一样；现在生成缩略图一律不出声。]]></description>
+· 网页壁纸的帧率上限会少给帧：设 60 帧实际只有约 40 帧，看着一顿一顿的；用电池时的省电档 24 帧只有 20 帧。现在给足。
+· 网页壁纸里同时跑着好几个动画时，除了第一个，其余的一直不动；现在都会动。
+· 120Hz 显示器上，状态栏和「显示器」页把网页壁纸的帧率写成 120，实际只有 60；现在如实显示 60，设置里也不再列给不到的 120 档。
+· 桌宠的运行记录被「某某应用正在出声」刷屏；现在每个应用只记一次。
+
+改进
+· 跟着声音动的网页壁纸，在「音频响应」关着时可能不动或一片黑；现在检查器里会提示一句，附「打开音频响应」按钮。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8191369"
+                 length="8203506"
                  type="application/octet-stream"/>
     </item>
   </channel>
