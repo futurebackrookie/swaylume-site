@@ -7,22 +7,21 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sun, 01 Nov 2026 20:38:59 +0000</pubDate>
-      <sparkle:version>46</sparkle:version>
+      <pubDate>Sun, 01 Nov 2026 23:45:45 +0000</pubDate>
+      <sparkle:version>47</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 46
+      <description><![CDATA[Beta 47
 
 修复
-· 网页壁纸的帧率上限会少给帧：设 60 帧实际只有约 40 帧，看着一顿一顿的；用电池时的省电档 24 帧只有 20 帧。现在给足。
-· 网页壁纸里同时跑着好几个动画时，除了第一个，其余的一直不动；现在都会动。
-· 120Hz 显示器上，状态栏和「显示器」页把网页壁纸的帧率写成 120，实际只有 60；现在如实显示 60，设置里也不再列给不到的 120 档。
-· 桌宠的运行记录被「某某应用正在出声」刷屏；现在每个应用只记一次。
+· 以前把帧率上限手动设成 120 的，关掉「跟随显示器刷新率」后「正常帧率上限」是一片空白；现在显示实际生效的 60。
+· 「日夜切换」自动推算的日出日落，在南半球、用夏令时的地区和高纬度地方会差一到两个小时，夜晚壁纸提前换上；现在按系统时区表里的城市坐标算，只差几分钟。没改过位置的会自动更新，自己填过的不动。
 
 改进
-· 跟着声音动的网页壁纸，在「音频响应」关着时可能不动或一片黑；现在检查器里会提示一句，附「打开音频响应」按钮。]]></description>
+· 检查器里的「打开音频响应」会同时把声音来源换成「系统播放的声音」：壁纸跟着正在放的音乐动，而不是麦克风收到的环境声。
+· 内置的「声场」「玻音」「低鸣」没有声音时也会动，不再提示「可能不动或一片黑」。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8203506"
+                 length="8219256"
                  type="application/octet-stream"/>
     </item>
   </channel>

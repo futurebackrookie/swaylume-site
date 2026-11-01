@@ -37,7 +37,6 @@ class ExternalLinkBrandSafetyTests(unittest.TestCase):
         links = dict(parser.anchors)
 
         expected = {
-            "https://livewallp.com/": "LiveWallp ↗",
             "https://livewallpapers4free.com/": "LiveWallpapers4Free ↗",
             "https://mylivewallpapers.com/": "MyLiveWallpapers ↗",
         }
