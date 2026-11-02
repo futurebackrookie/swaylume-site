@@ -27,7 +27,7 @@
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="stylesheet" href="https://futurebackrookie.github.io/swaylume-site/assets/site.css?v=e2692d50">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it going to drain my battery?","acceptedAnswer":{"@type":"Answer","text":"By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log."}},{"@type":"Question","name":"Can I use my own videos or images?","acceptedAnswer":{"@type":"Answer","text":"Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC; VP9-encoded mp4 plays directly too), plus webm and mkv — these are converted to MP4 on import: VP8, VP9 and AV1 are re-encoded, while H.264 and HEVC inside mkv are copied as-is with no quality loss; transparency and sound come along too. Your original file is left untouched. Images: the usual formats. Animated GIF, APNG and WebP images are converted to video on import too, so every fill mode works as chosen and playback is hardware-decoded; transparency is kept. Web wallpapers: HTML / WebGL."}},{"@type":"Question","name":"How does it compare to Wallpaper Engine?","acceptedAnswer":{"@type":"Answer","text":"Honestly, each has its strengths. It has what we don’t: millions of Workshop items, native Scene rendering, a mature editor. We have what it doesn’t: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across with the converter."}},{"@type":"Question","name":"macOS blocked the first launch. Is the app broken?","acceptedAnswer":{"@type":"Answer","text":"No. This build isn’t notarised by Apple yet — notarisation needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway”. All clicks, no Terminal. After each update you’ll need to do this once more on first launch. Full steps are in the download section."}},{"@type":"Question","name":"Does it upload any of my data?","acceptedAnswer":{"@type":"Answer","text":"No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalogue index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files."}},{"@type":"Question","name":"Which Macs are supported?","acceptedAnswer":{"@type":"Answer","text":"macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it going to drain my battery?","acceptedAnswer":{"@type":"Answer","text":"By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log."}},{"@type":"Question","name":"Can I use my own videos or images?","acceptedAnswer":{"@type":"Answer","text":"Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC; VP9-encoded mp4 plays directly too), plus webm and mkv — these are converted to MP4 on import: VP8, VP9 and AV1 are re-encoded, while H.264 and HEVC inside mkv are copied as-is with no quality loss; transparency and sound come along too. Your original file is left untouched. Images: the usual formats. Animated GIF, APNG and WebP images are converted to video on import too, so every fill mode works as chosen and playback is hardware-decoded; transparency is kept. Web wallpapers: HTML / WebGL."}},{"@type":"Question","name":"How does it compare to Wallpaper Engine?","acceptedAnswer":{"@type":"Answer","text":"Honestly, each has its strengths. It has what we don’t: millions of Workshop items, native Scene rendering, a mature editor. We have what it doesn’t: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across — just drag the folders in."}},{"@type":"Question","name":"macOS blocked the first launch. Is the app broken?","acceptedAnswer":{"@type":"Answer","text":"No. This build isn’t notarised by Apple yet — notarisation needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway”. All clicks, no Terminal. After each update you’ll need to do this once more on first launch. Full steps are in the download section."}},{"@type":"Question","name":"Does it upload any of my data?","acceptedAnswer":{"@type":"Answer","text":"No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalogue index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files."}},{"@type":"Question","name":"Which Macs are supported?","acceptedAnswer":{"@type":"Answer","text":"macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware."}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -100,7 +100,7 @@
         across the top of the wallpaper. Found by running it on real hardware; you cannot see this by reading code.
       </div>
       <figure class="shot rise">
-        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
+        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-displays-en.png" width="1040" height="370" loading="lazy" decoding="async"
              alt="Swaylume’s display settings, with toggles for covering icons and mouse parallax, plus per-display assignment">
       </figure>
 
@@ -137,8 +137,8 @@
 
       <h2 class="sec-h rise" id="how-migrate">Bring your Wallpaper Engine collection to the Mac.</h2>
       <p class="sec-p rise">
-        The command-line converter only reads Wallpaper Engine files already on your machine — no network,
-        no Steam, nothing downloaded. Tested against 8 real items totalling 713 MB: 8 of 8 converted.
+        Drag a Workshop item folder (the one with project.json) into Swaylume, or drop the whole 431960 folder to import everything at once —
+        dropping it again won’t duplicate anything. Only Wallpaper Engine files already on your machine are read — no network, no Steam, nothing downloaded.
       </p>
       <div class="table-scroll rise">
         <table>
@@ -146,39 +146,36 @@
             <tr><th>Source type</th><th>Result</th><th>Notes</th></tr>
           </thead>
           <tbody>
-            <tr><td class="mono">video</td><td><span class="st" data-v="ok">lossless</span></td><td>webm / VP9 transcoded to H.264 automatically<small>AVFoundation cannot read webm files, so transcoding is required</small></td></tr>
-            <tr><td class="mono">web</td><td><span class="st" data-v="ok">works</span></td><td>The JS interface those pages expect is filled in by a compatibility shim<small>Property listeners, random file requests and audio callbacks are all there</small></td></tr>
+            <tr><td class="mono">video</td><td><span class="st" data-v="ok">works as is</span></td><td>mp4 is used as is; webm and mkv are converted to MP4 on import<small>Title comes from project.json; the original file is untouched</small></td></tr>
+            <tr><td class="mono">web</td><td><span class="st" data-v="ok">works</span></td><td>The JS interface those pages expect is filled in by a compatibility shim<small>Title, entry page and properties come from project.json; property listeners, random file requests and audio callbacks are all there</small></td></tr>
             <tr><td class="mono">scene</td><td><span class="st" data-v="warn">partial</span></td><td>Ones with embedded video are extracted automatically<small>Pure scenes have to be pre-rendered to video on the Windows side — supporting them as-is would mean rewriting somebody else’s entire renderer</small></td></tr>
             <tr><td class="mono">application</td><td><span class="st" data-v="no">no</span></td><td>Windows executables<small>Nothing to be done here</small></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="code rise"><span class="c"># Install the dependency and build the converter</span>
-brew install ffmpeg
-cd Tools/swaylume-import &amp;&amp; swift build -c release
+      <div class="code rise"><span class="c"># Workshop content lives here on Windows — copy it all to the Mac</span>
+Steam/steamapps/workshop/content/431960/
 
-<span class="c"># Point it at your local content folder; it writes .swaylume packages</span>
-.build/release/swaylume-import &lt;your path&gt; -o ~/Desktop/out
-
-<span class="c"># Drag the .swaylume files from out/ into Swaylume</span></div>
+<span class="c"># Drag into the Swaylume library: one item, or the whole 431960</span>
+431960/&lt;item id&gt;/project.json</div>
       <div class="note rise">
-        Converted results are for your own use. <b>Copyright in the original wallpapers stays with their authors</b> —
-        the tool only changes the container format, and that changes nothing about ownership.
+        Imported wallpapers are for your own use. <b>Copyright in the original wallpapers stays with their authors</b> —
+        importing only lets them play on your Mac, and that changes nothing about ownership.
       </div>
 
       <h2 class="sec-h rise" id="how-keys">Things you can do without opening settings.</h2>
       <p class="sec-p rise">Four global shortcuts, available while any app is in front. They use the system’s hotkey registration, so they need no Accessibility permission — installing a wallpaper app shouldn’t hand it the ability to read everything you type.</p>
       <div class="key-list rise">
-        <div><kbd>⌥⌘P</kbd><span>Pause / resume</span></div>
-        <div><kbd>⌥⌘→</kbd><span>Next wallpaper</span></div>
-        <div><kbd>⌥⌘M</kbd><span>Mute toggle</span></div>
-        <div><kbd>⌥⌘C</kbd><span>Call the pet over</span></div>
+        <div><kbd>⌃⌥⌘P</kbd><span>Pause / resume</span></div>
+        <div><kbd>⌃⌥⌘→</kbd><span>Next wallpaper</span></div>
+        <div><kbd>⌃⌥⌘M</kbd><span>Mute toggle</span></div>
+        <div><kbd>⌃⌥⌘C</kbd><span>Call the pet over</span></div>
       </div>
       <div class="gov-list rise">
         <div class="gov-item"><b>Window translucency</b><span>The settings window can be made semi-transparent so the wallpaper shows through. At zero it is fully opaque, which is the default.</span></div>
         <div class="gov-item"><b>Automatic update checks</b><span>It fetches one version file and compares. Nothing is sent back. You can turn it off, or skip a particular build.</span></div>
       </div>
-      <div class="note rise"><b>If another app has taken a shortcut, you are told.</b> A failed registration doesn’t fail silently — that row is flagged in settings instead of leaving you pressing keys wondering what broke.</div>
+      <div class="note rise"><b>You can change the combinations.</b> The defaults use ⌃⌥⌘ to stay clear of the ⌥⌘ shortcuts common in Finder, Xcode and browsers; if one clashes with another global shortcut, that row is flagged in settings.</div>
     </div>
   </div>
 </section>
@@ -235,7 +232,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
         <article class="path-card">
           <span class="path-step">02 / Coming from Wallpaper Engine</span>
           <h3>Bring your collection; don’t start over.</h3>
-          <p>The converter only reads Wallpaper Engine projects already on your computer — no Steam login, no downloads. Video and web types are supported first, and Scene has a documented pre-render route.</p>
+          <p>Drag in the Wallpaper Engine folders already on your computer — no Steam login, no downloads. Video and web types work directly, scenes with an embedded video have it extracted, and pure scenes come with a clear way to record them as video.</p>
           <a href="#how-migrate">See what converts, and how</a>
         </article>
         <article class="path-card">
@@ -344,7 +341,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
       <div class="faq rise">
         <details><summary>Is it going to drain my battery?</summary><div class="faq-a">By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log.</div></details>
         <details><summary>Can I use my own videos or images?</summary><div class="faq-a">Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC; VP9-encoded mp4 plays directly too), plus webm and mkv — these are converted to MP4 on import: VP8, VP9 and AV1 are re-encoded, while H.264 and HEVC inside mkv are copied as-is with no quality loss; transparency and sound come along too. Your original file is left untouched. Images: the usual formats. Animated GIF, APNG and WebP images are converted to video on import too, so every fill mode works as chosen and playback is hardware-decoded; transparency is kept. Web wallpapers: HTML / WebGL.</div></details>
-        <details><summary>How does it compare to Wallpaper Engine?</summary><div class="faq-a">Honestly, each has its strengths. <strong>It has what we don’t</strong>: millions of Workshop items, native Scene rendering, a mature editor. <strong>We have what it doesn’t</strong>: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across with the converter.</div></details>
+        <details><summary>How does it compare to Wallpaper Engine?</summary><div class="faq-a">Honestly, each has its strengths. <strong>It has what we don’t</strong>: millions of Workshop items, native Scene rendering, a mature editor. <strong>We have what it doesn’t</strong>: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across — just drag the folders in.</div></details>
         <details><summary>macOS blocked the first launch. Is the app broken?</summary><div class="faq-a">No. This build isn’t notarised by Apple yet — notarisation needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway”. All clicks, no Terminal. After each update you’ll need to do this once more on first launch. Full steps are in the download section.</div></details>
         <details><summary>Does it upload any of my data?</summary><div class="faq-a">No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalogue index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files.</div></details>
         <details><summary>Which Macs are supported?</summary><div class="faq-a">macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware.</div></details>
@@ -363,7 +360,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
       Swaylume is not affiliated with, authorised by, or endorsed by Wallpaper Engine, its developers, or any
       third-party wallpaper platform. Product names are mentioned only to describe compatibility; trademarks
       belong to their respective owners.
-      The converter processes files you already have, on your own computer.
+      Importing only processes files you already have, on your own computer.
     </p>
     <p class="legal">Mac and macOS are trademarks of Apple Inc. Swaylume is an independently developed app and is not affiliated with Apple.</p>
     <div class="foot-row">

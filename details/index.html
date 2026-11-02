@@ -27,7 +27,7 @@
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="stylesheet" href="https://futurebackrookie.github.io/swaylume-site/assets/site.css?v=e2692d50">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"会不会很耗电？","acceptedAnswer":{"@type":"Answer","text":"默认看不见时一帧都不画。屏幕被窗口盖满、锁屏、显示器休眠、系统睡眠、低电量模式，各自对应一个暂停原因，醒来自动恢复；用电池时可选择暂停或降帧率。可选的「锁屏无延迟（预热）」仍会暂停动画与媒体，只保留视频管线和网页进程以加快解锁，代价是少量额外内存；系统真正睡眠时不预热。开启前 app 会明确提醒。所有判断集中在一个调速器里，「壁纸为什么停了」永远只有一个答案，而且写在日志里。"}},{"@type":"Question","name":"能用我自己的视频或图片吗？","acceptedAnswer":{"@type":"Answer","text":"能，拖进窗口就行。视频支持 mp4 / mov / m4v（H.264 或 HEVC，VP9 编码的 mp4 也能直接播），以及 webm 和 mkv —— 导入时自动转成 MP4：VP8、VP9、AV1 重新编码，mkv 里的 H.264、HEVC 原样搬、不掉画质；带透明的保留透明，声音一起带过来。原文件不动。图片支持常见格式；动图（GIF、APNG、动态 WebP）导入时也转成视频，填充方式照你选的来、硬件解码，透明的保留透明。网页壁纸支持 HTML / WebGL。"}},{"@type":"Question","name":"和 Wallpaper Engine 比怎么样？","acceptedAnswer":{"@type":"Answer","text":"诚实地说，各有各的强项。它有我们没有的：几百万张创意工坊内容、原生 Scene 渲染、成熟的编辑器。我们有它没有的：每个桌面（Space）用不同壁纸（Windows 上做不到）、按日出日落自动切换、以及明显更认真的省电策略。另外它没有 macOS 版，你现有的收藏可以用转换工具带过来。"}},{"@type":"Question","name":"第一次打开被系统拦住，是软件坏了吗？","acceptedAnswer":{"@type":"Answer","text":"不是。这个版本还没有经过 Apple 公证 —— 公证需要付费的开发者账号。macOS 会提示「无法验证开发者」，在「系统设置 → 隐私与安全性 → 安全性」里点「仍要打开」即可，全程点鼠标不用开终端。每装一个新版本，第一次打开时要再点一次。详细步骤在下载区。"}},{"@type":"Question","name":"会上传我的数据吗？","acceptedAnswer":{"@type":"Answer","text":"不会。壁纸、书签、导入记录和诊断报告都留在你的 Mac 上，没有自动上传，也没有任何广告追踪脚本。唯一的联网行为是你主动刷新壁纸目录时去拉一份索引；不刷新就完全不联网。诊断报告需要你自己点导出，内容是状态和错误，不含壁纸文件。"}},{"@type":"Question","name":"支持哪些 Mac？","acceptedAnswer":{"@type":"Answer","text":"macOS 14 或更高，Apple 芯片和 Intel 都能跑（通用二进制）。多显示器和 AirPlay 副屏都已实测。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"会不会很耗电？","acceptedAnswer":{"@type":"Answer","text":"默认看不见时一帧都不画。屏幕被窗口盖满、锁屏、显示器休眠、系统睡眠、低电量模式，各自对应一个暂停原因，醒来自动恢复；用电池时可选择暂停或降帧率。可选的「锁屏无延迟（预热）」仍会暂停动画与媒体，只保留视频管线和网页进程以加快解锁，代价是少量额外内存；系统真正睡眠时不预热。开启前 app 会明确提醒。所有判断集中在一个调速器里，「壁纸为什么停了」永远只有一个答案，而且写在日志里。"}},{"@type":"Question","name":"能用我自己的视频或图片吗？","acceptedAnswer":{"@type":"Answer","text":"能，拖进窗口就行。视频支持 mp4 / mov / m4v（H.264 或 HEVC，VP9 编码的 mp4 也能直接播），以及 webm 和 mkv —— 导入时自动转成 MP4：VP8、VP9、AV1 重新编码，mkv 里的 H.264、HEVC 原样搬、不掉画质；带透明的保留透明，声音一起带过来。原文件不动。图片支持常见格式；动图（GIF、APNG、动态 WebP）导入时也转成视频，填充方式照你选的来、硬件解码，透明的保留透明。网页壁纸支持 HTML / WebGL。"}},{"@type":"Question","name":"和 Wallpaper Engine 比怎么样？","acceptedAnswer":{"@type":"Answer","text":"诚实地说，各有各的强项。它有我们没有的：几百万张创意工坊内容、原生 Scene 渲染、成熟的编辑器。我们有它没有的：每个桌面（Space）用不同壁纸（Windows 上做不到）、按日出日落自动切换、以及明显更认真的省电策略。另外它没有 macOS 版，你现有的收藏把文件夹拖进来就能带过来。"}},{"@type":"Question","name":"第一次打开被系统拦住，是软件坏了吗？","acceptedAnswer":{"@type":"Answer","text":"不是。这个版本还没有经过 Apple 公证 —— 公证需要付费的开发者账号。macOS 会提示「无法验证开发者」，在「系统设置 → 隐私与安全性 → 安全性」里点「仍要打开」即可，全程点鼠标不用开终端。每装一个新版本，第一次打开时要再点一次。详细步骤在下载区。"}},{"@type":"Question","name":"会上传我的数据吗？","acceptedAnswer":{"@type":"Answer","text":"不会。壁纸、书签、导入记录和诊断报告都留在你的 Mac 上，没有自动上传，也没有任何广告追踪脚本。唯一的联网行为是你主动刷新壁纸目录时去拉一份索引；不刷新就完全不联网。诊断报告需要你自己点导出，内容是状态和错误，不含壁纸文件。"}},{"@type":"Question","name":"支持哪些 Mac？","acceptedAnswer":{"@type":"Answer","text":"macOS 14 或更高，Apple 芯片和 Intel 都能跑（通用二进制）。多显示器和 AirPlay 副屏都已实测。"}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -99,7 +99,7 @@
         实测它排在前面 —— 结果就是壁纸顶端被压出一条白边。真机上撞出来的，读代码看不出来。
       </div>
       <figure class="shot rise">
-        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
+        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-displays.png" width="1040" height="370" loading="lazy" decoding="async"
              alt="Swaylume 的显示器设置页，含覆盖图标、鼠标视差等开关与每屏分配">
       </figure>
 
@@ -135,8 +135,8 @@
 
       <h2 class="sec-h rise" id="how-migrate">把 Wallpaper Engine 的收藏带到 Mac。</h2>
       <p class="sec-p rise">
-        命令行转换工具只读你本机已有的 Wallpaper Engine 文件 —— 不联网、不碰 Steam、不下载任何东西。
-        实测跑过 8 个真实条目、713 MB，转换成功率 8/8。
+        把创意工坊条目的文件夹（有 project.json 的那层）拖进 Swaylume，或者把整个 431960 文件夹拖进来一次导入全部，再拖一次不会重复。
+        只读你本机已有的 Wallpaper Engine 文件 —— 不联网、不碰 Steam、不下载任何东西。
       </p>
       <div class="table-scroll rise">
         <table>
@@ -144,38 +144,35 @@
             <tr><th>原类型</th><th>结果</th><th>说明</th></tr>
           </thead>
           <tbody>
-            <tr><td class="mono">video</td><td><span class="st" data-v="ok">无损转换</span></td><td>webm / VP9 自动转码成 H.264<small>AVFoundation 读不了 webm 文件，必须转</small></td></tr>
-            <tr><td class="mono">web</td><td><span class="st" data-v="ok">可用</span></td><td>页面用的那套 JS 接口由兼容层补齐<small>属性监听、随机取文件、音频回调都在</small></td></tr>
+            <tr><td class="mono">video</td><td><span class="st" data-v="ok">直接可用</span></td><td>mp4 原样用；webm、mkv 导入时自动转成 MP4<small>标题按 project.json，原文件不动</small></td></tr>
+            <tr><td class="mono">web</td><td><span class="st" data-v="ok">可用</span></td><td>页面用的那套 JS 接口由兼容层补齐<small>标题、入口、属性按 project.json；属性监听、随机取文件、音频回调都在</small></td></tr>
             <tr><td class="mono">scene</td><td><span class="st" data-v="warn">部分</span></td><td>内嵌视频的能自动提取出来<small>纯场景要在 Windows 端先预渲染成视频 —— 原样支持等于重写人家整个渲染器</small></td></tr>
             <tr><td class="mono">application</td><td><span class="st" data-v="no">无解</span></td><td>Windows 可执行文件<small>这个真没办法</small></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="code rise"><span class="c"># 装依赖，编译转换器</span>
-brew install ffmpeg
-cd Tools/swaylume-import &amp;&amp; swift build -c release
+      <div class="code rise"><span class="c"># 创意工坊的内容在 Windows 上的这里，整个拷到 Mac</span>
+Steam/steamapps/workshop/content/431960/
 
-<span class="c"># 指向你本机的内容目录，输出 .swaylume 包</span>
-.build/release/swaylume-import &lt;你的路径&gt; -o ~/Desktop/out
-
-<span class="c"># 把 out 里的 .swaylume 拖进 Swaylume</span></div>
+<span class="c"># 拖进 Swaylume 的壁纸库：一个条目，或者整个 431960</span>
+431960/&lt;条目编号&gt;/project.json</div>
       <div class="note rise">
-        转换结果供个人使用。<b>原壁纸的版权归各自作者所有</b> —— 工具只是换个封装格式，不改变这一点。
+        导入结果供个人使用。<b>原壁纸的版权归各自作者所有</b> —— 导入只是让它在你的 Mac 上播放，不改变这一点。
       </div>
 
       <h2 class="sec-h rise" id="how-keys">不用打开设置就能做的事。</h2>
       <p class="sec-p rise">四个全局快捷键，任何 app 在前台都能用。它们走的是系统的快捷键注册接口，不需要「辅助功能」权限 —— 装个壁纸软件不该顺带拿到读取你所有键盘输入的能力。</p>
       <div class="key-list rise">
-        <div><kbd>⌥⌘P</kbd><span>暂停 / 继续</span></div>
-        <div><kbd>⌥⌘→</kbd><span>下一张壁纸</span></div>
-        <div><kbd>⌥⌘M</kbd><span>静音开关</span></div>
-        <div><kbd>⌥⌘C</kbd><span>把桌宠叫过来</span></div>
+        <div><kbd>⌃⌥⌘P</kbd><span>暂停 / 继续</span></div>
+        <div><kbd>⌃⌥⌘→</kbd><span>下一张壁纸</span></div>
+        <div><kbd>⌃⌥⌘M</kbd><span>静音开关</span></div>
+        <div><kbd>⌃⌥⌘C</kbd><span>把桌宠叫过来</span></div>
       </div>
       <div class="gov-list rise">
         <div class="gov-item"><b>窗口透明度</b><span>设置窗口可以调成半透明，让底下的壁纸透出来。滑到 0 就是完全不透明，默认如此。</span></div>
         <div class="gov-item"><b>自动检查更新</b><span>只拉一个版本号文件比对，不回传任何东西。可以关掉，也可以跳过某一版。</span></div>
       </div>
-      <div class="note rise"><b>快捷键被别的 app 占了会告诉你。</b>注册失败不会静悄悄失效 —— 设置里那一项会标出来，而不是让你按半天以为软件坏了。</div>
+      <div class="note rise"><b>组合键可以自己改。</b>默认用 ⌃⌥⌘，避开访达、Xcode、浏览器里常用的 ⌥⌘ 组合；和别的全局快捷键撞了，设置里那一项会标出来。</div>
     </div>
   </div>
 </section>
@@ -229,7 +226,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
         <article class="path-card">
           <span class="path-step">02 / 来自 Wallpaper Engine</span>
           <h3>带上已有收藏，不必从零开始。</h3>
-          <p>转换器只读取你电脑上已有的 Wallpaper Engine 项目，不登录 Steam、不下载内容。视频和网页类优先支持，Scene 明确给出预渲染路径。</p>
+          <p>直接把你电脑上已有的 Wallpaper Engine 壁纸文件夹拖进来，不登录 Steam、不下载内容。视频和网页类直接能用，Scene 里带视频的抽出来，纯场景说清楚怎么录成视频。</p>
           <a href="#how-migrate">查看兼容与转换方式</a>
         </article>
         <article class="path-card">
@@ -333,7 +330,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
       <div class="faq rise">
         <details><summary>会不会很耗电？</summary><div class="faq-a">默认看不见时一帧都不画。屏幕被窗口盖满、锁屏、显示器休眠、系统睡眠、低电量模式，各自对应一个暂停原因，醒来自动恢复；用电池时可选择暂停或降帧率。可选的「锁屏无延迟（预热）」仍会暂停动画与媒体，只保留视频管线和网页进程以加快解锁，代价是少量额外内存；系统真正睡眠时不预热。开启前 app 会明确提醒。所有判断集中在一个调速器里，「壁纸为什么停了」永远只有一个答案，而且写在日志里。</div></details>
         <details><summary>能用我自己的视频或图片吗？</summary><div class="faq-a">能，拖进窗口就行。视频支持 mp4 / mov / m4v（H.264 或 HEVC，VP9 编码的 mp4 也能直接播），以及 webm 和 mkv —— 导入时自动转成 MP4：VP8、VP9、AV1 重新编码，mkv 里的 H.264、HEVC 原样搬、不掉画质；带透明的保留透明，声音一起带过来。原文件不动。图片支持常见格式；动图（GIF、APNG、动态 WebP）导入时也转成视频，填充方式照你选的来、硬件解码，透明的保留透明。网页壁纸支持 HTML / WebGL。</div></details>
-        <details><summary>和 Wallpaper Engine 比怎么样？</summary><div class="faq-a">诚实地说，各有各的强项。<strong>它有我们没有的</strong>：几百万张创意工坊内容、原生 Scene 渲染、成熟的编辑器。<strong>我们有它没有的</strong>：每个桌面（Space）用不同壁纸（Windows 上做不到）、按日出日落自动切换、以及明显更认真的省电策略。另外它没有 macOS 版，你现有的收藏可以用转换工具带过来。</div></details>
+        <details><summary>和 Wallpaper Engine 比怎么样？</summary><div class="faq-a">诚实地说，各有各的强项。<strong>它有我们没有的</strong>：几百万张创意工坊内容、原生 Scene 渲染、成熟的编辑器。<strong>我们有它没有的</strong>：每个桌面（Space）用不同壁纸（Windows 上做不到）、按日出日落自动切换、以及明显更认真的省电策略。另外它没有 macOS 版，你现有的收藏把文件夹拖进来就能带过来。</div></details>
         <details><summary>第一次打开被系统拦住，是软件坏了吗？</summary><div class="faq-a">不是。这个版本还没有经过 Apple 公证 —— 公证需要付费的开发者账号。macOS 会提示「无法验证开发者」，在「系统设置 → 隐私与安全性 → 安全性」里点「仍要打开」即可，全程点鼠标不用开终端。每装一个新版本，第一次打开时要再点一次。详细步骤在下载区。</div></details>
         <details><summary>会上传我的数据吗？</summary><div class="faq-a">不会。壁纸、书签、导入记录和诊断报告都留在你的 Mac 上，没有自动上传，也没有任何广告追踪脚本。唯一的联网行为是你主动刷新壁纸目录时去拉一份索引；不刷新就完全不联网。诊断报告需要你自己点导出，内容是状态和错误，不含壁纸文件。</div></details>
         <details><summary>支持哪些 Mac？</summary><div class="faq-a">macOS 14 或更高，Apple 芯片和 Intel 都能跑（通用二进制）。多显示器和 AirPlay 副屏都已实测。</div></details>
@@ -351,7 +348,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     <p class="legal">
       Swaylume 与 Wallpaper Engine 及其开发者、以及任何第三方壁纸平台均无关联，也未获其授权或背书。
       文中提及的产品名称仅用于说明兼容性，商标归各自持有者所有。
-      转换工具在你自己的电脑上处理你自己已有的文件。
+      导入只在你自己的电脑上处理你自己已有的文件。
     </p>
     <p class="legal">Mac 和 macOS 是 Apple Inc. 的商标。Swaylume 是独立开发的应用，与 Apple 没有关联。</p>
     <div class="foot-row">

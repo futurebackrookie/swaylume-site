@@ -27,7 +27,7 @@
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="stylesheet" href="https://futurebackrookie.github.io/swaylume-site/assets/site.css?v=e2692d50">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"電力を食いませんか？","acceptedAnswer":{"@type":"Answer","text":"デフォルトでは、誰にも見えないときは 1 フレームも描画しません。画面がウインドウで完全に覆われた場合、ロック画面、ディスプレイスリープ、システムスリープ、低電力モードにはそれぞれ停止理由があり、復帰時に自動再開します。任意の「ロック解除遅延ゼロ（プリウォーム）」もアニメーションとメディアを停止し、少量の追加メモリと引き換えにビデオパイプラインと Web プロセスだけを待機させます。システムスリープ中はプリウォームせず、有効化前に app が影響を説明します。判断はすべて 1 つのガバナーに集約され、停止理由はログに残ります。"}},{"@type":"Question","name":"自分の動画や画像を使えますか？","acceptedAnswer":{"@type":"Answer","text":"使えます。ウインドウにドラッグするだけです。動画は mp4 / mov / m4v（H.264 または HEVC。VP9 でエンコードされた mp4 もそのまま再生できます）に加えて webm と mkv に対応します —— 読み込み時に自動で MP4 に変換されます。VP8・VP9・AV1 は再エンコード、mkv の H.264・HEVC はそのまま移すので画質は落ちません。透過も音声も引き継ぎます。元のファイルはそのままです。画像は一般的な形式に対応します。アニメーション画像（GIF・APNG・アニメーション WebP）も読み込み時に動画へ変換されるので、表示方法は選んだとおりになり、再生はハードウェアデコード、透過も保たれます。ウェブ壁紙は HTML / WebGL に対応します。"}},{"@type":"Question","name":"Wallpaper Engine と比べてどうですか？","acceptedAnswer":{"@type":"Answer","text":"正直に言うと、それぞれに強みがあります。あちらにあってこちらにないもの：数百万点のワークショップ、ネイティブの Scene 描画、成熟したエディタ。こちらにあってあちらにないもの：Space ごとに別の壁紙（Windows では実現できません）、日の出・日の入りでの自動切り替え、そして明らかに真面目な省電力設計。さらに向こうには macOS 版がなく、手持ちのコレクションは変換ツールで持ってこられます。"}},{"@type":"Question","name":"初回起動がブロックされました。壊れているのですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。このビルドはまだ Apple の公証を受けていません —— 公証には有料の開発者アカウントが必要です。macOS は「開発元を検証できません」と表示しますが、「システム設定 →プライバシーとセキュリティ →セキュリティ」で「このまま開く」を押せば済みます。すべてマウス操作、ターミナル不要です。新しいバージョンに更新するたびに、最初の起動でもう一度だけ押してください。詳しい手順はダウンロード欄にあります。"}},{"@type":"Question","name":"データはアップロードされますか？","acceptedAnswer":{"@type":"Answer","text":"されません。壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac に留まります。自動アップロードはなく、広告トラッキングのスクリプトもありません。通信するのは、あなたが自分で壁紙カタログを更新したときにインデックスを取得する場面だけです。診断レポートは自分で書き出したときだけ生成され、含まれるのは状態とエラーで、壁紙ファイルは含まれません。"}},{"@type":"Question","name":"対応している Mac は？","acceptedAnswer":{"@type":"Answer","text":"macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"電力を食いませんか？","acceptedAnswer":{"@type":"Answer","text":"デフォルトでは、誰にも見えないときは 1 フレームも描画しません。画面がウインドウで完全に覆われた場合、ロック画面、ディスプレイスリープ、システムスリープ、低電力モードにはそれぞれ停止理由があり、復帰時に自動再開します。任意の「ロック解除遅延ゼロ（プリウォーム）」もアニメーションとメディアを停止し、少量の追加メモリと引き換えにビデオパイプラインと Web プロセスだけを待機させます。システムスリープ中はプリウォームせず、有効化前に app が影響を説明します。判断はすべて 1 つのガバナーに集約され、停止理由はログに残ります。"}},{"@type":"Question","name":"自分の動画や画像を使えますか？","acceptedAnswer":{"@type":"Answer","text":"使えます。ウインドウにドラッグするだけです。動画は mp4 / mov / m4v（H.264 または HEVC。VP9 でエンコードされた mp4 もそのまま再生できます）に加えて webm と mkv に対応します —— 読み込み時に自動で MP4 に変換されます。VP8・VP9・AV1 は再エンコード、mkv の H.264・HEVC はそのまま移すので画質は落ちません。透過も音声も引き継ぎます。元のファイルはそのままです。画像は一般的な形式に対応します。アニメーション画像（GIF・APNG・アニメーション WebP）も読み込み時に動画へ変換されるので、表示方法は選んだとおりになり、再生はハードウェアデコード、透過も保たれます。ウェブ壁紙は HTML / WebGL に対応します。"}},{"@type":"Question","name":"Wallpaper Engine と比べてどうですか？","acceptedAnswer":{"@type":"Answer","text":"正直に言うと、それぞれに強みがあります。あちらにあってこちらにないもの：数百万点のワークショップ、ネイティブの Scene 描画、成熟したエディタ。こちらにあってあちらにないもの：Space ごとに別の壁紙（Windows では実現できません）、日の出・日の入りでの自動切り替え、そして明らかに真面目な省電力設計。さらに向こうには macOS 版がなく、手持ちのコレクションはフォルダをドラッグするだけで持ってこられます。"}},{"@type":"Question","name":"初回起動がブロックされました。壊れているのですか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。このビルドはまだ Apple の公証を受けていません —— 公証には有料の開発者アカウントが必要です。macOS は「開発元を検証できません」と表示しますが、「システム設定 →プライバシーとセキュリティ →セキュリティ」で「このまま開く」を押せば済みます。すべてマウス操作、ターミナル不要です。新しいバージョンに更新するたびに、最初の起動でもう一度だけ押してください。詳しい手順はダウンロード欄にあります。"}},{"@type":"Question","name":"データはアップロードされますか？","acceptedAnswer":{"@type":"Answer","text":"されません。壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac に留まります。自動アップロードはなく、広告トラッキングのスクリプトもありません。通信するのは、あなたが自分で壁紙カタログを更新したときにインデックスを取得する場面だけです。診断レポートは自分で書き出したときだけ生成され、含まれるのは状態とエラーで、壁紙ファイルは含まれません。"}},{"@type":"Question","name":"対応している Mac は？","acceptedAnswer":{"@type":"Answer","text":"macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。"}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -100,7 +100,7 @@
         実機で動かして初めて分かったことで、コードを読んでいても見えません。
       </div>
       <figure class="shot rise">
-        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
+        <img src="https://futurebackrookie.github.io/swaylume-site/screenshot-displays-en.png" width="1040" height="370" loading="lazy" decoding="async"
              alt="Swaylume のディスプレイ設定。アイコンより前面に、マウス視差などのスイッチと画面ごとの割り当て">
       </figure>
 
@@ -136,8 +136,8 @@
 
       <h2 class="sec-h rise" id="how-migrate">Wallpaper Engine のコレクションを Mac へ。</h2>
       <p class="sec-p rise">
-        コマンドラインの変換ツールが読むのは、すでにあなたのマシンにある Wallpaper Engine のファイルだけです ——
-        ネットワークにも Steam にも触れず、何もダウンロードしません。実際の 8 件・合計 713 MB で検証し、8/8 が変換できました。
+        ワークショップの項目フォルダ（project.json があるフォルダ）を Swaylume にドラッグするか、431960 フォルダごとドラッグすれば一度にすべて読み込めます。もう一度ドラッグしても重複しません。
+        読むのはすでにお手元にある Wallpaper Engine のファイルだけです —— ネットワークにも Steam にも触れず、何もダウンロードしません。
       </p>
       <div class="table-scroll rise">
         <table>
@@ -145,39 +145,36 @@
             <tr><th>元の種類</th><th>結果</th><th>備考</th></tr>
           </thead>
           <tbody>
-            <tr><td class="mono">video</td><td><span class="st" data-v="ok">無劣化</span></td><td>webm / VP9 は自動的に H.264 へ変換<small>AVFoundation は webm ファイルを読めないため、変換が必須です</small></td></tr>
-            <tr><td class="mono">web</td><td><span class="st" data-v="ok">利用可</span></td><td>ページが前提とする JS インターフェースは互換レイヤーが補います<small>プロパティ監視、ランダムファイル取得、オーディオコールバックすべて実装済み</small></td></tr>
+            <tr><td class="mono">video</td><td><span class="st" data-v="ok">そのまま使えます</span></td><td>mp4 はそのまま、webm と mkv は読み込み時に自動で MP4 へ変換<small>タイトルは project.json から。元のファイルはそのまま</small></td></tr>
+            <tr><td class="mono">web</td><td><span class="st" data-v="ok">利用可</span></td><td>ページが前提とする JS インターフェースは互換レイヤーが補います<small>タイトル・入口ページ・プロパティは project.json から。プロパティ監視、ランダムファイル取得、オーディオコールバックすべて実装済み</small></td></tr>
             <tr><td class="mono">scene</td><td><span class="st" data-v="warn">一部</span></td><td>動画を内包しているものは自動で抽出できます<small>純粋なシーンは Windows 側で動画に事前レンダリングする必要があります —— そのまま対応するのは他社のレンダラーを丸ごと書き直すのと同じです</small></td></tr>
             <tr><td class="mono">application</td><td><span class="st" data-v="no">不可</span></td><td>Windows の実行ファイル<small>これはどうにもなりません</small></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="code rise"><span class="c"># 依存を入れて変換ツールをビルド</span>
-brew install ffmpeg
-cd Tools/swaylume-import &amp;&amp; swift build -c release
+      <div class="code rise"><span class="c"># Windows ではワークショップの内容はここにあります。まるごと Mac にコピー</span>
+Steam/steamapps/workshop/content/431960/
 
-<span class="c"># ローカルのコンテンツフォルダを指定すると .swaylume パッケージが出力されます</span>
-.build/release/swaylume-import &lt;あなたのパス&gt; -o ~/Desktop/out
-
-<span class="c"># out/ の .swaylume を Swaylume にドラッグ</span></div>
+<span class="c"># Swaylume のライブラリにドラッグ：項目ひとつでも、431960 ごとでも</span>
+431960/&lt;項目 ID&gt;/project.json</div>
       <div class="note rise">
-        変換結果は個人利用のためのものです。<b>元の壁紙の著作権はそれぞれの作者に帰属します</b> ——
-        ツールがするのはコンテナ形式の変更だけで、その事実は変わりません。
+        読み込んだ壁紙は個人利用のためのものです。<b>元の壁紙の著作権はそれぞれの作者に帰属します</b> ——
+        読み込みはお使いの Mac で再生できるようにするだけで、その事実は変わりません。
       </div>
 
       <h2 class="sec-h rise" id="how-keys">設定を開かずにできること。</h2>
       <p class="sec-p rise">グローバルショートカットが4つ。どのアプリが前面にいても使えます。システムのホットキー登録を使うので「アクセシビリティ」権限は不要 — 壁紙アプリを入れたせいでキー入力を全部読める権限まで渡すのはおかしい。</p>
       <div class="key-list rise">
-        <div><kbd>⌥⌘P</kbd><span>一時停止 / 再開</span></div>
-        <div><kbd>⌥⌘→</kbd><span>次の壁紙</span></div>
-        <div><kbd>⌥⌘M</kbd><span>ミュート切り替え</span></div>
-        <div><kbd>⌥⌘C</kbd><span>ペットを呼ぶ</span></div>
+        <div><kbd>⌃⌥⌘P</kbd><span>一時停止 / 再開</span></div>
+        <div><kbd>⌃⌥⌘→</kbd><span>次の壁紙</span></div>
+        <div><kbd>⌃⌥⌘M</kbd><span>ミュート切り替え</span></div>
+        <div><kbd>⌃⌥⌘C</kbd><span>ペットを呼ぶ</span></div>
       </div>
       <div class="gov-list rise">
         <div class="gov-item"><b>ウインドウの透明度</b><span>設定ウインドウを半透明にして、下の壁紙を透けさせられます。0 なら完全に不透明で、これが初期値です。</span></div>
         <div class="gov-item"><b>更新の自動チェック</b><span>バージョン情報のファイルを1つ取得して比べるだけで、送信は一切ありません。オフにもできますし、特定のビルドを飛ばすこともできます。</span></div>
       </div>
-      <div class="note rise"><b>他のアプリに取られている場合は知らせます。</b>登録の失敗は黙って無効になりません — 設定のその行に印が付くので、押しても効かない理由が分からないまま悩まずに済みます。</div>
+      <div class="note rise"><b>組み合わせは自分で変えられます。</b>既定は ⌃⌥⌘ で、Finder や Xcode、ブラウザでよく使う ⌥⌘ の組み合わせを避けています。他のグローバルショートカットとぶつかった場合は、設定のその行に印が付きます。</div>
     </div>
   </div>
 </section>
@@ -233,7 +230,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
         <article class="path-card">
           <span class="path-step">02 / Wallpaper Engine から</span>
           <h3>コレクションを持ち込む。ゼロからやり直さない。</h3>
-          <p>変換ツールが読むのは、すでにお使いのコンピュータにある Wallpaper Engine のプロジェクトだけです。Steam へのログインもダウンロードもありません。動画とウェブ形式を優先して対応し、Scene には事前レンダリングの手順を明示しています。</p>
+          <p>お使いのコンピュータにある Wallpaper Engine の壁紙フォルダをそのままドラッグするだけ。Steam へのログインもダウンロードもありません。動画とウェブ形式はそのまま使え、動画を含む Scene は動画を取り出し、純粋な Scene は動画として書き出す手順を示します。</p>
           <a href="#how-migrate">対応範囲と変換方法を見る</a>
         </article>
         <article class="path-card">
@@ -340,7 +337,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
       <div class="faq rise">
         <details><summary>電力を食いませんか？</summary><div class="faq-a">デフォルトでは、誰にも見えないときは 1 フレームも描画しません。画面がウインドウで完全に覆われた場合、ロック画面、ディスプレイスリープ、システムスリープ、低電力モードにはそれぞれ停止理由があり、復帰時に自動再開します。任意の「ロック解除遅延ゼロ（プリウォーム）」もアニメーションとメディアを停止し、少量の追加メモリと引き換えにビデオパイプラインと Web プロセスだけを待機させます。システムスリープ中はプリウォームせず、有効化前に app が影響を説明します。判断はすべて 1 つのガバナーに集約され、停止理由はログに残ります。</div></details>
         <details><summary>自分の動画や画像を使えますか？</summary><div class="faq-a">使えます。ウインドウにドラッグするだけです。動画は mp4 / mov / m4v（H.264 または HEVC。VP9 でエンコードされた mp4 もそのまま再生できます）に加えて webm と mkv に対応します —— 読み込み時に自動で MP4 に変換されます。VP8・VP9・AV1 は再エンコード、mkv の H.264・HEVC はそのまま移すので画質は落ちません。透過も音声も引き継ぎます。元のファイルはそのままです。画像は一般的な形式に対応します。アニメーション画像（GIF・APNG・アニメーション WebP）も読み込み時に動画へ変換されるので、表示方法は選んだとおりになり、再生はハードウェアデコード、透過も保たれます。ウェブ壁紙は HTML / WebGL に対応します。</div></details>
-        <details><summary>Wallpaper Engine と比べてどうですか？</summary><div class="faq-a">正直に言うと、それぞれに強みがあります。<strong>あちらにあってこちらにないもの</strong>：数百万点のワークショップ、ネイティブの Scene 描画、成熟したエディタ。<strong>こちらにあってあちらにないもの</strong>：Space ごとに別の壁紙（Windows では実現できません）、日の出・日の入りでの自動切り替え、そして明らかに真面目な省電力設計。さらに向こうには macOS 版がなく、手持ちのコレクションは変換ツールで持ってこられます。</div></details>
+        <details><summary>Wallpaper Engine と比べてどうですか？</summary><div class="faq-a">正直に言うと、それぞれに強みがあります。<strong>あちらにあってこちらにないもの</strong>：数百万点のワークショップ、ネイティブの Scene 描画、成熟したエディタ。<strong>こちらにあってあちらにないもの</strong>：Space ごとに別の壁紙（Windows では実現できません）、日の出・日の入りでの自動切り替え、そして明らかに真面目な省電力設計。さらに向こうには macOS 版がなく、手持ちのコレクションはフォルダをドラッグするだけで持ってこられます。</div></details>
         <details><summary>初回起動がブロックされました。壊れているのですか？</summary><div class="faq-a">いいえ。このビルドはまだ Apple の公証を受けていません —— 公証には有料の開発者アカウントが必要です。macOS は「開発元を検証できません」と表示しますが、「システム設定 →プライバシーとセキュリティ →セキュリティ」で「このまま開く」を押せば済みます。すべてマウス操作、ターミナル不要です。新しいバージョンに更新するたびに、最初の起動でもう一度だけ押してください。詳しい手順はダウンロード欄にあります。</div></details>
         <details><summary>データはアップロードされますか？</summary><div class="faq-a">されません。壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac に留まります。自動アップロードはなく、広告トラッキングのスクリプトもありません。通信するのは、あなたが自分で壁紙カタログを更新したときにインデックスを取得する場面だけです。診断レポートは自分で書き出したときだけ生成され、含まれるのは状態とエラーで、壁紙ファイルは含まれません。</div></details>
         <details><summary>対応している Mac は？</summary><div class="faq-a">macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。</div></details>
@@ -358,7 +355,7 @@ cd Tools/swaylume-import &amp;&amp; swift build -c release
     <p class="legal">
       Swaylume は、Wallpaper Engine およびその開発元、ならびにいかなるサードパーティの壁紙プラットフォームとも
       提携しておらず、それらから許諾や推奨を受けてもいません。本文中の製品名は互換性を説明する目的でのみ言及しており、
-      商標は各権利者に帰属します。変換ツールは、あなた自身のコンピュータ上で、あなたがすでに持っているファイルを処理します。
+      商標は各権利者に帰属します。読み込みは、あなた自身のコンピュータ上で、あなたがすでに持っているファイルだけを処理します。
     </p>
     <p class="legal">Mac および macOS は Apple Inc. の商標です。Swaylume は個人で開発しているアプリで、Apple とは関係ありません。</p>
     <div class="foot-row">
