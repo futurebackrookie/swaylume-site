@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Technical details and where to find wallpapers — Swaylume</title>
-<meta name="description" content="How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's licence allows, privacy and compatibility limits, and answers to common questions.">
+<meta name="description" content="How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's license allows, privacy and compatibility limits, and answers to common questions.">
 <meta name="google-site-verification" content="93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318">
 <link rel="canonical" href="https://futurebackrookie.github.io/swaylume-site/en/details/">
 <link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/swaylume-site/details/">
@@ -15,7 +15,7 @@
 <link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/swaylume-site/details/">
 <meta name="theme-color" content="#000000">
 <meta property="og:title" content="Technical details and where to find wallpapers — Swaylume">
-<meta property="og:description" content="How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's licence allows, privacy and compatibility limits, and answers to common questions.">
+<meta property="og:description" content="How audio reactivity works, three ways to get started, where to find live wallpapers and what each site's license allows, privacy and compatibility limits, and answers to common questions.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://futurebackrookie.github.io/swaylume-site/en/details/">
@@ -27,7 +27,7 @@
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
 <link rel="stylesheet" href="https://futurebackrookie.github.io/swaylume-site/assets/site.css?v=e2692d50">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/swaylume-site/icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it going to drain my battery?","acceptedAnswer":{"@type":"Answer","text":"By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log."}},{"@type":"Question","name":"Can I use my own videos or images?","acceptedAnswer":{"@type":"Answer","text":"Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC; VP9-encoded mp4 plays directly too), plus webm and mkv — these are converted to MP4 on import: VP8, VP9 and AV1 are re-encoded, while H.264 and HEVC inside mkv are copied as-is with no quality loss; transparency and sound come along too. Your original file is left untouched. Images: the usual formats. Animated GIF, APNG and WebP images are converted to video on import too, so every fill mode works as chosen and playback is hardware-decoded; transparency is kept. Web wallpapers: HTML / WebGL."}},{"@type":"Question","name":"How does it compare to Wallpaper Engine?","acceptedAnswer":{"@type":"Answer","text":"Honestly, each has its strengths. It has what we don’t: millions of Workshop items, native Scene rendering, a mature editor. We have what it doesn’t: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across — just drag the folders in."}},{"@type":"Question","name":"macOS blocked the first launch. Is the app broken?","acceptedAnswer":{"@type":"Answer","text":"No. This build isn’t notarised by Apple yet — notarisation needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway”. All clicks, no Terminal. After each update you’ll need to do this once more on first launch. Full steps are in the download section."}},{"@type":"Question","name":"Does it upload any of my data?","acceptedAnswer":{"@type":"Answer","text":"No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalogue index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files."}},{"@type":"Question","name":"Which Macs are supported?","acceptedAnswer":{"@type":"Answer","text":"macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it going to drain my battery?","acceptedAnswer":{"@type":"Answer","text":"By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log."}},{"@type":"Question","name":"Can I use my own videos or images?","acceptedAnswer":{"@type":"Answer","text":"Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC; VP9-encoded mp4 plays directly too), plus webm and mkv — these are converted to MP4 on import: VP8, VP9 and AV1 are re-encoded, while H.264 and HEVC inside mkv are copied as-is with no quality loss; transparency and sound come along too. Your original file is left untouched. Images: the usual formats. Animated GIF, APNG and WebP images are converted to video on import too, so every fill mode works as chosen and playback is hardware-decoded; transparency is kept. Web wallpapers: HTML / WebGL."}},{"@type":"Question","name":"How does it compare to Wallpaper Engine?","acceptedAnswer":{"@type":"Answer","text":"Honestly, each has its strengths. It has what we don’t: millions of Workshop items, native Scene rendering, a mature editor. We have what it doesn’t: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across — just drag the folders in."}},{"@type":"Question","name":"macOS blocked the first launch. Is the app broken?","acceptedAnswer":{"@type":"Answer","text":"No. This build isn’t notarized by Apple yet — notarization needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway”. All clicks, no Terminal. After each update you’ll need to do this once more on first launch. Full steps are in the download section."}},{"@type":"Question","name":"Does it upload any of my data?","acceptedAnswer":{"@type":"Answer","text":"No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalog index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files."}},{"@type":"Question","name":"Which Macs are supported?","acceptedAnswer":{"@type":"Answer","text":"macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware."}}]}</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body data-page="details">
@@ -206,7 +206,7 @@ Steam/steamapps/workshop/content/431960/
         Older systems can only sample an <b>input device</b>: without a loopback driver like
         BlackHole you get room noise from the microphone. The pet’s “dance to music” uses the
         same Core Audio process tap, but listens only to music, video and browser apps. Everything
-        is analysed locally in real time and never recorded, saved or uploaded.
+        is analyzed locally in real time and never recorded, saved or uploaded.
       </div>
     </div>
   </div>
@@ -226,8 +226,8 @@ Steam/steamapps/workshop/content/431960/
         <article class="path-card">
           <span class="path-step">01 / Just want it running</span>
           <h3>Pick a live wallpaper, put it on your desktop.</h3>
-          <p>Download a `.swaylume` from the catalogue and drag it into the app. Video, images, web and layered wallpapers each get their own native renderer.</p>
-          <a href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">Browse the catalogue</a>
+          <p>Download a `.swaylume` from the catalog and drag it into the app. Video, images, web and layered wallpapers each get their own native renderer.</p>
+          <a href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener">Browse the catalog</a>
         </article>
         <article class="path-card">
           <span class="path-step">02 / Coming from Wallpaper Engine</span>
@@ -238,7 +238,7 @@ Steam/steamapps/workshop/content/431960/
         <article class="path-card">
           <span class="path-step">03 / I make wallpapers</span>
           <h3>Make one, and put it on other people’s desktops.</h3>
-          <p>Start with the zero-cost catalogue: a clear format, checksums, version history and a visible review trail. Until uploads open properly, the risk doesn’t get pushed onto creators.</p>
+          <p>Start with the zero-cost catalog: a clear format, checksums, version history and a visible review trail. Until uploads open properly, the risk doesn’t get pushed onto creators.</p>
           <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Read the submission guide</a>
         </article>
       </div>
@@ -291,7 +291,7 @@ Steam/steamapps/workshop/content/431960/
       <div class="note rise">
         <b>These links are not an endorsement.</b>
         Swaylume has no connection to these sites, takes no part in running them, and cannot vouch for the licensing,
-        quality or safety of what they host. <b>Confirm the licence before you download</b> — copyright in derivative
+        quality or safety of what they host. <b>Confirm the license before you download</b> — copyright in derivative
         work (anime and game characters and so on) belongs to the original creators, and using something on your own
         machine is not the same as redistributing it.
         If something is wrong with one of these sites,
@@ -301,10 +301,10 @@ Steam/steamapps/workshop/content/431960/
       <div class="note note-quiet rise">
         <b>Free to download for yourself ≠ free to submit.</b>
         Plenty of free stock sites allow you to download and use their material but forbid redistribution — Pexels
-        explicitly forbids redistributing “on other stock photo or wallpaper platforms”, and a wallpaper catalogue is
+        explicitly forbids redistributing “on other stock photo or wallpaper platforms”, and a wallpaper catalog is
         exactly that.
         Changing the container format does not count as “applying creative effort”, so <b>please don’t submit this
-        material to the catalogue</b>.
+        material to the catalog</b>.
       </div>
     </div>
   </div>
@@ -322,7 +322,7 @@ Steam/steamapps/workshop/content/431960/
       </p>
       <div class="trust-grid rise">
         <article class="trust-card"><strong>Local first.</strong><p>Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically, and there are no ad-tracking scripts.</p></article>
-        <article class="trust-card"><strong>Public APIs only.</strong><p>Desktop window levels, multi-Space behaviour, the power strategy and file access all use documented macOS capabilities, keeping the App Store route open.</p></article>
+        <article class="trust-card"><strong>Public APIs only.</strong><p>Desktop window levels, multi-Space behavior, the power strategy and file access all use documented macOS capabilities, keeping the App Store route open.</p></article>
         <article class="trust-card"><strong>Diagnostics you can take with you.</strong><p>Hit a black screen or a compatibility problem and you can export a redacted local report. It contains state and errors, not your wallpaper files.</p></article>
         <article class="trust-card"><strong>No pretend compatibility.</strong><p>Windows application-type wallpapers and native Scene rendering are not promised. Scene has a legitimate video pre-render path instead.</p></article>
       </div>
@@ -342,8 +342,8 @@ Steam/steamapps/workshop/content/431960/
         <details><summary>Is it going to drain my battery?</summary><div class="faq-a">By default it doesn’t draw a single frame when nobody can see it. A fully covered screen, lock screen, display sleep, system sleep and Low Power Mode each have their own pause reason, with automatic resume on wake; on battery you can pause or lower the frame rate. The optional “Zero-latency unlock (Prewarm)” mode still pauses animation and media, keeping only the video pipeline and web process ready for a faster unlock at the cost of a little extra memory. It never prewarms during system sleep, and the app explains the trade-off before enabling it. Every decision lives in one governor, so “why did my wallpaper stop?” always has exactly one answer — and it’s in the log.</div></details>
         <details><summary>Can I use my own videos or images?</summary><div class="faq-a">Yes — just drag them into the window. Video: mp4 / mov / m4v (H.264 or HEVC; VP9-encoded mp4 plays directly too), plus webm and mkv — these are converted to MP4 on import: VP8, VP9 and AV1 are re-encoded, while H.264 and HEVC inside mkv are copied as-is with no quality loss; transparency and sound come along too. Your original file is left untouched. Images: the usual formats. Animated GIF, APNG and WebP images are converted to video on import too, so every fill mode works as chosen and playback is hardware-decoded; transparency is kept. Web wallpapers: HTML / WebGL.</div></details>
         <details><summary>How does it compare to Wallpaper Engine?</summary><div class="faq-a">Honestly, each has its strengths. <strong>It has what we don’t</strong>: millions of Workshop items, native Scene rendering, a mature editor. <strong>We have what it doesn’t</strong>: a different wallpaper per Space (not possible on Windows), automatic switching at sunrise and sunset, and a noticeably more serious power strategy. It also has no macOS version — and the collection you already have can come across — just drag the folders in.</div></details>
-        <details><summary>macOS blocked the first launch. Is the app broken?</summary><div class="faq-a">No. This build isn’t notarised by Apple yet — notarisation needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway”. All clicks, no Terminal. After each update you’ll need to do this once more on first launch. Full steps are in the download section.</div></details>
-        <details><summary>Does it upload any of my data?</summary><div class="faq-a">No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalogue index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files.</div></details>
+        <details><summary>macOS blocked the first launch. Is the app broken?</summary><div class="faq-a">No. This build isn’t notarized by Apple yet — notarization needs a paid developer account. macOS says it “cannot verify the developer”; open System Settings → Privacy &amp; Security → Security and click “Open Anyway”. All clicks, no Terminal. After each update you’ll need to do this once more on first launch. Full steps are in the download section.</div></details>
+        <details><summary>Does it upload any of my data?</summary><div class="faq-a">No. Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically and there are no ad-tracking scripts. The only network activity is fetching the wallpaper catalog index when you refresh it yourself; don’t refresh and it never goes online. Diagnostic reports are exported only when you ask, and contain state and errors, not your wallpaper files.</div></details>
         <details><summary>Which Macs are supported?</summary><div class="faq-a">macOS 14 or later, on Apple silicon and Intel alike (universal binary). Multiple displays and AirPlay secondary screens have both been tested on real hardware.</div></details>
       </div>
       <div class="note rise"><b>Not answered here?</b> This is a beta, and your question is probably somebody else’s too — <a href="https://github.com/futurebackrookie/swaylume-catalog/issues" target="_blank" rel="noopener">open an issue</a> and the answer will end up in this section.</div>
@@ -357,7 +357,7 @@ Steam/steamapps/workshop/content/431960/
 <footer class="foot">
   <div class="wrap">
     <p class="legal">
-      Swaylume is not affiliated with, authorised by, or endorsed by Wallpaper Engine, its developers, or any
+      Swaylume is not affiliated with, authorized by, or endorsed by Wallpaper Engine, its developers, or any
       third-party wallpaper platform. Product names are mentioned only to describe compatibility; trademarks
       belong to their respective owners.
       Importing only processes files you already have, on your own computer.
@@ -367,7 +367,7 @@ Steam/steamapps/workshop/content/431960/
       <a href="/swaylume-site/en/details/">Technical Details</a>
       <a href="/swaylume-site/en/format/">Make one</a>
       <a href="https://github.com/futurebackrookie/swaylume-site/releases">Beta builds</a>
-      <a href="https://github.com/futurebackrookie/swaylume-catalog">Wallpaper catalogue</a>
+      <a href="https://github.com/futurebackrookie/swaylume-catalog">Wallpaper catalog</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Submit a wallpaper</a>
     </div>
     <div class="foot-row">

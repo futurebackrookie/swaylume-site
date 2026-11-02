@@ -92,7 +92,7 @@
     <div class="rail"><span class="rail-num">02</span><span>Manifest</span></div>
     <div>
       <h2 class="sec-h rise">What goes in manifest.json.</h2>
-      <p class="sec-p rise">Four required fields, everything else optional. The reader ignores fields it doesn’t recognise, so extras are never an error.</p>
+      <p class="sec-p rise">Four required fields, everything else optional. The reader ignores fields it doesn’t recognize, so extras are never an error.</p>
 
       <div class="code rise">{
   <span class="k">"formatVersion"</span>: 1,
@@ -118,7 +118,7 @@
     <div class="rail"><span class="rail-num">03</span><span>Parameters</span></div>
     <div>
       <h2 class="sec-h rise">Let people tune your wallpaper from the inspector.</h2>
-      <p class="sec-p rise">Web wallpapers only. <strong>Whatever you declare in the manifest is what shows up in Swaylume’s inspector</strong> — switches, sliders, colours, file pickers, text fields. Values reach the page the moment the user drags, with no reload.</p>
+      <p class="sec-p rise">Web wallpapers only. <strong>Whatever you declare in the manifest is what shows up in Swaylume’s inspector</strong> — switches, sliders, colors, file pickers, text fields. Values reach the page the moment the user drags, with no reload.</p>
 
       <div class="code rise"><span class="k">"properties"</span>: {
   <span class="k">"speed"</span>:     { <span class="k">"number"</span>: { <span class="k">"_0"</span>: { <span class="k">"value"</span>: 0.35, <span class="k">"min"</span>: 0, <span class="k">"max"</span>: 1 } } },
@@ -129,7 +129,7 @@
 }</div>
 
       <div class="table-scroll rise" style="margin-top:24px">
-        <table><thead><tr><th>case</th><th>Type of <code>_0</code></th><th>How it appears</th></tr></thead><tbody><tr><td>bool</td><td>Bool</td><td>Switch</td></tr><tr><td>number</td><td><code>{ value, min, max }</code></td><td>Slider</td></tr><tr><td>text</td><td>String</td><td>Text field</td></tr><tr><td>color</td><td>String, <code>"r g b"</code> — three 0…1 floats</td><td>Colour picker</td></tr><tr><td>file</td><td><code>{ fileType }</code></td><td>File picker</td></tr><tr><td>directory</td><td><code>{ fileType }</code></td><td>Folder picker</td></tr></tbody></table>
+        <table><thead><tr><th>case</th><th>Type of <code>_0</code></th><th>How it appears</th></tr></thead><tbody><tr><td>bool</td><td>Bool</td><td>Switch</td></tr><tr><td>number</td><td><code>{ value, min, max }</code></td><td>Slider</td></tr><tr><td>text</td><td>String</td><td>Text field</td></tr><tr><td>color</td><td>String, <code>"r g b"</code> — three 0…1 floats</td><td>Color picker</td></tr><tr><td>file</td><td><code>{ fileType }</code></td><td>File picker</td></tr><tr><td>directory</td><td><code>{ fileType }</code></td><td>Folder picker</td></tr></tbody></table>
       </div>
 
       <div class="note rise"><b><span class="mono">number</span> takes an object for <span class="mono">_0</span>, not a bare value.</b> A slider can’t be drawn without knowing its range — Wallpaper Engine sliders show up as 0…1, 0…100, 0…359, 0…1000 in the wild. Without the range the inspector has to guess, and every drag lands in the wrong place.</div>
@@ -166,13 +166,13 @@
       <h2 class="sec-h rise">How this format is allowed to change.</h2>
       <p class="sec-p rise">Only a breaking change touches <code>formatVersion</code>. Put differently: <strong>a package you build today won’t stop working because we added a field tomorrow.</strong></p>
 
-      <div class="gov-list rise"><div class="gov-item"><b>New fields are always optional.</b><span>The reader must ignore fields it doesn’t recognise rather than fail. That’s a hard rule, not advice.</span></div><div class="gov-item"><b>formatVersion only rises on a breaking change.</b><span>Adding a field isn’t breaking. If it ever does rise, old packages still load — they just miss the new capability.</span></div><div class="gov-item"><b>The old extension still works.</b><span>Packages exported as .livewall before the rename hold the same v1 format inside; Finder association and import both still work. Only new exports use .swaylume.</span></div><div class="gov-item"><b>Writer and reader are one contract.</b><span>The converter and the app’s import path change together. Letting one side move first means exporting packages you can’t read back.</span></div></div>
+      <div class="gov-list rise"><div class="gov-item"><b>New fields are always optional.</b><span>The reader must ignore fields it doesn’t recognize rather than fail. That’s a hard rule, not advice.</span></div><div class="gov-item"><b>formatVersion only rises on a breaking change.</b><span>Adding a field isn’t breaking. If it ever does rise, old packages still load — they just miss the new capability.</span></div><div class="gov-item"><b>The old extension still works.</b><span>Packages exported as .livewall before the rename hold the same v1 format inside; Finder association and import both still work. Only new exports use .swaylume.</span></div><div class="gov-item"><b>Writer and reader are one contract.</b><span>The converter and the app’s import path change together. Letting one side move first means exporting packages you can’t read back.</span></div></div>
 
       <div class="note rise"><b>Run it locally before you submit.</b> Drag the <span class="mono">.swaylume</span> straight into Swaylume: it should play, and every parameter in the inspector should do what you meant. The catalog repo’s CI re-checks structure and checksums, but it cannot check whether the thing looks right — only you can.</div>
 
       <div class="btn-row rise" style="margin-top:30px">
         <a class="btn btn-primary" href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener"><span>Read the submission guide</span></a>
-        <a class="btn btn-line" href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener"><span>Browse the wallpaper catalogue</span></a>
+        <a class="btn btn-line" href="https://github.com/futurebackrookie/swaylume-catalog" target="_blank" rel="noopener"><span>Browse the wallpaper catalog</span></a>
       </div>
     </div>
   </div>
@@ -183,7 +183,7 @@
 <footer class="foot">
   <div class="wrap">
     <p class="legal">
-      Swaylume is not affiliated with, authorised by, or endorsed by Wallpaper Engine, its developers, or any
+      Swaylume is not affiliated with, authorized by, or endorsed by Wallpaper Engine, its developers, or any
       third-party wallpaper platform. Product names are mentioned only to describe compatibility; trademarks
       belong to their respective owners.
       Importing only processes files you already have, on your own computer.
@@ -193,7 +193,7 @@
       <a href="/swaylume-site/en/details/">Technical Details</a>
       <a href="/swaylume-site/en/format/">Make one</a>
       <a href="https://github.com/futurebackrookie/swaylume-site/releases">Beta builds</a>
-      <a href="https://github.com/futurebackrookie/swaylume-catalog">Wallpaper catalogue</a>
+      <a href="https://github.com/futurebackrookie/swaylume-catalog">Wallpaper catalog</a>
       <a href="https://github.com/futurebackrookie/swaylume-catalog/blob/main/CONTRIBUTING.md">Submit a wallpaper</a>
     </div>
     <div class="foot-row">

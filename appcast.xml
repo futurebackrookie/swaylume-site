@@ -7,50 +7,38 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Mon, 02 Nov 2026 13:12:47 +0000</pubDate>
-      <sparkle:version>49</sparkle:version>
+      <pubDate>Mon, 02 Nov 2026 20:39:36 +0000</pubDate>
+      <sparkle:version>50</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description xml:lang="en"><![CDATA[Beta 49
-
-New
-· Drag Wallpaper Engine wallpaper folders straight in: video and web wallpapers are imported with the title, entry page and properties from project.json, WebM is converted to MP4 as usual, and scene wallpapers that contain a video have it extracted. You can also drop the whole 431960 folder to import everything at once. No command-line tool needed.
-· Global shortcuts can be changed: Settings → General → Shortcuts, click a shortcut to record a new one.
-
-Fixes
-· Settings that web wallpapers save for themselves are no longer lost on relaunch, and wallpapers no longer share them.
-· Turning on timed rotation didn’t actually start it until you changed another setting; now it starts right away.
-· Fill mode, volume and “Play sound” in the inspector lagged one step behind, so the switch looked reversed; changes now apply immediately.
-· Turning off mouse parallax left the wallpaper shifted instead of re-centring it.
-· Adjusting a web wallpaper’s properties could undo a favourite or frame-rate cap you had just set.
-· Day/night switching now shows the real next sunrise or sunset under “Next change”, and tells you when no day or night wallpaper is chosen.
-· In timed rotation, ticking wallpapers or changing the order no longer switches immediately; after a manual “Next”, the countdown restarts from that moment.
+      <description xml:lang="en"><![CDATA[Beta 50
 
 Improvements
-· Global shortcuts now default to ⌃⌥⌘P / ⌃⌥⌘→ / ⌃⌥⌘M / ⌃⌥⌘C. The old ⌥⌘ ones took keystrokes away from Finder (Copy as Pathname, path bar), Xcode and browsers. Record ⌥⌘ again in Settings if you prefer it.
-· Leftover files that belong to no wallpaper are cleaned up at launch (wallpaper folders go to the Trash; caches like thumbnails are deleted).
-· Release notes are now available in English.]]></description>
-      <description><![CDATA[Beta 49
+· English interface: the 26 built-in wallpapers now have English names; counts use proper singular and plural (no more “Every 1 minutes” or “1 items”); spelling is consistently American and capitalization follows macOS conventions; the “Automation” sidebar item is now “Auto Switch”.
+· The status on the Displays page reflects what the display is actually showing: “No wallpaper” when nothing is set, and videos and images no longer show a frame-rate cap that only applies to web wallpapers.
+· When fewer than two wallpapers are in a timed rotation, the countdown is replaced by a short explanation instead of counting down to nothing.
+· The empty-library hint and the Add Wallpaper panel now mention Wallpaper Engine wallpaper folders.
 
-新功能
-· Wallpaper Engine 的壁纸文件夹直接拖进来就能用：视频、网页壁纸按 project.json 的标题、入口和属性导入，WebM 照常转成 MP4；场景（Scene）壁纸里带视频的会把视频抽出来。也可以把整个 431960 文件夹拖进来一次导入全部。不再需要命令行工具。
-· 全局快捷键可以自己改：设置 → 通用 → 快捷键，点组合键重新录。
-
-修复
-· 网页壁纸里存的设置（比如壁纸自己记住的样式）重启后不再丢，壁纸之间也不再互相串。
-· 刚打开「定时轮播」时其实不转，要再改一处设置才开始；现在打开就开始。
-· 检查器里改填充方式、音量、「播放声音」慢一拍，开关看起来像接反了；现在立刻生效。
-· 关掉「鼠标视差」后壁纸停在偏移的位置，不回正。
-· 调网页壁纸的属性时，会把刚才的收藏、帧率上限改动冲掉。
-· 「日夜切换」的「下次切换」显示真正会换的日出 / 日落时间；白天和夜晚都没选壁纸时会提示。
-· 定时轮播时勾选参与的壁纸、改顺序不再立刻换一张；手动「下一张」后倒计时从这一刻重新算。
+Fixes
+· The Order picker in the English Auto Switch page read “In order: In order”.
+· The “Turn On Audio Reactive” button in the English inspector was cut off.
+· The pet’s “Listening to…” line said the wrong number of apps in English and used a Chinese comma.
+· A broken scene package was reported as an unreadable project.json.]]></description>
+      <description><![CDATA[Beta 50
 
 改进
-· 全局快捷键默认换成 ⌃⌥⌘P / ⌃⌥⌘→ / ⌃⌥⌘M / ⌃⌥⌘C。原来的 ⌥⌘ 会抢走访达（拷贝路径名、路径栏）、Xcode 和浏览器的快捷键。想用回 ⌥⌘ 可以在设置里自己录。
-· 启动时清掉不属于任何壁纸的残留文件（壁纸文件夹移到废纸篓，缩略图之类的缓存直接删）。
-· 更新说明有了英文版。]]></description>
+· 英文界面：内置的 26 张壁纸显示英文名；数量分单复数（不再有「Every 1 minutes」「1 items」）；统一成美式拼写和 macOS 的大小写习惯；侧栏「自动切换」改叫 Auto Switch。
+· 显示器页的「状态」按这块屏上实际放的东西显示：没设壁纸写「没有壁纸」，视频和图片不再显示只对网页壁纸有用的帧率上限。
+· 定时轮播里参与的壁纸不到两张时，不再空倒计时，改成一句说明。
+· 壁纸库空着时的提示、「添加壁纸…」面板的说明写上了 Wallpaper Engine 的壁纸文件夹。
+
+修复
+· 英文界面「自动切换」页的选择框显示成「In order: In order」。
+· 英文界面检查器里「打开音频响应」按钮的文字被截断。
+· 桌宠「正在听」那句英文意思说反了，还夹着中文顿号。
+· 场景（Scene）壁纸的场景包坏了时，报错说成「读不懂 project.json」。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8425751"
+                 length="8438198"
                  type="application/octet-stream"/>
     </item>
   </channel>
