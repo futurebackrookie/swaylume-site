@@ -7,21 +7,21 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Sun, 01 Nov 2026 23:45:45 +0000</pubDate>
-      <sparkle:version>47</sparkle:version>
+      <pubDate>Mon, 02 Nov 2026 08:43:53 +0000</pubDate>
+      <sparkle:version>48</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Beta 47
+      <description><![CDATA[Beta 48
 
 修复
-· 以前把帧率上限手动设成 120 的，关掉「跟随显示器刷新率」后「正常帧率上限」是一片空白；现在显示实际生效的 60。
-· 「日夜切换」自动推算的日出日落，在南半球、用夏令时的地区和高纬度地方会差一到两个小时，夜晚壁纸提前换上；现在按系统时区表里的城市坐标算，只差几分钟。没改过位置的会自动更新，自己填过的不动。
+· VP9 编码的 MP4 以前能导入，设成壁纸却是一片黑、也不报错；现在能正常播放。
+· 同一个文件或文件夹拖进来两次，库里不再多出一条；会提示「已在库里」，并说是库里哪一张。
 
 改进
-· 检查器里的「打开音频响应」会同时把声音来源换成「系统播放的声音」：壁纸跟着正在放的音乐动，而不是麦克风收到的环境声。
-· 内置的「声场」「玻音」「低鸣」没有声音时也会动，不再提示「可能不动或一片黑」。]]></description>
+· 系统播不了的视频（WMV、FLV、Xvid / DivX 的 AVI 等）导入时当场说明原因和办法：先转成 H.264 或 HEVC 编码的 MP4，比如用 HandBrake。不再先收进库、设成壁纸后才黑屏报错。
+· 不再每次同步壁纸都在应用数据里另存一份副本（原本给没发布的屏保准备的）；升级后会自动清掉这份副本，腾出磁盘空间。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="8219256"
+                 length="8229411"
                  type="application/octet-stream"/>
     </item>
   </channel>
